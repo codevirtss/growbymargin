@@ -24,7 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         scrollDirection: Axis.vertical,
         child: Container(
           width: 100.w,
-          //height: 100.h,
+          height: 100.h,
           color: Colors.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: emailId,
                   style: GoogleFonts.roboto(fontSize: 17.sp),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person_outline),
+                    //prefixIcon: Icon(Icons.person_outline),
                     hintText:'Name',
                     hintStyle: GoogleFonts.roboto(fontSize: 15.sp),
                     border: UnderlineInputBorder()
@@ -55,7 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: emailId,
                   style: GoogleFonts.roboto(fontSize: 17.sp),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email_outlined),
+                    //prefixIcon: Icon(Icons.email_outlined),
                     hintText:'Email',
                     hintStyle: GoogleFonts.roboto(fontSize: 15.sp),
                     border: UnderlineInputBorder()
@@ -70,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: GoogleFonts.roboto(fontSize: 17.sp),
                   obscureText: true,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock_outline),
+                    //prefixIcon: Icon(Icons.lock_outline),
                     hintText:'Password',
                     hintStyle: GoogleFonts.roboto(fontSize: 15.sp),
                     border: UnderlineInputBorder()
@@ -78,49 +78,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 60.w),
-                child: GestureDetector(
-                  onTap: (){},
-                  child: Text('Forget Password?',
-                    style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 11.sp,fontWeight: FontWeight.w500,color: Colors.black38,)),
-                  ),
+                padding: EdgeInsets.fromLTRB(10.w, 15.w, 10.w, 18.w),
+                child: Row(
+                  children: [
+                    Text('Sign ',
+                      style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black54,wordSpacing: -0.5.w)),
+                    ),
+                    Text('Up',
+                      style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black,)),
+                    ),
+                    Container(
+                      height: 16.w,
+                      padding: EdgeInsets.only(left: 27.w),
+                      child: MaterialButton(
+                        onPressed: (){},
+                        child: Icon(Icons.arrow_forward,color: Colors.white,),
+                        color: Color(0xff92E3A9),
+                        shape: CircleBorder(),
+                      ),
+                    )
+                  ],
                 ),
               ),
-              Container(
-                width: 100.h,
-                height: 6.h,
-                margin: EdgeInsets.only(left: 10.w,right: 10.w,top: 8.h,bottom: 2.h),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.w)),
-                child: MaterialButton(
-                  onPressed: (){
-                    //Navigator.pop(context);
-                    //Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInScreen()));
-                  },
-                  elevation: 0.0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3.w)),
-                  color: Color(0xff92E3A9),
-                  child: Text('Sign Up',
-                    style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: Colors.white)),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.w),
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInScreen()));
+                      },
+                      child: Text('Sign In',
+                        style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 13.sp,fontWeight: FontWeight.w600,color: Colors.black38,decoration: TextDecoration.underline)),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Container(
-                width: 100.h,
-                height: 6.h,
-                margin: EdgeInsets.only(left: 10.w,right: 10.w,top: 0.h,bottom: 2.h),
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.w)),
-                child: MaterialButton(
-                  onPressed: (){
-                    //Navigator.pop(context);
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInScreen()));
-                  },
-                  elevation: 0.0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3.w)),
-                  color: Color(0xff92E3A9),
-                  child: Text('Log In',
-                    style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: Colors.white)),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.w,right: 10.w),
+                    child: GestureDetector(
+                      onTap: (){},
+                      child: Text('Forget Password',
+                        style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 13.sp,fontWeight: FontWeight.w600,color: Colors.black38,decoration: TextDecoration.underline)),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
