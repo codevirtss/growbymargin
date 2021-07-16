@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:growbymargin/Screens/signin.dart';
+import 'package:growbymargin/Screens/signup.dart';
 import 'package:sizer/sizer.dart';
 
 class OnBoard extends StatefulWidget {
@@ -84,7 +86,10 @@ class _OnBoardState extends State<OnBoard> {
                   margin: EdgeInsets.only(left: 8.w,right: 8.w,top: 12.h,bottom: 3.h),
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.w)),
                   child: MaterialButton(
-                    onPressed: (){},
+                    onPressed: (){
+                      //Navigator.pop(context);
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInScreen()));
+                    },
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3.w)),
                     color: Color(0xff92E3A9),
@@ -97,8 +102,9 @@ class _OnBoardState extends State<OnBoard> {
                   child: Text('Create an Account',
                     style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 11.sp,fontWeight: FontWeight.w500,color: Colors.black38,wordSpacing: 0.5.w,letterSpacing: 0.5.sp)),
                   ),
-                  onTap: (){},
-
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpScreen()));
+                  },
                 )
               ],
             ),
