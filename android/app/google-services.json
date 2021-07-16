@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "316863838331",
+    "project_id": "growbymargin-2211c",
+    "storage_bucket": "growbymargin-2211c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316863838331:android:e58df84a0e78b01af64ade",
+        "android_client_info": {
+          "package_name": "com.growbymargin.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "316863838331-e0vu47a6jc1lq1e4gebf45j3r26i3d0a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjpsmYmOH-fqarWDXWRD6SqFHr6FNusr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "316863838331-e0vu47a6jc1lq1e4gebf45j3r26i3d0a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
