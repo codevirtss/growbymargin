@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:growbymargin/Screens/home.dart';
 import 'package:growbymargin/Screens/signup.dart';
+import 'package:growbymargin/helper/authentication.dart';
 import 'package:sizer/sizer.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -13,8 +15,8 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
 
-  final TextEditingController emailId=TextEditingController();
-  final TextEditingController password=TextEditingController();
+  final TextEditingController email=TextEditingController();
+  final TextEditingController pass=TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 padding: EdgeInsets.fromLTRB(10.w, 10.w, 10.w, 5.w),
                 child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
-                  controller: emailId,
+                  controller: email,
                   style: GoogleFonts.roboto(fontSize: 17.sp),
                   decoration: InputDecoration(
                     //prefixIcon: Icon(Icons.email_outlined),
@@ -52,7 +54,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 padding: EdgeInsets.fromLTRB(10.w, 3.w, 10.w, 4.w),
                 child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
-                  controller: password,
+                  controller: pass,
                   style: GoogleFonts.roboto(fontSize: 17.sp),
                   obscureText: true,
                   decoration: InputDecoration(
@@ -66,20 +68,34 @@ class _SignInScreenState extends State<SignInScreen> {
               Padding(
                 padding: EdgeInsets.fromLTRB(10.w, 20.w, 10.w, 20.w),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Sign ',
-                      style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black54,wordSpacing: -0.5.w)),
-                    ),
-                    Text('In',
-                      style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black,)),
+                    Row(
+                      children: <Widget>[
+                        Text('Sign ',
+                          style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black54,wordSpacing: -0.5.w)),
+                        ),
+                        Text('In',
+                          style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black,)),
+                        ),
+                      ],
                     ),
                     Container(
                       height: 16.w,
-                      padding: EdgeInsets.only(left: 30.w),
-                      child: MaterialButton(
-                        onPressed: (){},
+                      //padding: EdgeInsets.only(left: 40.w),
+                      child: FloatingActionButton(
+                        onPressed: (){
+                          AuthenticationHelper().signIn(email: email.text, password: pass.text).then((result){
+                            if (result==null){
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home()));
+                            }
+                            else{
+                              print(result);
+                            }
+                          });
+                        },
                         child: Icon(Icons.arrow_forward,color: Colors.white,),
-                        color: Color(0xff92E3A9),
+                        backgroundColor: Color(0xff92E3A9),
                         shape: CircleBorder(),
                       ),
                     )

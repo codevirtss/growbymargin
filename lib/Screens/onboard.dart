@@ -87,7 +87,7 @@ class _OnBoardState extends State<OnBoard> {
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.w)),
                   child: MaterialButton(
                     onPressed: (){
-                      //Navigator.pop(context);
+                      Navigator.pop(context);
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInScreen()));
                     },
                     elevation: 0.0,
@@ -103,6 +103,7 @@ class _OnBoardState extends State<OnBoard> {
                     style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 11.sp,fontWeight: FontWeight.w500,color: Colors.black38,wordSpacing: 0.5.w,letterSpacing: 0.5.sp)),
                   ),
                   onTap: (){
+                    Navigator.pop(context);
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpScreen()));
                   },
                 )
