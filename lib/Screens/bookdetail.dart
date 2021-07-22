@@ -12,6 +12,7 @@ class DetailBook extends StatefulWidget {
 
 class _DetailBookState extends State<DetailBook> {
   int index=0;
+  int count=0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +76,7 @@ class _DetailBookState extends State<DetailBook> {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(horizontal: 30,vertical: 30),
+                  padding: EdgeInsets.fromLTRB(30, 30, 30, 15),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(40),topRight: Radius.circular(40)),
                     color: Colors.white
@@ -119,22 +120,102 @@ class _DetailBookState extends State<DetailBook> {
                       color: Colors.grey[300]
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Text('\$20.00',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black54,fontSize: 15,fontWeight: FontWeight.w600)),),
-                            Text('\$20.00',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.lightBlue,fontSize: 16,fontWeight: FontWeight.w600)),),
+                            Text('Rating',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black54,fontSize: 11,fontWeight: FontWeight.w600)),),
+                            Text('4.1',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black,fontSize: 11,fontWeight: FontWeight.w700)),),
                           ],
-                        )                        
+                        ),
+                        VerticalDivider(color: Colors.black45,),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text('Number of Pages',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black54,fontSize: 11,fontWeight: FontWeight.w600)),),
+                            Text('180',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black,fontSize: 11,fontWeight: FontWeight.w700)),),
+                          ],
+                        ),
+                        VerticalDivider(color: Colors.black45,),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text('Language',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black54,fontSize: 11,fontWeight: FontWeight.w600)),),
+                            Text('English',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black,fontSize: 11,fontWeight: FontWeight.w700)),),
+                          ],
+                        ),
                       ],
                     ),
                   ),
                 ),
-
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 30,vertical: 5),
+                  color: Colors.white,
+                  child:Text('Timeless lessons on wealth, greed, and happiness doing well with money isn’t necessarily about what you know. It’s about how you behave...',
+                    style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black45,fontSize: 12,fontWeight: FontWeight.w500)),),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.only(right: 30),
+                  color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 30,right:5),
+                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                        height: 55,
+                        width: 190,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(6)
+                        ),
+                        child:Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(' QTY ',
+                              style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black54,fontSize: 14,fontWeight: FontWeight.w500)),),
+                            VerticalDivider(color: Colors.black38,),
+                            IconButton(
+                              onPressed: (){
+                                setState(() {
+                                  count>0?count-=1:count=0;
+                                });
+                              },
+                              icon: Icon(Icons.remove,color: Colors.black54,size: 19,),
+                            ),
+                            Text('${count.toString()}',
+                              style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black54,fontSize: 14,fontWeight: FontWeight.w500)),),
+                            IconButton(
+                              onPressed: (){
+                                setState(() {
+                                  count+=1;
+                                });
+                              },
+                              icon: Icon(Icons.add,color: Colors.black54,size: 19,),
+                            ),
+                          ],
+                        ),
+                      ),
+                      MaterialButton(
+                        elevation: 0,
+                        height: 55,
+                        padding: EdgeInsets.only(left: 8,right: 8),
+                        color: Colors.orange[800],
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                        onPressed: (){},
+                        child: Text('Add to Cart',
+                              style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w500)),),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           ),
