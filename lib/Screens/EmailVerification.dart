@@ -25,7 +25,7 @@ class _EmailVerificationState extends State<EmailVerification> {
   void initState() {
     // TODO: implement initState
     var user = FirebaseAuth.instance;
-    Timer.periodic(Duration(seconds: 5), (timer) {
+    Timer.periodic(Duration(seconds: 2), (timer) {
       if (authenticationHelper.verifyEmail(context, user)) {
         Navigator.pushReplacement(
             context,
@@ -39,6 +39,7 @@ class _EmailVerificationState extends State<EmailVerification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -46,7 +47,7 @@ class _EmailVerificationState extends State<EmailVerification> {
               height: 50.h,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/Images/email.gif"))),
+                      image: AssetImage("assets/Images/Email.gif"))),
             ),
             Container(
               height: 40.h,
