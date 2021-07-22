@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:growbymargin/Screens/morebook.dart';
 import 'package:sizer/sizer.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -13,6 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int index=0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +78,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       body: SlidingUpPanel(
-        defaultPanelState: PanelState.OPEN,
+        //defaultPanelState: PanelState.CLOSED,
         borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
         color: Color(0xff4DB6AC),
         maxHeight: MediaQuery.of(context).size.height*0.35,
@@ -119,7 +121,107 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
-                )
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 10,),
+                          Text('Tending Books',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black38,fontSize: 15,fontWeight: FontWeight.w600)),),
+                        ],
+                      ),
+                      GestureDetector(
+                        child:Text('...',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black45,fontSize: 30,letterSpacing: 2,fontWeight: FontWeight.w900)),),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height*0.35,
+                  padding: EdgeInsets.only(left: 10),
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      BookTile(imageUrl: 'https://source.unsplash.com/aZ_MmSmAcjg',name: 'The Psychology of Money',writer: 'Morgan Housel',),
+                      BookTile(imageUrl: 'https://source.unsplash.com/9dXSoi6VXEA',name: 'Stupore e Tremori',writer: 'Amelie Nothomb',),
+                      BookTile(imageUrl: 'https://source.unsplash.com/aZ_MmSmAcjg',name: 'The Psychology of Money',writer: 'Morgan Housel',),
+                      BookTile(imageUrl: 'https://source.unsplash.com/9dXSoi6VXEA',name: 'Stupore e Tremori',writer: 'Amelie Nothomb',),                      
+                    ],
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 10,),
+                          Text('Recomended Books',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black38,fontSize: 15,fontWeight: FontWeight.w600)),),
+                        ],
+                      ),
+                      GestureDetector(
+                        child:Text('...',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black45,fontSize: 30,letterSpacing: 2,fontWeight: FontWeight.w900)),),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height*0.35,
+                  padding: EdgeInsets.only(left: 10),
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      BookTile(imageUrl: 'https://source.unsplash.com/aZ_MmSmAcjg',name: 'The Psychology of Money',writer: 'Morgan Housel',),
+                      BookTile(imageUrl: 'https://source.unsplash.com/9dXSoi6VXEA',name: 'Stupore e Tremori',writer: 'Amelie Nothomb',),
+                      BookTile(imageUrl: 'https://source.unsplash.com/aZ_MmSmAcjg',name: 'The Psychology of Money',writer: 'Morgan Housel',),
+                      BookTile(imageUrl: 'https://source.unsplash.com/9dXSoi6VXEA',name: 'Stupore e Tremori',writer: 'Amelie Nothomb',),                      
+                    ],
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 10,),
+                          Text('Top Rated Books',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black38,fontSize: 15,fontWeight: FontWeight.w600)),),
+                        ],
+                      ),
+                      GestureDetector(
+                        child:Text('...',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black45,fontSize: 30,letterSpacing: 2,fontWeight: FontWeight.w900)),),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height*0.35,
+                  padding: EdgeInsets.only(left: 10),
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      BookTile(imageUrl: 'https://source.unsplash.com/aZ_MmSmAcjg',name: 'The Psychology of Money',writer: 'Morgan Housel',),
+                      BookTile(imageUrl: 'https://source.unsplash.com/9dXSoi6VXEA',name: 'Stupore e Tremori',writer: 'Amelie Nothomb',),
+                      BookTile(imageUrl: 'https://source.unsplash.com/aZ_MmSmAcjg',name: 'The Psychology of Money',writer: 'Morgan Housel',),
+                      BookTile(imageUrl: 'https://source.unsplash.com/9dXSoi6VXEA',name: 'Stupore e Tremori',writer: 'Amelie Nothomb',),                      
+                    ],
+                  ),
+                ),
+                SizedBox(height: 226,)
               ],
             ),
           ),
@@ -141,7 +243,7 @@ class _HomeState extends State<Home> {
                     ],
                   ),
                   GestureDetector(
-                    child:Text('...',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.white,fontSize: 30,letterSpacing: 2)),),
+                    child:Text('...',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.white,fontSize: 30,letterSpacing: 2,fontWeight: FontWeight.w900)),),
                   ),
                 ],
               ),
@@ -220,6 +322,7 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
         child: BottomNavigationBar(
+          currentIndex: index,
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.white,
           selectedItemColor: Colors.teal[300],
@@ -227,17 +330,76 @@ class _HomeState extends State<Home> {
           unselectedFontSize: 13,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.explore),
+              icon: GestureDetector(
+                onTap: (){
+                  setState(() {
+                    index=0;
+                  });
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Home()));
+                },
+                child: Icon(Icons.explore)),
               label: "Explore"
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.book_outlined),
+              icon: GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>MoreBook()));
+                  setState(() {
+                    index=1;
+                  });
+                },
+                child: Icon(Icons.book_outlined)),
               label: "Reading"
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark_outline),
+              icon: GestureDetector(
+                onTap: (){
+                  setState(() {
+                    index=2;
+                  });
+                },
+                child: Icon(Icons.bookmark_outline)),
               label: "Bookmark"
             )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BookTile extends StatelessWidget {
+  final String name, imageUrl, writer;
+  BookTile({required this.imageUrl,required this.name, required this.writer});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){},
+      child: Container(
+        height: MediaQuery.of(context).size.height*0.35,
+        width: MediaQuery.of(context).size.width*0.38,
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.fromLTRB(10, 10, 5, 10),
+              height: MediaQuery.of(context).size.height*0.25,
+              width: MediaQuery.of(context).size.width*0.35,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                image: DecorationImage(image: NetworkImage(imageUrl),fit: BoxFit.cover)
+              ),
+            ),
+            Container(
+              alignment: Alignment.topLeft,
+              padding: EdgeInsets.only(left: 10,right: 10),
+              child: Text('By $writer',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black38,fontSize: 11,fontWeight: FontWeight.w600)),)
+            ),
+            Container(
+              alignment: Alignment.topLeft,
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Text('$name',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.black87,fontSize: 14,fontWeight: FontWeight.w600)),overflow: TextOverflow.ellipsis,)
+            ),
           ],
         ),
       ),
