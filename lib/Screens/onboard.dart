@@ -39,11 +39,11 @@ class _OnBoardState extends State<OnBoard> {
                   height: 40.w,
                   padding:EdgeInsets.all(2.w),
                   child: CircleAvatar(
-                    child: Image.network('https://source.unsplash.com/80hj671r_2g')
+                    child: Image.asset('assets/Images/reading.gif')
                   ),
                 ),
                 Center(
-                  child: Text('Tandur',
+                  child: Text('Knowmemore',
                     style: GoogleFonts.kanit(textStyle: TextStyle(fontWeight: FontWeight.w700,fontStyle: FontStyle.italic,fontSize: 19.sp)),
                   ),
                 ),

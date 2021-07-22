@@ -30,5 +30,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:316863838331:ios:95bd61f819c7652ef64ade</string>
+	<key>DATABASE_URL</key>
+	<string>https://growbymargin-2211c-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

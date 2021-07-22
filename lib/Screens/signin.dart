@@ -7,16 +7,15 @@ import 'package:growbymargin/helper/authentication.dart';
 import 'package:sizer/sizer.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({ Key? key }) : super(key: key);
+  const SignInScreen({Key? key}) : super(key: key);
 
   @override
   _SignInScreenState createState() => _SignInScreenState();
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-
-  final TextEditingController email=TextEditingController();
-  final TextEditingController pass=TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController pass = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,10 @@ class _SignInScreenState extends State<SignInScreen> {
               Container(
                 width: 75.w,
                 height: 75.w,
-                child: Image.asset('assets/Images/image2.png',fit: BoxFit.cover,),
+                child: Image.asset(
+                  'assets/Images/image2.png',
+                  fit: BoxFit.cover,
+                ),
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(10.w, 10.w, 10.w, 5.w),
@@ -43,11 +45,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   controller: email,
                   style: GoogleFonts.roboto(fontSize: 17.sp),
                   decoration: InputDecoration(
-                    //prefixIcon: Icon(Icons.email_outlined),
-                    hintText:'Email',
-                    hintStyle: GoogleFonts.roboto(fontSize: 15.sp),
-                    border: UnderlineInputBorder()
-                  ),
+                      //prefixIcon: Icon(Icons.email_outlined),
+                      hintText: 'Email',
+                      hintStyle: GoogleFonts.roboto(fontSize: 15.sp),
+                      border: UnderlineInputBorder()),
                 ),
               ),
               Padding(
@@ -58,11 +59,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   style: GoogleFonts.roboto(fontSize: 17.sp),
                   obscureText: true,
                   decoration: InputDecoration(
-                    //prefixIcon: Icon(Icons.lock_outline),
-                    hintText:'Password',
-                    hintStyle: GoogleFonts.roboto(fontSize: 15.sp),
-                    border: UnderlineInputBorder()
-                  ),
+                      //prefixIcon: Icon(Icons.lock_outline),
+                      hintText: 'Password',
+                      hintStyle: GoogleFonts.roboto(fontSize: 15.sp),
+                      border: UnderlineInputBorder()),
                 ),
               ),
               Padding(
@@ -72,11 +72,23 @@ class _SignInScreenState extends State<SignInScreen> {
                   children: [
                     Row(
                       children: <Widget>[
-                        Text('Sign ',
-                          style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black54,wordSpacing: -0.5.w)),
+                        Text(
+                          'Sign ',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                                  fontSize: 22.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black54,
+                                  wordSpacing: -0.5.w)),
                         ),
-                        Text('In',
-                          style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black,)),
+                        Text(
+                          'In',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                            fontSize: 22.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          )),
                         ),
                       ],
                     ),
@@ -84,17 +96,18 @@ class _SignInScreenState extends State<SignInScreen> {
                       height: 16.w,
                       //padding: EdgeInsets.only(left: 40.w),
                       child: FloatingActionButton(
-                        onPressed: (){
-                          AuthenticationHelper().signIn(email: email.text, password: pass.text).then((result){
-                            if (result==null){
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home()));
-                            }
-                            else{
-                              print(result);
-                            }
-                          });
+                        onPressed: () {
+                          AuthenticationHelper()
+                              .signIn(
+                                  email: email.text,
+                                  password: pass.text,
+                                  context: context)
+                              .then((result) {});
                         },
-                        child: Icon(Icons.arrow_forward,color: Colors.white,),
+                        child: Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
+                        ),
                         backgroundColor: Color(0xff92E3A9),
                         shape: CircleBorder(),
                       ),
@@ -107,20 +120,35 @@ class _SignInScreenState extends State<SignInScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpScreen()));
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpScreen()));
                       },
-                      child: Text('Sign Up',
-                        style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 13.sp,fontWeight: FontWeight.w600,color: Colors.black38,decoration: TextDecoration.underline)),
+                      child: Text(
+                        'Sign Up',
+                        style: GoogleFonts.prompt(
+                            textStyle: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black38,
+                                decoration: TextDecoration.underline)),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 25.w,right: 10.w),
+                    padding: EdgeInsets.only(left: 25.w, right: 10.w),
                     child: GestureDetector(
-                      onTap: (){},
-                      child: Text('Forget Password',
-                        style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 13.sp,fontWeight: FontWeight.w600,color: Colors.black38,decoration: TextDecoration.underline)),
+                      onTap: () {},
+                      child: Text(
+                        'Forget Password',
+                        style: GoogleFonts.prompt(
+                            textStyle: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black38,
+                                decoration: TextDecoration.underline)),
                       ),
                     ),
                   ),

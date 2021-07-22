@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:growbymargin/Screens/Navigation.dart';
+import 'package:growbymargin/Screens/home.dart';
 import 'package:growbymargin/Screens/onboard.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
         
           primaryColor: Colors.white,
         ),
-        home: OnBoard(),
+        home: Home(),
       );
     });
   }

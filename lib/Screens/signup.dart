@@ -11,18 +11,19 @@ import 'package:sizer/sizer.dart';
 import 'package:growbymargin/helper/authentication.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({ Key? key }) : super(key: key);
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController emailId = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final TextEditingController name = TextEditingController();
+  final dbRef = FirebaseDatabase.instance.reference();
 
-  final TextEditingController emailId=TextEditingController();
-  final TextEditingController password=TextEditingController();
-  final TextEditingController name=TextEditingController();
-  final dbRef=FirebaseDatabase.instance.reference();
+  AuthenticationHelper authenticationHelper = AuthenticationHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Container(
                 width: 75.w,
                 height: 75.w,
-                child: Image.asset('assets/Images/image2.png',fit: BoxFit.cover,),
+                child: Image.asset(
+                  'assets/Images/image2.png',
+                  fit: BoxFit.cover,
+                ),
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(10.w, 5.w, 10.w, 5.w),
@@ -49,11 +53,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: name,
                   style: GoogleFonts.roboto(fontSize: 17.sp),
                   decoration: InputDecoration(
-                    //prefixIcon: Icon(Icons.person_outline),
-                    hintText:'Name',
-                    hintStyle: GoogleFonts.roboto(fontSize: 15.sp),
-                    border: UnderlineInputBorder()
-                  ),
+                      //prefixIcon: Icon(Icons.person_outline),
+                      hintText: 'Name',
+                      hintStyle: GoogleFonts.roboto(fontSize: 15.sp),
+                      border: UnderlineInputBorder()),
                 ),
               ),
               Padding(
@@ -63,11 +66,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: emailId,
                   style: GoogleFonts.roboto(fontSize: 17.sp),
                   decoration: InputDecoration(
-                    //prefixIcon: Icon(Icons.email_outlined),
-                    hintText:'Email',
-                    hintStyle: GoogleFonts.roboto(fontSize: 15.sp),
-                    border: UnderlineInputBorder()
-                  ),
+                      //prefixIcon: Icon(Icons.email_outlined),
+                      hintText: 'Email',
+                      hintStyle: GoogleFonts.roboto(fontSize: 15.sp),
+                      border: UnderlineInputBorder()),
                 ),
               ),
               Padding(
@@ -78,25 +80,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: GoogleFonts.roboto(fontSize: 17.sp),
                   obscureText: true,
                   decoration: InputDecoration(
-                    //prefixIcon: Icon(Icons.lock_outline),
-                    hintText:'Password',
-                    hintStyle: GoogleFonts.roboto(fontSize: 15.sp),
-                    border: UnderlineInputBorder()
-                  ),
+                      //prefixIcon: Icon(Icons.lock_outline),
+                      hintText: 'Password',
+                      hintStyle: GoogleFonts.roboto(fontSize: 15.sp),
+                      border: UnderlineInputBorder()),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(10.w, 15.w, 10.w, 18.w),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('Sign ',
-                          style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black54,wordSpacing: -0.5.w)),
+                        Text(
+                          'Sign ',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                                  fontSize: 22.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black54,
+                                  wordSpacing: -0.5.w)),
                         ),
-                        Text('Up',
-                          style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 22.sp,fontWeight: FontWeight.w600,color: Colors.black,)),
+                        Text(
+                          'Up',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                            fontSize: 22.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          )),
                         ),
                       ],
                     ),
@@ -104,22 +118,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 16.w,
                       //padding: EdgeInsets.only(left: 36.w),
                       child: FloatingActionButton(
-                        onPressed: (){
-                          AuthenticationHelper().signUp(email: emailId.text, password: password.text).then((result){
-                            if (result==null){
-                              //AuthenticationHelper().signIn(email: emailId.text, password: password.text);
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home()));
-                              final ui=FirebaseAuth.instance.currentUser!.uid;
-                              final user=UserData(name: name.text, uid: ui, email: emailId.text);
-                              dbRef.child('User').set(user);
-                            }
-                            else{
-                              print(result);
-                              //Scaffold.of(context).showSnackBar(SnackBar(content: Text('result')));
-                            }
-                          });
+                        onPressed: () {
+                          authenticationHelper.signUpWithEmail(
+                              emailId.text, password.text, name.text, context);
                         },
-                        child: Icon(Icons.arrow_forward,color: Colors.white,),
+                        child: Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
+                        ),
                         backgroundColor: Color(0xff92E3A9),
                         shape: CircleBorder(),
                       ),
@@ -132,11 +138,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInScreen()));
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignInScreen()));
                       },
-                      child: Text('Sign In',
-                        style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 13.sp,fontWeight: FontWeight.w600,color: Colors.black38,decoration: TextDecoration.underline)),
+                      child: Text(
+                        'Sign In',
+                        style: GoogleFonts.prompt(
+                            textStyle: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black38,
+                                decoration: TextDecoration.underline)),
                       ),
                     ),
                   ),
