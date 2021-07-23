@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -41,6 +43,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final db=FirebaseFirestore.instance;
     return Scaffold(
       backgroundColor: Colors.teal[300],
       appBar: AppBar(
@@ -182,10 +185,10 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
-                              height: 10,
+                              height: 15,
                             ),
                             Text(
-                              'Tending Books',
+                              'Books on Ayurvedic Herbs',
                               style: GoogleFonts.prompt(
                                   textStyle: TextStyle(
                                       color: Colors.black38,
@@ -209,33 +212,35 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.35,
-                    padding: EdgeInsets.only(left: 10),
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        BookTile(
-                          imageUrl: 'https://source.unsplash.com/aZ_MmSmAcjg',
-                          name: 'The Psychology of Money',
-                          writer: 'Morgan Housel',
-                        ),
-                        BookTile(
-                          imageUrl: 'https://source.unsplash.com/9dXSoi6VXEA',
-                          name: 'Stupore e Tremori',
-                          writer: 'Amelie Nothomb',
-                        ),
-                        BookTile(
-                          imageUrl: 'https://source.unsplash.com/aZ_MmSmAcjg',
-                          name: 'The Psychology of Money',
-                          writer: 'Morgan Housel',
-                        ),
-                        BookTile(
-                          imageUrl: 'https://source.unsplash.com/9dXSoi6VXEA',
-                          name: 'Stupore e Tremori',
-                          writer: 'Amelie Nothomb',
-                        ),
-                      ],
+                    //width: MediaQuery.of(context).size.width,
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: db.collection('BookCollection').where('bookCollectionName',isEqualTo: 'Ayurvedic Herbs').snapshots(),
+                      builder: (context,snapshot){
+                        if (!snapshot.hasData){
+                          return Center(
+                            child: CircularProgressIndicator(color:Colors.teal[300]),
+                          );
+                        }else
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.33,
+                            padding: EdgeInsets.only(left: 10),
+                            child: ListView(
+                              shrinkWrap: true,
+                              //physics: ScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              children: snapshot.data!.docs.map((doc){
+                                return Container(
+                                  child: BookTile(
+                                        imageUrl: doc['bookCoverImageUrl'],
+                                        name: doc['bookName'],
+                                        writer: 'Morgan Housel',
+                                      ),
+                                );
+                              }).toList(),
+                            ),
+                          );
+                      },
                     ),
                   ),
                   Container(
@@ -248,10 +253,10 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
-                              height: 10,
+                              height: 15,
                             ),
                             Text(
-                              'Recomended Books',
+                              'Books on Herbal Products',
                               style: GoogleFonts.prompt(
                                   textStyle: TextStyle(
                                       color: Colors.black38,
@@ -276,32 +281,34 @@ class _HomeState extends State<Home> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.35,
-                    padding: EdgeInsets.only(left: 10),
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        BookTile(
-                          imageUrl: 'https://source.unsplash.com/aZ_MmSmAcjg',
-                          name: 'The Psychology of Money',
-                          writer: 'Morgan Housel',
-                        ),
-                        BookTile(
-                          imageUrl: 'https://source.unsplash.com/9dXSoi6VXEA',
-                          name: 'Stupore e Tremori',
-                          writer: 'Amelie Nothomb',
-                        ),
-                        BookTile(
-                          imageUrl: 'https://source.unsplash.com/aZ_MmSmAcjg',
-                          name: 'The Psychology of Money',
-                          writer: 'Morgan Housel',
-                        ),
-                        BookTile(
-                          imageUrl: 'https://source.unsplash.com/9dXSoi6VXEA',
-                          name: 'Stupore e Tremori',
-                          writer: 'Amelie Nothomb',
-                        ),
-                      ],
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: db.collection('BookCollection').where('bookCollectionName',isEqualTo: 'Herbal Products').snapshots(),
+                      builder: (context,snapshot){
+                        if (!snapshot.hasData){
+                          return Center(
+                            child: CircularProgressIndicator(color:Colors.teal[300]),
+                          );
+                        }else
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.33,
+                            padding: EdgeInsets.only(left: 10),
+                            child: ListView(
+                              shrinkWrap: true,
+                              //physics: ScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              children: snapshot.data!.docs.map((doc){
+                                return Container(
+                                  child: BookTile(
+                                        imageUrl: doc['bookCoverImageUrl'],
+                                        name: doc['bookName'],
+                                        writer: 'Morgan Housel',
+                                      ),
+                                );
+                              }).toList(),
+                            ),
+                          );
+                      },
                     ),
                   ),
                   Container(
@@ -314,10 +321,10 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(
-                              height: 10,
+                              height: 15,
                             ),
                             Text(
-                              'Top Rated Books',
+                              'Books on Phytotherapy',
                               style: GoogleFonts.prompt(
                                   textStyle: TextStyle(
                                       color: Colors.black38,
@@ -342,32 +349,102 @@ class _HomeState extends State<Home> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.35,
-                    padding: EdgeInsets.only(left: 10),
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        BookTile(
-                          imageUrl: 'https://source.unsplash.com/aZ_MmSmAcjg',
-                          name: 'The Psychology of Money',
-                          writer: 'Morgan Housel',
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: db.collection('BookCollection').where('bookCollectionName',isEqualTo: 'Phytotherapy').snapshots(),
+                      builder: (context,snapshot){
+                        if (!snapshot.hasData){
+                          return Center(
+                            child: CircularProgressIndicator(color:Colors.teal[300]),
+                          );
+                        }else
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.33,
+                            padding: EdgeInsets.only(left: 10),
+                            child: ListView(
+                              shrinkWrap: true,
+                              //physics: ScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              children: snapshot.data!.docs.map((doc){
+                                return Container(
+                                  child: BookTile(
+                                        imageUrl: doc['bookCoverImageUrl'],
+                                        name: doc['bookName'],
+                                        writer: 'Morgan Housel',
+                                      ),
+                                );
+                              }).toList(),
+                            ),
+                          );
+                      },
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              'Books on Homeopathy',
+                              style: GoogleFonts.prompt(
+                                  textStyle: TextStyle(
+                                      color: Colors.black38,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600)),
+                            ),
+                          ],
                         ),
-                        BookTile(
-                          imageUrl: 'https://source.unsplash.com/9dXSoi6VXEA',
-                          name: 'Stupore e Tremori',
-                          writer: 'Amelie Nothomb',
-                        ),
-                        BookTile(
-                          imageUrl: 'https://source.unsplash.com/aZ_MmSmAcjg',
-                          name: 'The Psychology of Money',
-                          writer: 'Morgan Housel',
-                        ),
-                        BookTile(
-                          imageUrl: 'https://source.unsplash.com/9dXSoi6VXEA',
-                          name: 'Stupore e Tremori',
-                          writer: 'Amelie Nothomb',
+                        GestureDetector(
+                          child: Text(
+                            '...',
+                            style: GoogleFonts.prompt(
+                                textStyle: TextStyle(
+                                    color: Colors.black45,
+                                    fontSize: 30,
+                                    letterSpacing: 2,
+                                    fontWeight: FontWeight.w900)),
+                          ),
                         ),
                       ],
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: db.collection('BookCollection').where('bookCollectionName',isEqualTo: 'Homeopathy').snapshots(),
+                      builder: (context,snapshot){
+                        if (!snapshot.hasData){
+                          return Center(
+                            child: CircularProgressIndicator(color:Colors.teal[300]),
+                          );
+                        }else
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.33,
+                            padding: EdgeInsets.only(left: 10),
+                            child: ListView(
+                              shrinkWrap: true,
+                              //physics: ScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              children: snapshot.data!.docs.map((doc){
+                                return Container(
+                                  child: BookTile(
+                                        imageUrl: doc['bookCoverImageUrl'],
+                                        name: doc['bookName'],
+                                        writer: 'Morgan Housel',
+                                      ),
+                                );
+                              }).toList(),
+                            ),
+                          );
+                      },
                     ),
                   ),
                   SizedBox(
@@ -583,7 +660,7 @@ class BookTile extends StatelessWidget {
     return GestureDetector(
       onTap: () {},
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.35,
+        height: MediaQuery.of(context).size.height * 0.30,
         width: MediaQuery.of(context).size.width * 0.38,
         child: Column(
           children: <Widget>[
@@ -606,6 +683,7 @@ class BookTile extends StatelessWidget {
                           color: Colors.black38,
                           fontSize: 11,
                           fontWeight: FontWeight.w600)),
+                  overflow: TextOverflow.ellipsis,
                 )),
             Container(
                 alignment: Alignment.topLeft,
