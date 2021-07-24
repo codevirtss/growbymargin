@@ -767,7 +767,7 @@ class GridTile extends StatelessWidget {
                 )),
             Container(
                 alignment: Alignment.topLeft,
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Text(
                   '$name',
                   style: GoogleFonts.prompt(
@@ -779,7 +779,7 @@ class GridTile extends StatelessWidget {
                 )),
             Container(
                 alignment: Alignment.topLeft,
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Row(
                   children: [
                     Row(
