@@ -44,7 +44,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final db=FirebaseFirestore.instance;
+    final db = FirebaseFirestore.instance;
     //final List<String> id=List.generate(length, (index) => null)
     return Scaffold(
       backgroundColor: Colors.teal[300],
@@ -180,19 +180,22 @@ class _HomeState extends State<Home> {
                   Container(
                     child: StreamBuilder<QuerySnapshot>(
                       stream: db.collection('BookCollection').snapshots(),
-                      builder: (context,snapshot){
-                        if(!snapshot.hasData){
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
                           return Center(
-                            child: CircularProgressIndicator(color: Colors.teal[300],),
+                            child: CircularProgressIndicator(
+                              color: Colors.teal[300],
+                            ),
                           );
-                        }else {
+                        } else {
                           //print(snapshot.data!.docs.toList()[0].id.toString());
                           return Container(
                             width: 100.w,
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: GridView(
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: 1/1.7,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                childAspectRatio: 1 / 1.7,
                                 crossAxisCount: 2,
                                 //crossAxisSpacing: 20,
                                 //mainAxisSpacing: 10
@@ -200,7 +203,7 @@ class _HomeState extends State<Home> {
                               primary: false,
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
-                              children: snapshot.data!.docs.map((doc){
+                              children: snapshot.data!.docs.map((doc) {
                                 return Container(
                                   child: GridTile(
                                     imageUrl: doc['bookCoverImageUrl'],
@@ -209,6 +212,7 @@ class _HomeState extends State<Home> {
                                     id: doc.id.toString(),
                                     mrp: doc['bookMrp'],
                                     desc: doc['bookDescription'],
+                                    price: doc['bookPrice'],
                                     //bookID: doc['bookID'],
                                   ),
                                 );
@@ -718,31 +722,29 @@ class BookTile extends StatelessWidget {
                       image: NetworkImage(imageUrl), fit: BoxFit.cover)),
             ),
             Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: Text(
-                'By $writer',
-                style: GoogleFonts.prompt(
-                    textStyle: TextStyle(
-                        color: Colors.black38,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600)),
-                overflow: TextOverflow.ellipsis,
-              )
-            ),
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: Text(
+                  'By $writer',
+                  style: GoogleFonts.prompt(
+                      textStyle: TextStyle(
+                          color: Colors.black38,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600)),
+                  overflow: TextOverflow.ellipsis,
+                )),
             Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                '$name',
-                style: GoogleFonts.prompt(
-                    textStyle: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600)),
-                overflow: TextOverflow.ellipsis,
-              )
-            ),
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  '$name',
+                  style: GoogleFonts.prompt(
+                      textStyle: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600)),
+                  overflow: TextOverflow.ellipsis,
+                )),
           ],
         ),
       ),
@@ -751,34 +753,42 @@ class BookTile extends StatelessWidget {
 }
 
 class GridTile extends StatelessWidget {
-  final String name, imageUrl, writer,id,mrp,desc;
-  GridTile({required this.imageUrl, required this.name, required this.writer,required this.id, required this.mrp, required this.desc});
+  final String name, imageUrl, writer, id, mrp, desc, price;
+  GridTile(
+      {required this.imageUrl,
+      required this.name,
+      required this.writer,
+      required this.id,
+      required this.mrp,
+      required this.desc,
+      required this.price});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()async{
+      onTap: () async {
         Navigator.push(
-          context, MaterialPageRoute(
-            builder: (context)=>DetailBook(
-              bookID: id,
-              imgUrl: imageUrl,
-              author: writer,
-              bname: name,
-              bMrp: mrp,
-              bdesc: desc,
-            )
-          )
-        );
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailBook(
+                      bookID: id,
+                      imgUrl: imageUrl,
+                      author: writer,
+                      bname: name,
+                      bMrp: mrp,
+                      bdesc: desc,
+                      price: price
+                    )));
       },
       child: Container(
+        height: 40.h,
         //color: Colors.pink,
-        margin: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+        //  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         child: Column(
           children: <Widget>[
             Container(
               margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-              height: MediaQuery.of(context).size.height * 0.30,
+              height: MediaQuery.of(context).size.height * 0.25,
               //width: MediaQuery.of(context).size.height * 0.15,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
@@ -786,31 +796,61 @@ class GridTile extends StatelessWidget {
                       image: NetworkImage(imageUrl), fit: BoxFit.cover)),
             ),
             Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.only(left: 5, right: 5),
-              child: Text(
-                'By $writer',
-                style: GoogleFonts.prompt(
-                    textStyle: TextStyle(
-                        color: Colors.black38,
-                        fontSize: 10.7.sp,
-                        fontWeight: FontWeight.w600)),
-                overflow: TextOverflow.ellipsis,
-              )
-            ),
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.only(left: 5, right: 5),
+                child: Text(
+                  'By $writer',
+                  style: GoogleFonts.prompt(
+                      textStyle: TextStyle(
+                          color: Colors.black38,
+                          fontSize: 10.7.sp,
+                          fontWeight: FontWeight.w600)),
+                  overflow: TextOverflow.ellipsis,
+                )),
             Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                '$name',
-                style: GoogleFonts.prompt(
-                    textStyle: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600)),
-                overflow: TextOverflow.ellipsis,
-              )
-            ),
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  '$name',
+                  style: GoogleFonts.prompt(
+                      textStyle: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600)),
+                  overflow: TextOverflow.ellipsis,
+                )),
+            Container(
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          '\$${price.split(' ')[0]}',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                                  color: Colors.lightBlue,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Text(
+                          '\$${mrp.split(' ')[0]}',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  decoration: TextDecoration.lineThrough)),
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
           ],
         ),
       ),

@@ -5,16 +5,24 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 class DetailBook extends StatefulWidget {
-  final String bookID,imgUrl,bname,author,bMrp,bdesc;
-  DetailBook({required this.bookID, required this.imgUrl, required this.bname, required this.author, required this.bMrp, required this.bdesc});
+  final String bookID, imgUrl, bname, author, bMrp, bdesc, price;
+  DetailBook({
+    required this.bookID,
+    required this.imgUrl,
+    required this.bname,
+    required this.author,
+    required this.bMrp,
+    required this.bdesc,
+    required this.price,
+  });
 
   @override
   _DetailBookState createState() => _DetailBookState();
 }
 
 class _DetailBookState extends State<DetailBook> {
-  final db=FirebaseFirestore.instance;
-  
+  final db = FirebaseFirestore.instance;
+
   int index = 0;
   int count = 0;
   @override
@@ -84,8 +92,7 @@ class _DetailBookState extends State<DetailBook> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(6),
                           image: DecorationImage(
-                              image: NetworkImage(
-                                  widget.imgUrl),
+                              image: NetworkImage(widget.imgUrl),
                               fit: BoxFit.cover)),
                     ),
                   ],
@@ -106,13 +113,31 @@ class _DetailBookState extends State<DetailBook> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            '\$${widget.bMrp.split(' ')[0]}',
-                            style: GoogleFonts.prompt(
-                                textStyle: TextStyle(
-                                    color: Colors.lightBlue,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                '\$${widget.price.split(' ')[0]}',
+                                style: GoogleFonts.prompt(
+                                    textStyle: TextStyle(
+                                        color: Colors.lightBlue,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600)),
+                              ),
+                              SizedBox(
+                                width: 2.w,
+                              ),
+                              Text(
+                                '\$${widget.bMrp.split(' ')[0]}',
+                                style: GoogleFonts.prompt(
+                                    textStyle: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        decoration:
+                                            TextDecoration.lineThrough)),
+                              ),
+                            ],
                           ),
                           Text(
                             widget.bname,
@@ -246,102 +271,101 @@ class _DetailBookState extends State<DetailBook> {
                       textStyle: TextStyle(
                           color: Colors.black45,
                           fontSize: 10.sp,
-                          fontWeight: FontWeight.w500)
-                      ),
-                      
+                          fontWeight: FontWeight.w500)),
                 ),
               ),
-              SizedBox(height: 60,)
+              SizedBox(
+                height: 60,
+              )
             ],
           ),
         ),
       ),
       floatingActionButton: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(right: 30),
-                color: Colors.white,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 30, right: 5),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      height: 55,
-                      width: 190,
-                      decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(6)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            ' QTY ',
-                            style: GoogleFonts.prompt(
-                                textStyle: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500)),
-                          ),
-                          VerticalDivider(
-                            color: Colors.black38,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                count > 0 ? count -= 1 : count = 0;
-                              });
-                            },
-                            icon: Icon(
-                              Icons.remove,
-                              color: Colors.black54,
-                              size: 19,
-                            ),
-                          ),
-                          Text(
-                            '${count.toString()}',
-                            style: GoogleFonts.prompt(
-                                textStyle: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500)),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                count += 1;
-                              });
-                            },
-                            icon: Icon(
-                              Icons.add,
-                              color: Colors.black54,
-                              size: 19,
-                            ),
-                          ),
-                        ],
-                      ),
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(right: 30),
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(left: 30, right: 5),
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              height: 55,
+              width: 190,
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(6)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    ' QTY ',
+                    style: GoogleFonts.prompt(
+                        textStyle: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500)),
+                  ),
+                  VerticalDivider(
+                    color: Colors.black38,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        count > 0 ? count -= 1 : count = 0;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.remove,
+                      color: Colors.black54,
+                      size: 19,
                     ),
-                    MaterialButton(
-                      elevation: 0,
-                      height: 55,
-                      padding: EdgeInsets.only(left: 8, right: 8),
-                      color: Colors.orange[800],
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6)),
-                      onPressed: () {},
-                      child: Text(
-                        'Add to Cart',
-                        style: GoogleFonts.prompt(
-                            textStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500)),
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  Text(
+                    '${count.toString()}',
+                    style: GoogleFonts.prompt(
+                        textStyle: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500)),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        count += 1;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.add,
+                      color: Colors.black54,
+                      size: 19,
+                    ),
+                  ),
+                ],
               ),
+            ),
+            MaterialButton(
+              elevation: 0,
+              height: 55,
+              padding: EdgeInsets.only(left: 8, right: 8),
+              color: Colors.orange[800],
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6)),
+              onPressed: () {},
+              child: Text(
+                'Add to Cart',
+                style: GoogleFonts.prompt(
+                    textStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500)),
+              ),
+            )
+          ],
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
