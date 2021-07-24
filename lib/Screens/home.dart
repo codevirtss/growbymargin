@@ -136,47 +136,6 @@ class _HomeState extends State<Home> {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: <Widget>[
-                  SizedBox(
-                    height: 2.w,
-                  ),
-                  Center(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.07,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    color: Colors.black45,
-                                  ),
-                                  border: InputBorder.none,
-                                  hintText: 'Search',
-                                  hintStyle: GoogleFonts.firaSans(
-                                      textStyle:
-                                          TextStyle(color: Colors.black26))),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 0),
-                            child: IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.mic),
-                              color: Colors.black45,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
                   Container(
                     child: StreamBuilder<QuerySnapshot>(
                       stream: db.collection('BookCollection').snapshots(),
@@ -771,14 +730,13 @@ class GridTile extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => DetailBook(
-                      bookID: id,
-                      imgUrl: imageUrl,
-                      author: writer,
-                      bname: name,
-                      bMrp: mrp,
-                      bdesc: desc,
-                      price: price
-                    )));
+                    bookID: id,
+                    imgUrl: imageUrl,
+                    author: writer,
+                    bname: name,
+                    bMrp: mrp,
+                    bdesc: desc,
+                    price: price)));
       },
       child: Container(
         height: 40.h,
