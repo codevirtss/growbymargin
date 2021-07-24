@@ -107,7 +107,7 @@ class _MoreBookState extends State<MoreBook> {
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                                   elevation: 0,
                                   onPressed: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailBook()));
+                                    //Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailBook(bookID: '1256',)));
                                   },
                                   child:Text('Details',style: GoogleFonts.prompt(textStyle: TextStyle(color: Colors.white,fontSize: 13,fontWeight: FontWeight.w600)),),
                                 )

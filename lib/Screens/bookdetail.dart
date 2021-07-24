@@ -1,16 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 class DetailBook extends StatefulWidget {
-  const DetailBook({Key? key}) : super(key: key);
+  final String bookID,imgUrl,bname,author,bMrp,bdesc;
+  DetailBook({required this.bookID, required this.imgUrl, required this.bname, required this.author, required this.bMrp, required this.bdesc});
 
   @override
   _DetailBookState createState() => _DetailBookState();
 }
 
 class _DetailBookState extends State<DetailBook> {
+  final db=FirebaseFirestore.instance;
+  
   int index = 0;
   int count = 0;
   @override
@@ -81,7 +85,7 @@ class _DetailBookState extends State<DetailBook> {
                           borderRadius: BorderRadius.circular(6),
                           image: DecorationImage(
                               image: NetworkImage(
-                                  'https://source.unsplash.com/aZ_MmSmAcjg'),
+                                  widget.imgUrl),
                               fit: BoxFit.cover)),
                     ),
                   ],
@@ -103,7 +107,7 @@ class _DetailBookState extends State<DetailBook> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            '\$20.00',
+                            '\$${widget.bMrp.split(' ')[0]}',
                             style: GoogleFonts.prompt(
                                 textStyle: TextStyle(
                                     color: Colors.lightBlue,
@@ -111,7 +115,7 @@ class _DetailBookState extends State<DetailBook> {
                                     fontWeight: FontWeight.w600)),
                           ),
                           Text(
-                            'The Psychology of Money',
+                            widget.bname,
                             style: GoogleFonts.prompt(
                                 textStyle: TextStyle(
                                     color: Colors.black,
@@ -119,7 +123,7 @@ class _DetailBookState extends State<DetailBook> {
                                     fontWeight: FontWeight.w600)),
                           ),
                           Text(
-                            'By Morgan Housel',
+                            widget.author,
                             style: GoogleFonts.prompt(
                                 textStyle: TextStyle(
                                     color: Colors.black26,
@@ -237,15 +241,22 @@ class _DetailBookState extends State<DetailBook> {
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
                 color: Colors.white,
                 child: Text(
-                  'Timeless lessons on wealth, greed, and happiness doing well with money isn’t necessarily about what you know. It’s about how you behave...',
+                  '${widget.bdesc}',
                   style: GoogleFonts.prompt(
                       textStyle: TextStyle(
                           color: Colors.black45,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500)),
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w500)
+                      ),
+                      
                 ),
               ),
-              Container(
+              SizedBox(height: 60,)
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.only(right: 30),
                 color: Colors.white,
@@ -330,11 +341,8 @@ class _DetailBookState extends State<DetailBook> {
                     )
                   ],
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
+              ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
