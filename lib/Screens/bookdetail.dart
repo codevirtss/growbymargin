@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:epub_viewer/epub_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class DetailBook extends StatefulWidget {
-  final String bookID, imgUrl, bname, author, bMrp, bdesc, price,collName;
+  final String bookID, imgUrl, bname, author, bMrp, bdesc, price,collName,prev;
   DetailBook({
     required this.bookID,
     required this.imgUrl,
@@ -15,6 +18,7 @@ class DetailBook extends StatefulWidget {
     required this.bdesc,
     required this.price,
     required this.collName,
+    required this.prev,
   });
 
   @override
@@ -166,7 +170,7 @@ class _DetailBookState extends State<DetailBook> {
                           decoration: BoxDecoration(
                               color: Colors.teal[300], shape: BoxShape.circle),
                           child: Icon(
-                            Icons.bookmark,
+                            Icons.shopping_cart,
                             color: Colors.white,
                           ),
                         ),
@@ -276,6 +280,51 @@ class _DetailBookState extends State<DetailBook> {
                 ),
               ),
               Container(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                color: Colors.white,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: MaterialButton(
+                        color: Colors.orange[800],
+                        height: 40,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                        onPressed: ()async{
+                          print(widget.prev); 
+                        },
+                        child: Text(
+                          'Preview',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500)),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10,),
+                    Expanded(
+                      child: MaterialButton(
+                        color: Colors.orange[800],
+                        height: 40,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                        onPressed: (){},
+                        child: Text(
+                          'Buy',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500)),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.symmetric(horizontal: 30),
                     color: Colors.white,
@@ -325,7 +374,7 @@ class _DetailBookState extends State<DetailBook> {
                         }else
                           return Container(
                             width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.33,
+                            height: MediaQuery.of(context).size.height * 0.35,
                             padding: EdgeInsets.only(left: 10),
                             child: ListView(
                               shrinkWrap: true,
@@ -342,6 +391,7 @@ class _DetailBookState extends State<DetailBook> {
                                         desc: doc['bookDescription'],
                                         price: doc['bookPrice'], 
                                         collection: doc['bookCollectionName'],
+                                        bookPreviewUrl: doc['bookPreviewUrl'],
                                       ),
                                 );
                               }).toList(),
@@ -351,13 +401,13 @@ class _DetailBookState extends State<DetailBook> {
                     ),
                   ),
               SizedBox(
-                height: 60,
+                height: 0,
               )
             ],
           ),
         ),
       ),
-      floatingActionButton: Container(
+      /*floatingActionButton: Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(right: 30),
         color: Colors.white,
@@ -442,13 +492,13 @@ class _DetailBookState extends State<DetailBook> {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,*/
     );
   }
 }
 
 class BookTile extends StatelessWidget {
-  final String name, imageUrl, writer, id, mrp, desc, price,collection;
+  final String name, imageUrl, writer, id, mrp, desc, price,collection,bookPreviewUrl;
   BookTile(
       {required this.imageUrl,
       required this.name,
@@ -457,7 +507,8 @@ class BookTile extends StatelessWidget {
       required this.mrp,
       required this.desc,
       required this.price, 
-      required this.collection});
+      required this.collection,
+      required this.bookPreviewUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -474,7 +525,8 @@ class BookTile extends StatelessWidget {
                     bMrp: mrp,
                     bdesc: desc,
                     price: price,
-                    collName: collection,)));
+                    collName: collection,
+                    prev: bookPreviewUrl,)));
       },
       child: Container(
         height: MediaQuery.of(context).size.height * 0.35,
@@ -490,7 +542,7 @@ class BookTile extends StatelessWidget {
                   image: DecorationImage(
                       image: NetworkImage(imageUrl), fit: BoxFit.cover)),
             ),
-            Container(
+            /*Container(
                 alignment: Alignment.topLeft,
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: Text(
@@ -500,7 +552,7 @@ class BookTile extends StatelessWidget {
                           color: Colors.black38,
                           fontSize: 11,
                           fontWeight: FontWeight.w600)),
-                )),
+                )),*/
             Container(
                 alignment: Alignment.topLeft,
                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -513,9 +565,42 @@ class BookTile extends StatelessWidget {
                           fontWeight: FontWeight.w600)),
                   overflow: TextOverflow.ellipsis,
                 )),
+                Container(
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: Row(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          '\$${mrp.split(' ')[0]}',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  decoration: TextDecoration.lineThrough)),
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Text(
+                          '\$${price.split(' ')[0]}',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                                  color: Colors.lightBlue,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
           ],
         ),
       ),
     );
   }
 }
+

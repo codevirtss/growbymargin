@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+//import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,8 +10,10 @@ import 'package:growbymargin/Screens/onboard.dart';
 import 'package:growbymargin/helper/authentication.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:url_launcher/url_launcher.dart';
+//import 'package:percent_indicator/circular_percent_indicator.dart';
+//import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -47,7 +49,7 @@ class _HomeState extends State<Home> {
     final db = FirebaseFirestore.instance;
     //final List<String> id=List.generate(length, (index) => null)
     return Scaffold(
-      backgroundColor: Colors.teal[300],
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
         elevation: 0.0,
         leading: Container(
@@ -121,14 +123,7 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      body: SlidingUpPanel(
-          //defaultPanelState: PanelState.CLOSED,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-          color: Color(0xff4DB6AC),
-          maxHeight: MediaQuery.of(context).size.height * 0.35,
-          minHeight: 80,
-          body: Container(
+      body: Container(
             color: Colors.white,
             //height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
@@ -136,6 +131,65 @@ class _HomeState extends State<Home> {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: <Widget>[
+                  Container(
+                    color: Colors.pink,
+                    width: 100.w,
+                    height: 30.h,
+                    margin: EdgeInsets.only(bottom: 8,top: 5),
+                    child: Container(
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: db.collection('Offers').snapshots(),
+                        builder: (context,snapshot){
+                          if(!snapshot.hasData){
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.teal[300],
+                              ),
+                            );
+                          }else
+                            return Container(
+                              width: 100.w,
+                              child: CarouselSlider(
+                                options: CarouselOptions(
+                                  height: 100.h,
+                                  enlargeCenterPage: false,
+                                  autoPlay: true,
+                                  aspectRatio: 16/9,
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  enableInfiniteScroll: true,
+                                  //autoPlayAnimationDuration: Duration(microseconds: 1000),
+                                  viewportFraction: 1.0
+                                ),
+                                items: snapshot.data!.docs.map((doc){
+                                  return GestureDetector(
+                                    onTap: () async{
+                                      if (await canLaunch('${doc['destinationUrl']}')) {
+                                          await launch(
+                                            doc['destinationUrl'],
+                                          );
+                                        } else {
+                                          throw 'Could not launch ${doc['destinationUrl']}';
+                                        }
+                                      },
+                                    child: Container(
+                                      //margin: EdgeInsets.symmetric(vertical: 7.h,horizontal: 6),
+                                      decoration: BoxDecoration(
+                                        //borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white,
+                                        image: DecorationImage(
+                                          image: NetworkImage('${doc['imageUrl']}'),
+                                          fit: BoxFit.fill,
+                                        )
+                                      ),
+                                    ),
+                                  );
+                                }).toList(), 
+                              ),
+                            );
+                        },
+                      ),
+                    ),
+                  ),
                   Container(
                     child: StreamBuilder<QuerySnapshot>(
                       stream: db.collection('BookCollection').snapshots(),
@@ -154,7 +208,7 @@ class _HomeState extends State<Home> {
                             child: GridView(
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: 1 / 1.7,
+                                childAspectRatio: 1 / 1.5,
                                 crossAxisCount: 2,
                                 //crossAxisSpacing: 20,
                                 //mainAxisSpacing: 10
@@ -173,6 +227,7 @@ class _HomeState extends State<Home> {
                                     desc: doc['bookDescription'],
                                     price: doc['bookPrice'], 
                                     collection: doc['bookCollectionName'],
+                                    bookPreviewUrl: doc['bookPreviewUrl'],
                                     //bookID: doc['bookID'],
                                   ),
                                 );
@@ -456,203 +511,63 @@ class _HomeState extends State<Home> {
                     ),
                   ),*/
                   SizedBox(
-                    height: 226,
+                    height: 0,
                   )
                 ],
               ),
             ),
           ),
-          panel: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Icon(
-                Icons.drag_handle,
-                color: Colors.black26,
-                size: 40,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Continue Reading',
-                          style: GoogleFonts.prompt(
-                              textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                      ],
-                    ),
-                    GestureDetector(
-                      child: Text(
-                        '...',
-                        style: GoogleFonts.prompt(
-                            textStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 30,
-                                letterSpacing: 2,
-                                fontWeight: FontWeight.w900)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.2,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(18)),
-                margin: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.fromLTRB(10, 10, 5, 10),
-                          height: MediaQuery.of(context).size.height * 0.2,
-                          width: MediaQuery.of(context).size.width * 0.22,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      'https://source.unsplash.com/aZ_MmSmAcjg'),
-                                  fit: BoxFit.cover)),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.31,
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Column(
-                                children: [
-                                  Text(
-                                    'The Psychology of Money',
-                                    style: GoogleFonts.prompt(
-                                        textStyle: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600)),
-                                  ),
-                                  Text(
-                                    'By Morgan Housel',
-                                    style: GoogleFonts.prompt(
-                                        textStyle: TextStyle(
-                                            color: Colors.black26,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600)),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.amber[700],
-                                    size: 19,
-                                  ),
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.amber[700],
-                                    size: 19,
-                                  ),
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.amber[700],
-                                    size: 19,
-                                  ),
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.amber[700],
-                                    size: 19,
-                                  ),
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.black26,
-                                    size: 19,
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(2, 10, 5, 10),
-                      height: MediaQuery.of(context).size.width * 0.20,
-                      width: MediaQuery.of(context).size.width * 0.20,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        //image: DecorationImage(image: NetworkImage('https://source.unsplash.com/aZ_MmSmAcjg'),fit: BoxFit.cover)
-                      ),
-                      child: CircularPercentIndicator(
-                        radius: 60.0,
-                        lineWidth: 5.0,
-                        percent: 0.65,
-                        center: new Text("65%"),
-                        progressColor: Colors.red[400],
-                      ),
-                    ),
-                  ],
-                ),
-              )
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+          color: Colors.grey,
+          boxShadow: [BoxShadow(color: Color(0xffeeeeee),offset: Offset(0.1,0),spreadRadius: 1)]
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+          child: BottomNavigationBar(
+            currentIndex: index,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.white,
+            selectedItemColor: Colors.teal[300],
+            selectedFontSize: 13,
+            unselectedFontSize: 13,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          index = 0;
+                        });
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Home()));
+                      },
+                      child: Icon(Icons.explore)),
+                  label: "Explore"),
+              BottomNavigationBarItem(
+                  icon: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => MoreBook()));
+                        setState(() {
+                          index = 1;
+                        });
+                      },
+                      child: Icon(Icons.book_outlined)),
+                  label: "Reading"),
+              BottomNavigationBarItem(
+                  icon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          index = 2;
+                        });
+                      },
+                      child: Icon(Icons.bookmark_outline)),
+                  label: "Bookmark")
             ],
-          )),
-      bottomNavigationBar: ClipRRect(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-        child: BottomNavigationBar(
-          currentIndex: index,
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-          selectedItemColor: Colors.teal[300],
-          selectedFontSize: 13,
-          unselectedFontSize: 13,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        index = 0;
-                      });
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Home()));
-                    },
-                    child: Icon(Icons.explore)),
-                label: "Explore"),
-            BottomNavigationBarItem(
-                icon: GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MoreBook()));
-                      setState(() {
-                        index = 1;
-                      });
-                    },
-                    child: Icon(Icons.book_outlined)),
-                label: "Reading"),
-            BottomNavigationBarItem(
-                icon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        index = 2;
-                      });
-                    },
-                    child: Icon(Icons.bookmark_outline)),
-                label: "Bookmark")
-          ],
+          ),
         ),
       ),
     );
@@ -713,7 +628,7 @@ class _HomeState extends State<Home> {
 }*/
 
 class GridTile extends StatelessWidget {
-  final String name, imageUrl, writer, id, mrp, desc, price,collection;
+  final String name, imageUrl, writer, id, mrp, desc, price,collection,bookPreviewUrl;
   GridTile(
       {required this.imageUrl,
       required this.name,
@@ -722,7 +637,8 @@ class GridTile extends StatelessWidget {
       required this.mrp,
       required this.desc,
       required this.price, 
-      required this.collection});
+      required this.collection,
+      required this.bookPreviewUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -739,7 +655,8 @@ class GridTile extends StatelessWidget {
                     bMrp: mrp,
                     bdesc: desc,
                     price: price,
-                    collName: collection,)));
+                    collName: collection,
+                    prev: bookPreviewUrl,)));
       },
       child: Container(
         height: 40.h,
@@ -756,7 +673,7 @@ class GridTile extends StatelessWidget {
                   image: DecorationImage(
                       image: NetworkImage(imageUrl), fit: BoxFit.cover)),
             ),
-            Container(
+            /*Container(
                 alignment: Alignment.topLeft,
                 padding: EdgeInsets.only(left: 5, right: 5),
                 child: Text(
@@ -767,7 +684,7 @@ class GridTile extends StatelessWidget {
                           fontSize: 10.7.sp,
                           fontWeight: FontWeight.w600)),
                   overflow: TextOverflow.ellipsis,
-                )),
+                )),*/
             Container(
                 alignment: Alignment.topLeft,
                 padding: EdgeInsets.symmetric(horizontal: 5),
