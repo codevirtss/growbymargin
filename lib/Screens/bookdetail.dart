@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 class DetailBook extends StatefulWidget {
-  final String bookID, imgUrl, bname, author, bMrp, bdesc, price;
+  final String bookID, imgUrl, bname, author, bMrp, bdesc, price,collName;
   DetailBook({
     required this.bookID,
     required this.imgUrl,
@@ -14,6 +14,7 @@ class DetailBook extends StatefulWidget {
     required this.bMrp,
     required this.bdesc,
     required this.price,
+    required this.collName,
   });
 
   @override
@@ -117,17 +118,6 @@ class _DetailBookState extends State<DetailBook> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                '\$${widget.price.split(' ')[0]}',
-                                style: GoogleFonts.prompt(
-                                    textStyle: TextStyle(
-                                        color: Colors.lightBlue,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600)),
-                              ),
-                              SizedBox(
-                                width: 2.w,
-                              ),
-                              Text(
                                 '\$${widget.bMrp.split(' ')[0]}',
                                 style: GoogleFonts.prompt(
                                     textStyle: TextStyle(
@@ -136,6 +126,17 @@ class _DetailBookState extends State<DetailBook> {
                                         fontWeight: FontWeight.w600,
                                         decoration:
                                             TextDecoration.lineThrough)),
+                              ),
+                              SizedBox(
+                                width: 2.w,
+                              ),
+                              Text(
+                                '\$${widget.price.split(' ')[0]}',
+                                style: GoogleFonts.prompt(
+                                    textStyle: TextStyle(
+                                        color: Colors.lightBlue,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600)),
                               ),
                             ],
                           ),
@@ -274,6 +275,81 @@ class _DetailBookState extends State<DetailBook> {
                           fontWeight: FontWeight.w500)),
                 ),
               ),
+              Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    color: Colors.white,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              'Books on ${widget.collName}',
+                              style: GoogleFonts.prompt(
+                                  textStyle: TextStyle(
+                                      color: Colors.black38,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600)),
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                          child: Text(
+                            '...',
+                            style: GoogleFonts.prompt(
+                                textStyle: TextStyle(
+                                    color: Colors.black45,
+                                    fontSize: 30,
+                                    letterSpacing: 2,
+                                    fontWeight: FontWeight.w900)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              Container(
+                    //width: MediaQuery.of(context).size.width,
+                    color: Colors.white,
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: db.collection('BookCollection').where('bookCollectionName',isEqualTo: widget.collName).snapshots(),
+                      builder: (context,snapshot){
+                        if (!snapshot.hasData){
+                          return Center(
+                            child: CircularProgressIndicator(color:Colors.teal[300]),
+                          );
+                        }else
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.33,
+                            padding: EdgeInsets.only(left: 10),
+                            child: ListView(
+                              shrinkWrap: true,
+                              //physics: ScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              children: snapshot.data!.docs.map((doc){
+                                return Container(
+                                  child: BookTile(
+                                        imageUrl: doc['bookCoverImageUrl'],
+                                        name: doc['bookName'],
+                                        writer: 'Morgan Housel',
+                                        id: doc.id.toString(),
+                                        mrp: doc['bookMrp'],
+                                        desc: doc['bookDescription'],
+                                        price: doc['bookPrice'], 
+                                        collection: doc['bookCollectionName'],
+                                      ),
+                                );
+                              }).toList(),
+                            ),
+                          );
+                      },
+                    ),
+                  ),
               SizedBox(
                 height: 60,
               )
@@ -372,13 +448,34 @@ class _DetailBookState extends State<DetailBook> {
 }
 
 class BookTile extends StatelessWidget {
-  final String name, imageUrl, writer;
-  BookTile({required this.imageUrl, required this.name, required this.writer});
+  final String name, imageUrl, writer, id, mrp, desc, price,collection;
+  BookTile(
+      {required this.imageUrl,
+      required this.name,
+      required this.writer,
+      required this.id,
+      required this.mrp,
+      required this.desc,
+      required this.price, 
+      required this.collection});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () async{
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailBook(
+                    bookID: id,
+                    imgUrl: imageUrl,
+                    author: writer,
+                    bname: name,
+                    bMrp: mrp,
+                    bdesc: desc,
+                    price: price,
+                    collName: collection,)));
+      },
       child: Container(
         height: MediaQuery.of(context).size.height * 0.35,
         width: MediaQuery.of(context).size.width * 0.38,

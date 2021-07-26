@@ -171,7 +171,8 @@ class _HomeState extends State<Home> {
                                     id: doc.id.toString(),
                                     mrp: doc['bookMrp'],
                                     desc: doc['bookDescription'],
-                                    price: doc['bookPrice'],
+                                    price: doc['bookPrice'], 
+                                    collection: doc['bookCollectionName'],
                                     //bookID: doc['bookID'],
                                   ),
                                 );
@@ -658,7 +659,7 @@ class _HomeState extends State<Home> {
   }
 }
 
-class BookTile extends StatelessWidget {
+/*class BookTile extends StatelessWidget {
   final String name, imageUrl, writer;
   BookTile({required this.imageUrl, required this.name, required this.writer});
 
@@ -709,10 +710,10 @@ class BookTile extends StatelessWidget {
       ),
     );
   }
-}
+}*/
 
 class GridTile extends StatelessWidget {
-  final String name, imageUrl, writer, id, mrp, desc, price;
+  final String name, imageUrl, writer, id, mrp, desc, price,collection;
   GridTile(
       {required this.imageUrl,
       required this.name,
@@ -720,7 +721,8 @@ class GridTile extends StatelessWidget {
       required this.id,
       required this.mrp,
       required this.desc,
-      required this.price});
+      required this.price, 
+      required this.collection});
 
   @override
   Widget build(BuildContext context) {
@@ -736,7 +738,8 @@ class GridTile extends StatelessWidget {
                     bname: name,
                     bMrp: mrp,
                     bdesc: desc,
-                    price: price)));
+                    price: price,
+                    collName: collection,)));
       },
       child: Container(
         height: 40.h,
@@ -786,17 +789,6 @@ class GridTile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          '\$${price.split(' ')[0]}',
-                          style: GoogleFonts.prompt(
-                              textStyle: TextStyle(
-                                  color: Colors.lightBlue,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        Text(
                           '\$${mrp.split(' ')[0]}',
                           style: GoogleFonts.prompt(
                               textStyle: TextStyle(
@@ -804,6 +796,17 @@ class GridTile extends StatelessWidget {
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
                                   decoration: TextDecoration.lineThrough)),
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Text(
+                          '\$${price.split(' ')[0]}',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                                  color: Colors.lightBlue,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600)),
                         ),
                       ],
                     ),
