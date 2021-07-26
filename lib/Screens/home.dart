@@ -124,121 +124,128 @@ class _HomeState extends State<Home> {
         ),
       ),
       body: Container(
-            color: Colors.white,
-            //height: MediaQuery.of(context).size.height,
-            child: SingleChildScrollView(
-              physics: ClampingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    color: Colors.pink,
-                    width: 100.w,
-                    height: 30.h,
-                    margin: EdgeInsets.only(bottom: 8,top: 5),
-                    child: Container(
-                      child: StreamBuilder<QuerySnapshot>(
-                        stream: db.collection('Offers').snapshots(),
-                        builder: (context,snapshot){
-                          if(!snapshot.hasData){
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.teal[300],
-                              ),
-                            );
-                          }else
-                            return Container(
-                              width: 100.w,
-                              child: CarouselSlider(
-                                options: CarouselOptions(
+        color: Colors.white,
+        //height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: <Widget>[
+              Container(
+                //   color: Colors.pink,
+                width: 100.w,
+                height: 20.h,
+                margin: EdgeInsets.only(bottom: 8, top: 5),
+                child: Container(
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: db.collection('Offers').snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.teal[300],
+                          ),
+                        );
+                      } else
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5.sp),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.sp)),
+                            width: 100.w,
+                            child: CarouselSlider(
+                              options: CarouselOptions(
                                   height: 100.h,
                                   enlargeCenterPage: false,
                                   autoPlay: true,
-                                  aspectRatio: 16/9,
+                                  aspectRatio: 16 / 9,
                                   autoPlayCurve: Curves.fastOutSlowIn,
                                   enableInfiniteScroll: true,
-                                  //autoPlayAnimationDuration: Duration(microseconds: 1000),
-                                  viewportFraction: 1.0
-                                ),
-                                items: snapshot.data!.docs.map((doc){
-                                  return GestureDetector(
-                                    onTap: () async{
-                                      if (await canLaunch('${doc['destinationUrl']}')) {
-                                          await launch(
-                                            doc['destinationUrl'],
-                                          );
-                                        } else {
-                                          throw 'Could not launch ${doc['destinationUrl']}';
-                                        }
-                                      },
-                                    child: Container(
-                                      //margin: EdgeInsets.symmetric(vertical: 7.h,horizontal: 6),
-                                      decoration: BoxDecoration(
+                                  // autoPlayAnimationDuration: Duration(microseconds: 10),
+                                  viewportFraction: 1.0),
+                              items: snapshot.data!.docs.map((doc) {
+                                return GestureDetector(
+                                  onTap: () async {
+                                    if (await canLaunch(
+                                        '${doc['destinationUrl']}')) {
+                                      await launch(
+                                        doc['destinationUrl'],
+                                      );
+                                    } else {
+                                      throw 'Could not launch ${doc['destinationUrl']}';
+                                    }
+                                  },
+                                  child: Container(
+                                    //margin: EdgeInsets.symmetric(vertical: 7.h,horizontal: 6),
+                                    decoration: BoxDecoration(
                                         //borderRadius: BorderRadius.circular(10),
                                         color: Colors.white,
                                         image: DecorationImage(
-                                          image: NetworkImage('${doc['imageUrl']}'),
+                                          image: NetworkImage(
+                                              '${doc['imageUrl']}'),
                                           fit: BoxFit.fill,
-                                        )
-                                      ),
-                                    ),
-                                  );
-                                }).toList(), 
-                              ),
-                            );
-                        },
-                      ),
-                    ),
-                  ),
-                  Container(
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: db.collection('BookCollection').snapshots(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.teal[300],
-                            ),
-                          );
-                        } else {
-                          //print(snapshot.data!.docs.toList()[0].id.toString());
-                          return Container(
-                            width: 100.w,
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: GridView(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                childAspectRatio: 1 / 1.5,
-                                crossAxisCount: 2,
-                                //crossAxisSpacing: 20,
-                                //mainAxisSpacing: 10
-                              ),
-                              primary: false,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              children: snapshot.data!.docs.map((doc) {
-                                return Container(
-                                  child: GridTile(
-                                    imageUrl: doc['bookCoverImageUrl'],
-                                    name: doc['bookName'],
-                                    writer: 'Morgan Housel',
-                                    id: doc.id.toString(),
-                                    mrp: doc['bookMrp'],
-                                    desc: doc['bookDescription'],
-                                    price: doc['bookPrice'], 
-                                    collection: doc['bookCollectionName'],
-                                    bookPreviewUrl: doc['bookPreviewUrl'],
-                                    //bookID: doc['bookID'],
+                                        )),
                                   ),
                                 );
                               }).toList(),
                             ),
-                          );
-                        }
-                      },
-                    ),
+                          ),
+                        );
+                    },
                   ),
-                  /*Container(
+                ),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(10.sp)),
+              ),
+              Container(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: db.collection('BookCollection').snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.teal[300],
+                        ),
+                      );
+                    } else {
+                      //print(snapshot.data!.docs.toList()[0].id.toString());
+                      return Container(
+                        width: 100.w,
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: GridView(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 1 / 1.5,
+                            crossAxisCount: 2,
+                            //crossAxisSpacing: 20,
+                            //mainAxisSpacing: 10
+                          ),
+                          primary: false,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          children: snapshot.data!.docs.map((doc) {
+                            return Container(
+                              child: GridTile(
+                                imageUrl: doc['bookCoverImageUrl'],
+                                name: doc['bookName'],
+                                writer: 'Morgan Housel',
+                                id: doc.id.toString(),
+                                mrp: doc['bookMrp'],
+                                desc: doc['bookDescription'],
+                                price: doc['bookPrice'],
+                                collection: doc['bookCollectionName'],
+                                bookPreviewUrl: doc['bookPreviewUrl'],
+                                //bookID: doc['bookID'],
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
+              /*Container(
                     width: MediaQuery.of(context).size.width,
                     margin: EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
@@ -510,20 +517,24 @@ class _HomeState extends State<Home> {
                       },
                     ),
                   ),*/
-                  SizedBox(
-                    height: 0,
-                  )
-                ],
-              ),
-            ),
+              SizedBox(
+                height: 0,
+              )
+            ],
           ),
+        ),
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-          color: Colors.grey,
-          boxShadow: [BoxShadow(color: Color(0xffeeeeee),offset: Offset(0.1,0),spreadRadius: 1)]
-        ),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+            color: Colors.grey,
+            boxShadow: [
+              BoxShadow(
+                  color: Color(0xffeeeeee),
+                  offset: Offset(0.1, 0),
+                  spreadRadius: 1)
+            ]),
         child: ClipRRect(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),
@@ -549,8 +560,10 @@ class _HomeState extends State<Home> {
               BottomNavigationBarItem(
                   icon: GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => MoreBook()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MoreBook()));
                         setState(() {
                           index = 1;
                         });
@@ -628,7 +641,15 @@ class _HomeState extends State<Home> {
 }*/
 
 class GridTile extends StatelessWidget {
-  final String name, imageUrl, writer, id, mrp, desc, price,collection,bookPreviewUrl;
+  final String name,
+      imageUrl,
+      writer,
+      id,
+      mrp,
+      desc,
+      price,
+      collection,
+      bookPreviewUrl;
   GridTile(
       {required this.imageUrl,
       required this.name,
@@ -636,7 +657,7 @@ class GridTile extends StatelessWidget {
       required this.id,
       required this.mrp,
       required this.desc,
-      required this.price, 
+      required this.price,
       required this.collection,
       required this.bookPreviewUrl});
 
@@ -648,15 +669,16 @@ class GridTile extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => DetailBook(
-                    bookID: id,
-                    imgUrl: imageUrl,
-                    author: writer,
-                    bname: name,
-                    bMrp: mrp,
-                    bdesc: desc,
-                    price: price,
-                    collName: collection,
-                    prev: bookPreviewUrl,)));
+                      bookID: id,
+                      imgUrl: imageUrl,
+                      author: writer,
+                      bname: name,
+                      bMrp: mrp,
+                      bdesc: desc,
+                      price: price,
+                      collName: collection,
+                      prev: bookPreviewUrl,
+                    )));
       },
       child: Container(
         height: 40.h,

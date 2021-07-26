@@ -8,7 +8,15 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DetailBook extends StatefulWidget {
-  final String bookID, imgUrl, bname, author, bMrp, bdesc, price,collName,prev;
+  final String bookID,
+      imgUrl,
+      bname,
+      author,
+      bMrp,
+      bdesc,
+      price,
+      collName,
+      prev;
   DetailBook({
     required this.bookID,
     required this.imgUrl,
@@ -290,8 +298,28 @@ class _DetailBookState extends State<DetailBook> {
                         height: 40,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6)),
-                        onPressed: ()async{
-                          print(widget.prev); 
+                        onPressed: () async {
+                          print(widget.prev);
+                          EpubViewer.setConfig(
+                              identifier: "iosBook",
+                              scrollDirection:
+                                  EpubScrollDirection.ALLDIRECTIONS,
+                              allowSharing: true,
+                              enableTts: true,
+                              nightMode: true);
+
+                          await EpubViewer.openAsset(
+                            'assets/Images/book.epub',
+                            lastLocation: EpubLocator.fromJson({
+                              "bookId": "2239",
+                              "href": "/OEBPS/ch06.xhtml",
+                              "created": 1539934158390,
+                              "locations": {
+                                "cfi": "epubcfi(/0!/4/4[simple_book]/2/2/6)"
+                              }
+                            }),
+                          );
+                          // ge
                         },
                         child: Text(
                           'Preview',
@@ -303,14 +331,16 @@ class _DetailBookState extends State<DetailBook> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Expanded(
                       child: MaterialButton(
                         color: Colors.orange[800],
                         height: 40,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6)),
-                        onPressed: (){},
+                        onPressed: () {},
                         child: Text(
                           'Buy',
                           style: GoogleFonts.prompt(
@@ -325,81 +355,85 @@ class _DetailBookState extends State<DetailBook> {
                 ),
               ),
               Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    color: Colors.white,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              'Books on ${widget.collName}',
-                              style: GoogleFonts.prompt(
-                                  textStyle: TextStyle(
-                                      color: Colors.black38,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600)),
-                            ),
-                          ],
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 15,
                         ),
-                        GestureDetector(
-                          child: Text(
-                            '...',
-                            style: GoogleFonts.prompt(
-                                textStyle: TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: 30,
-                                    letterSpacing: 2,
-                                    fontWeight: FontWeight.w900)),
-                          ),
+                        Text(
+                          'Books on ${widget.collName}',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                                  color: Colors.black38,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600)),
                         ),
                       ],
                     ),
-                  ),
-              Container(
-                    //width: MediaQuery.of(context).size.width,
-                    color: Colors.white,
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: db.collection('BookCollection').where('bookCollectionName',isEqualTo: widget.collName).snapshots(),
-                      builder: (context,snapshot){
-                        if (!snapshot.hasData){
-                          return Center(
-                            child: CircularProgressIndicator(color:Colors.teal[300]),
-                          );
-                        }else
-                          return Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.35,
-                            padding: EdgeInsets.only(left: 10),
-                            child: ListView(
-                              shrinkWrap: true,
-                              //physics: ScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              children: snapshot.data!.docs.map((doc){
-                                return Container(
-                                  child: BookTile(
-                                        imageUrl: doc['bookCoverImageUrl'],
-                                        name: doc['bookName'],
-                                        writer: 'Morgan Housel',
-                                        id: doc.id.toString(),
-                                        mrp: doc['bookMrp'],
-                                        desc: doc['bookDescription'],
-                                        price: doc['bookPrice'], 
-                                        collection: doc['bookCollectionName'],
-                                        bookPreviewUrl: doc['bookPreviewUrl'],
-                                      ),
-                                );
-                              }).toList(),
-                            ),
-                          );
-                      },
+                    GestureDetector(
+                      child: Text(
+                        '...',
+                        style: GoogleFonts.prompt(
+                            textStyle: TextStyle(
+                                color: Colors.black45,
+                                fontSize: 30,
+                                letterSpacing: 2,
+                                fontWeight: FontWeight.w900)),
+                      ),
                     ),
-                  ),
+                  ],
+                ),
+              ),
+              Container(
+                //width: MediaQuery.of(context).size.width,
+                color: Colors.white,
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: db
+                      .collection('BookCollection')
+                      .where('bookCollectionName', isEqualTo: widget.collName)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child:
+                            CircularProgressIndicator(color: Colors.teal[300]),
+                      );
+                    } else
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.35,
+                        padding: EdgeInsets.only(left: 10),
+                        child: ListView(
+                          shrinkWrap: true,
+                          //physics: ScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          children: snapshot.data!.docs.map((doc) {
+                            return Container(
+                              child: BookTile(
+                                imageUrl: doc['bookCoverImageUrl'],
+                                name: doc['bookName'],
+                                writer: 'Morgan Housel',
+                                id: doc.id.toString(),
+                                mrp: doc['bookMrp'],
+                                desc: doc['bookDescription'],
+                                price: doc['bookPrice'],
+                                collection: doc['bookCollectionName'],
+                                bookPreviewUrl: doc['bookPreviewUrl'],
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                  },
+                ),
+              ),
               SizedBox(
                 height: 0,
               )
@@ -498,7 +532,15 @@ class _DetailBookState extends State<DetailBook> {
 }
 
 class BookTile extends StatelessWidget {
-  final String name, imageUrl, writer, id, mrp, desc, price,collection,bookPreviewUrl;
+  final String name,
+      imageUrl,
+      writer,
+      id,
+      mrp,
+      desc,
+      price,
+      collection,
+      bookPreviewUrl;
   BookTile(
       {required this.imageUrl,
       required this.name,
@@ -506,27 +548,28 @@ class BookTile extends StatelessWidget {
       required this.id,
       required this.mrp,
       required this.desc,
-      required this.price, 
+      required this.price,
       required this.collection,
       required this.bookPreviewUrl});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async{
+      onTap: () async {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => DetailBook(
-                    bookID: id,
-                    imgUrl: imageUrl,
-                    author: writer,
-                    bname: name,
-                    bMrp: mrp,
-                    bdesc: desc,
-                    price: price,
-                    collName: collection,
-                    prev: bookPreviewUrl,)));
+                      bookID: id,
+                      imgUrl: imageUrl,
+                      author: writer,
+                      bname: name,
+                      bMrp: mrp,
+                      bdesc: desc,
+                      price: price,
+                      collName: collection,
+                      prev: bookPreviewUrl,
+                    )));
       },
       child: Container(
         height: MediaQuery.of(context).size.height * 0.35,
@@ -565,7 +608,7 @@ class BookTile extends StatelessWidget {
                           fontWeight: FontWeight.w600)),
                   overflow: TextOverflow.ellipsis,
                 )),
-                Container(
+            Container(
                 alignment: Alignment.topLeft,
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Row(
@@ -603,4 +646,3 @@ class BookTile extends StatelessWidget {
     );
   }
 }
-

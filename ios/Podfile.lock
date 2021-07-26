@@ -212,6 +212,7 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
+  - AEXML (4.6.0)
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -222,6 +223,16 @@ PODS:
     - Firebase/Firestore (= 8.3.0)
     - firebase_core
     - Flutter
+  - epub_viewer (0.0.2):
+    - EpubViewerKit (~> 0.1.3)
+    - Flutter
+  - EpubViewerKit (0.1.3):
+    - AEXML (= 4.6.0)
+    - FontBlaster (= 5.1.1)
+    - MenuItemKit (= 4.0.1)
+    - RealmSwift (= 5.5.1)
+    - SSZipArchive (= 2.2.3)
+    - ZFDragableModalTransition (= 0.6)
   - Firebase/Auth (8.3.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 8.3.0)
@@ -274,6 +285,7 @@ PODS:
     - leveldb-library (~> 1.22)
     - nanopb (~> 2.30908.0)
   - Flutter (1.0.0)
+  - FontBlaster (5.1.1)
   - GoogleDataTransport (9.1.0):
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
@@ -319,6 +331,7 @@ PODS:
   - gRPC-Core/Interface (1.28.2)
   - GTMSessionFetcher/Core (1.6.1)
   - leveldb-library (1.22.1)
+  - MenuItemKit (4.0.1)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
@@ -327,40 +340,64 @@ PODS:
   - path_provider (0.0.1):
     - Flutter
   - PromisesObjC (2.0.0)
+  - Realm (5.5.1):
+    - Realm/Headers (= 5.5.1)
+  - Realm/Headers (5.5.1)
+  - RealmSwift (5.5.1):
+    - Realm (= 5.5.1)
   - shared_preferences (0.0.1):
     - Flutter
+  - SSZipArchive (2.2.3)
+  - url_launcher (0.0.1):
+    - Flutter
+  - webview_flutter (0.0.1):
+    - Flutter
+  - ZFDragableModalTransition (0.6)
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
+  - epub_viewer (from `.symlinks/plugins/epub_viewer/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
   - Flutter (from `Flutter`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
   trunk:
     - abseil
+    - AEXML
     - BoringSSL-GRPC
+    - EpubViewerKit
     - Firebase
     - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseDatabase
     - FirebaseFirestore
+    - FontBlaster
     - GoogleDataTransport
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
     - GTMSessionFetcher
     - leveldb-library
+    - MenuItemKit
     - nanopb
     - PromisesObjC
+    - Realm
+    - RealmSwift
+    - SSZipArchive
+    - ZFDragableModalTransition
 
 EXTERNAL SOURCES:
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
+  epub_viewer:
+    :path: ".symlinks/plugins/epub_viewer/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -373,11 +410,18 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
+  webview_flutter:
+    :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
+  AEXML: 2fbb73d8724797ed2cde888731e176fa4d44dd83
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   cloud_firestore: d6c77e2b33f00576fed2b070fec1be58d7e5f276
+  epub_viewer: 422e82cc0068756c376102e3fa0e0fda570ddeb8
+  EpubViewerKit: 5f6c8ff9161bba18d6742c59b3c575c19f0623a9
   Firebase: 817b9171d0d51dccc458b94a5e8edff6b1dd323d
   firebase_auth: afaff5f874986a468841a87ffe0ed4ad9d07c95c
   firebase_core: 72374607c8c6f5a0adc0559e5c5bf57deda975e3
@@ -388,16 +432,24 @@ SPEC CHECKSUMS:
   FirebaseDatabase: 3cb36bbf667be87d72cebc8dbe72e2e8cac1d615
   FirebaseFirestore: f4f42828c6d82f6945575611c23dd343e0e7d0aa
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  FontBlaster: 8897ebdbb4b6ace3ab78c92b665d88c954f19e4a
   GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
   GoogleUtilities: eea970f4a389963963bffe8d8fabe43540678b9c
   "gRPC-C++": 13d8ccef97d5c3c441b7e3c529ef28ebee86fad2
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
+  MenuItemKit: 1459920e984d823e1bcc858b7a964f94e6bfa0f6
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
+  Realm: c2ffe0667f9c98c9ba65f608ba85684d39826145
+  RealmSwift: 5a35c1c35c3e1925e6fcd092c881d5cc4a826bff
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
+  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
+  ZFDragableModalTransition: 0d294eaaba6edfcb9839595de765f9ca06a4b524
 
 PODFILE CHECKSUM: fe0e1ee7f3d1f7d00b11b474b62dd62134535aea
 
