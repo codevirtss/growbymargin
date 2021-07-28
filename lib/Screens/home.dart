@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:growbymargin/Screens/bookdetail.dart';
+import 'package:growbymargin/Screens/bottomNavBar.dart';
 import 'package:growbymargin/Screens/morebook.dart';
 import 'package:growbymargin/Screens/onboard.dart';
 import 'package:growbymargin/helper/authentication.dart';
@@ -16,15 +17,12 @@ import 'package:url_launcher/url_launcher.dart';
 //import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
-
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   AuthenticationHelper authenticationHelper = AuthenticationHelper();
-  int index = 0;
 
   bool isLoggedIn = false;
 
@@ -524,65 +522,7 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-            color: Colors.grey,
-            boxShadow: [
-              BoxShadow(
-                  color: Color(0xffeeeeee),
-                  offset: Offset(0.1, 0),
-                  spreadRadius: 1)
-            ]),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-          child: BottomNavigationBar(
-            currentIndex: index,
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.white,
-            selectedItemColor: Colors.teal[300],
-            selectedFontSize: 13,
-            unselectedFontSize: 13,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                  icon: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          index = 0;
-                        });
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Home()));
-                      },
-                      child: Icon(Icons.explore)),
-                  label: "Explore"),
-              BottomNavigationBarItem(
-                  icon: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MoreBook()));
-                        setState(() {
-                          index = 1;
-                        });
-                      },
-                      child: Icon(Icons.book_outlined)),
-                  label: "Reading"),
-              BottomNavigationBarItem(
-                  icon: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          index = 2;
-                        });
-                      },
-                      child: Icon(Icons.bookmark_outline)),
-                  label: "Bookmark")
-            ],
-          ),
-        ),
-      ),
+      bottomNavigationBar: bottomNav(index: 0,)
     );
   }
 }
