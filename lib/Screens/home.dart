@@ -44,100 +44,161 @@ class _HomeState extends State<Home> {
     final db = FirebaseFirestore.instance;
     //final List<String> id=List.generate(length, (index) => null)
     return Scaffold(
-      backgroundColor: Colors.grey[50],
-      drawer: TheDrawer(),
-      appBar: AppBar(
-        elevation: 0.0,
-        leading: Builder(
-          builder: (context)=> Container(
-            width: 56,
-            height: 56,
-            margin: EdgeInsets.only(top: 5, bottom: 5, left: 3.w),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(color: Colors.grey, offset: Offset(0.0, 0.1))
-                ]),
-            child: IconButton(
-                onPressed: () {
-                  //authenticationHelper.signOut();
-                  Scaffold.of(context).openDrawer();
-                },
-                icon: Icon(
-                  Icons.dashboard,
-                  color: Colors.black54,
-                  size: 8.w,
-                )),
+        backgroundColor: Colors.grey[50],
+        drawer: TheDrawer(),
+        appBar: AppBar(
+          elevation: 0.0,
+          leading: Builder(
+            builder: (context) => Container(
+              width: 56,
+              height: 56,
+              margin: EdgeInsets.only(top: 5, bottom: 5, left: 3.w),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(color: Colors.grey, offset: Offset(0.0, 0.1))
+                  ]),
+              child: IconButton(
+                  onPressed: () {
+                    //authenticationHelper.signOut();
+                    Scaffold.of(context).openDrawer();
+                  },
+                  icon: Icon(
+                    Icons.menu,
+                    color: Colors.black54,
+                    size: 8.w,
+                  )),
+            ),
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                width: 45,
+                height: 45,
+                margin: EdgeInsets.only(top: 5, bottom: 5, right: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(color: Colors.grey, offset: Offset(0.0, 0.1))
+                  ],
+                ),
+                child: Icon(
+                  Icons.shopping_bag_outlined,
+                ),
+              ),
+              isLoggedIn == true
+                  ? Container(
+                      width: 50,
+                      height: 50,
+                      margin: EdgeInsets.only(top: 5, bottom: 5, left: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0, 0.1),
+                          ),
+                        ],
+                      ),
+                      child: ClipOval(
+                          child: Image.network(
+                        'https://source.unsplash.com/cIEb4UJ4ruk',
+                        fit: BoxFit.contain,
+                      )),
+                    )
+                  : TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                child: OnBoard(),
+                                type: PageTransitionType.leftToRight));
+                      },
+                      child: Text("Login")),
+            ],
           ),
         ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              width: 45,
-              height: 45,
-              margin: EdgeInsets.only(top: 5, bottom: 5, right: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(color: Colors.grey, offset: Offset(0.0, 0.1))
-                ],
-              ),
-              child: Icon(
-                Icons.shopping_bag_outlined,
-              ),
-            ),
-            isLoggedIn == true
-                ? Container(
-                    width: 50,
-                    height: 50,
-                    margin: EdgeInsets.only(top: 5, bottom: 5, left: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0.0, 0.1),
-                        ),
-                      ],
+        body: Container(
+          color: Colors.white,
+          //height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            physics: ClampingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  //   color: Colors.pink,
+                  width: 100.w,
+                  height: 20.h,
+                  margin: EdgeInsets.only(bottom: 8, top: 5),
+                  child: Container(
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: db.collection('Offers').snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.teal[300],
+                            ),
+                          );
+                        } else
+                          return Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5.sp),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.sp)),
+                              width: 100.w,
+                              child: CarouselSlider(
+                                options: CarouselOptions(
+                                    height: 100.h,
+                                    enlargeCenterPage: false,
+                                    autoPlay: true,
+                                    aspectRatio: 16 / 9,
+                                    autoPlayCurve: Curves.fastOutSlowIn,
+                                    enableInfiniteScroll: true,
+                                    // autoPlayAnimationDuration: Duration(microseconds: 10),
+                                    viewportFraction: 1.0),
+                                items: snapshot.data!.docs.map((doc) {
+                                  return GestureDetector(
+                                    onTap: () async {
+                                      if (await canLaunch(
+                                          '${doc['destinationUrl']}')) {
+                                        await launch(
+                                          doc['destinationUrl'],
+                                        );
+                                      } else {
+                                        throw 'Could not launch ${doc['destinationUrl']}';
+                                      }
+                                    },
+                                    child: Container(
+                                      //margin: EdgeInsets.symmetric(vertical: 7.h,horizontal: 6),
+                                      decoration: BoxDecoration(
+                                          //borderRadius: BorderRadius.circular(10),
+                                          color: Colors.white,
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                                '${doc['imageUrl']}'),
+                                            fit: BoxFit.fill,
+                                          )),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          );
+                      },
                     ),
-                    child: ClipOval(
-                        child: Image.network(
-                      'https://source.unsplash.com/cIEb4UJ4ruk',
-                      fit: BoxFit.contain,
-                    )),
-                  )
-                : TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              child: OnBoard(),
-                              type: PageTransitionType.leftToRight));
-                    },
-                    child: Text("Login")),
-          ],
-        ),
-      ),
-      body: Container(
-        color: Colors.white,
-        //height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: <Widget>[
-              Container(
-                //   color: Colors.pink,
-                width: 100.w,
-                height: 20.h,
-                margin: EdgeInsets.only(bottom: 8, top: 5),
-                child: Container(
+                  ),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10.sp)),
+                ),
+                Container(
                   child: StreamBuilder<QuerySnapshot>(
-                    stream: db.collection('Offers').snapshots(),
+                    stream: db.collection('BookCollection').snapshots(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return Center(
@@ -145,106 +206,45 @@ class _HomeState extends State<Home> {
                             color: Colors.teal[300],
                           ),
                         );
-                      } else
-                        return Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.sp),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.sp)),
-                            width: 100.w,
-                            child: CarouselSlider(
-                              options: CarouselOptions(
-                                  height: 100.h,
-                                  enlargeCenterPage: false,
-                                  autoPlay: true,
-                                  aspectRatio: 16 / 9,
-                                  autoPlayCurve: Curves.fastOutSlowIn,
-                                  enableInfiniteScroll: true,
-                                  // autoPlayAnimationDuration: Duration(microseconds: 10),
-                                  viewportFraction: 1.0),
-                              items: snapshot.data!.docs.map((doc) {
-                                return GestureDetector(
-                                  onTap: () async {
-                                    if (await canLaunch(
-                                        '${doc['destinationUrl']}')) {
-                                      await launch(
-                                        doc['destinationUrl'],
-                                      );
-                                    } else {
-                                      throw 'Could not launch ${doc['destinationUrl']}';
-                                    }
-                                  },
-                                  child: Container(
-                                    //margin: EdgeInsets.symmetric(vertical: 7.h,horizontal: 6),
-                                    decoration: BoxDecoration(
-                                        //borderRadius: BorderRadius.circular(10),
-                                        color: Colors.white,
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              '${doc['imageUrl']}'),
-                                          fit: BoxFit.fill,
-                                        )),
-                                  ),
-                                );
-                              }).toList(),
+                      } else {
+                        //print(snapshot.data!.docs.toList()[0].id.toString());
+                        return Container(
+                          width: 100.w,
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: GridView(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              childAspectRatio: 1 / 1.5,
+                              crossAxisCount: 2,
+                              //crossAxisSpacing: 20,
+                              //mainAxisSpacing: 10
                             ),
+                            primary: false,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            children: snapshot.data!.docs.map((doc) {
+                              return Container(
+                                child: GridTile(
+                                  imageUrl: doc['bookCoverImageUrl'],
+                                  name: doc['bookName'],
+                                  writer: 'Morgan Housel',
+                                  id: doc.id.toString(),
+                                  mrp: doc['bookMrp'],
+                                  desc: doc['bookDescription'],
+                                  price: doc['bookPrice'],
+                                  collection: doc['bookCollectionName'],
+                                  bookPreviewUrl: doc['bookPreviewUrl'],
+                                  //bookID: doc['bookID'],
+                                ),
+                              );
+                            }).toList(),
                           ),
                         );
+                      }
                     },
                   ),
                 ),
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(10.sp)),
-              ),
-              Container(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: db.collection('BookCollection').snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.teal[300],
-                        ),
-                      );
-                    } else {
-                      //print(snapshot.data!.docs.toList()[0].id.toString());
-                      return Container(
-                        width: 100.w,
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: GridView(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 1 / 1.5,
-                            crossAxisCount: 2,
-                            //crossAxisSpacing: 20,
-                            //mainAxisSpacing: 10
-                          ),
-                          primary: false,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          children: snapshot.data!.docs.map((doc) {
-                            return Container(
-                              child: GridTile(
-                                imageUrl: doc['bookCoverImageUrl'],
-                                name: doc['bookName'],
-                                writer: 'Morgan Housel',
-                                id: doc.id.toString(),
-                                mrp: doc['bookMrp'],
-                                desc: doc['bookDescription'],
-                                price: doc['bookPrice'],
-                                collection: doc['bookCollectionName'],
-                                bookPreviewUrl: doc['bookPreviewUrl'],
-                                //bookID: doc['bookID'],
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
-              /*Container(
+                /*Container(
                     width: MediaQuery.of(context).size.width,
                     margin: EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
@@ -516,15 +516,16 @@ class _HomeState extends State<Home> {
                       },
                     ),
                   ),*/
-              SizedBox(
-                height: 0,
-              )
-            ],
+                SizedBox(
+                  height: 0,
+                )
+              ],
+            ),
           ),
         ),
-      ),
-      bottomNavigationBar: bottomNav(index: 0,)
-    );
+        bottomNavigationBar: bottomNav(
+          index: 0,
+        ));
   }
 }
 
