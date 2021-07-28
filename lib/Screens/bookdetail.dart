@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:epub_viewer/epub_viewer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,12 +40,12 @@ class DetailBook extends StatefulWidget {
 }
 
 class _DetailBookState extends State<DetailBook> {
-  
   final db = FirebaseFirestore.instance;
   AuthenticationHelper authenticationHelper = AuthenticationHelper();
   int index = 0;
 
   bool isLoggedIn = false;
+  bool isBookAdded = false;
 
   @override
   void initState() {
@@ -61,6 +62,7 @@ class _DetailBookState extends State<DetailBook> {
       }
     });
   }
+
   int count = 0;
   @override
   Widget build(BuildContext context) {
@@ -94,13 +96,14 @@ class _DetailBookState extends State<DetailBook> {
                 ),
               ),
               GestureDetector(
-                onTap: (){
-                  Share.share('Check out this amazing book only on Knowmemore. Download the app now.');
-                },
+                  onTap: () {
+                    Share.share(
+                        'Check out this amazing book only on Knowmemore. Download the app now.');
+                  },
                   child: Icon(
-                Icons.share,
-                color: Colors.black45,
-              )),
+                    Icons.share,
+                    color: Colors.black45,
+                  )),
             ],
           ),
         ),
@@ -197,29 +200,69 @@ class _DetailBookState extends State<DetailBook> {
                           ),
                         ],
                       ),
-                      GestureDetector(
-                        onTap: () async{
-                          if (isLoggedIn==false){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>OnBoard()));
-                          }else{
-                            var currentUser=FirebaseAuth.instance.currentUser;
-                            await FirebaseFirestore.instance.collection('Users').doc(currentUser!.uid).collection('Cart').add({
-                              'bookID':widget.bookID,
-                              'datetime':DateTime.now().toString(),
-                            });
-                          }
-                        },
-                        child: Container(
-                          width: 45,
-                          height: 45,
-                          decoration: BoxDecoration(
-                              color: Colors.teal[300], shape: BoxShape.circle),
-                          child: Icon(
-                            Icons.shopping_cart,
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
+                      isLoggedIn == true
+                          ? GestureDetector(
+                              onTap: () async {
+                                var currentUser =
+                                    FirebaseAuth.instance.currentUser;
+
+                                try {
+                                  await FirebaseFirestore.instance
+                                      .collection('Users')
+                                      .doc(currentUser!.uid)
+                                      .collection('Cart')
+                                      .doc(widget.bookID)
+                                      .set({
+                                    'bookID': widget.bookID,
+                                    'datetime': DateTime.now().toString(),
+                                  }).then((value) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text("Success"),
+                                            content: Text("Book added"),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text("OK"))
+                                            ],
+                                          );
+                                        });
+                                  });
+                                } catch (e) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text("Error"),
+                                          content: Text("Try after some time"),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text("OK"))
+                                          ],
+                                        );
+                                      });
+                                }
+                              },
+                              child: Container(
+                                width: 45,
+                                height: 45,
+                                decoration: BoxDecoration(
+                                    color: Colors.teal[300],
+                                    shape: BoxShape.circle),
+                                child: Icon(
+                                  Icons.shopping_cart,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          : TextButton(onPressed: () {}, child: Text("Login"))
                     ],
                   )),
               Container(
@@ -371,23 +414,41 @@ class _DetailBookState extends State<DetailBook> {
                     SizedBox(
                       width: 10,
                     ),
-                    Expanded(
-                      child: MaterialButton(
-                        color: Colors.orange[800],
-                        height: 40,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        onPressed: () {},
-                        child: Text(
-                          'Buy',
-                          style: GoogleFonts.prompt(
-                              textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w500)),
-                        ),
-                      ),
-                    )
+                    isLoggedIn == true
+                        ? Expanded(
+                            child: MaterialButton(
+                              color: Colors.orange[800],
+                              height: 40,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6)),
+                              onPressed: () {},
+                              child: Text(
+                                'Buy',
+                                style: GoogleFonts.prompt(
+                                    textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500)),
+                              ),
+                            ),
+                          )
+                        : Expanded(
+                            child: MaterialButton(
+                              color: Colors.orange[800],
+                              height: 40,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6)),
+                              onPressed: () {},
+                              child: Text(
+                                'Login',
+                                style: GoogleFonts.prompt(
+                                    textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500)),
+                              ),
+                            ),
+                          )
                   ],
                 ),
               ),

@@ -345,6 +345,8 @@ PODS:
   - Realm/Headers (5.5.1)
   - RealmSwift (5.5.1):
     - Realm (= 5.5.1)
+  - share (0.0.1):
+    - Flutter
   - shared_preferences (0.0.1):
     - Flutter
   - SSZipArchive (2.2.3)
@@ -362,6 +364,7 @@ DEPENDENCIES:
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
   - Flutter (from `Flutter`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
@@ -408,6 +411,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
+  share:
+    :path: ".symlinks/plugins/share/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
   url_launcher:
@@ -445,6 +450,7 @@ SPEC CHECKSUMS:
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   Realm: c2ffe0667f9c98c9ba65f608ba85684d39826145
   RealmSwift: 5a35c1c35c3e1925e6fcd092c881d5cc4a826bff
+  share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:growbymargin/Screens/home.dart';
 import 'package:growbymargin/Screens/signup.dart';
 import 'package:growbymargin/helper/authentication.dart';
 import 'package:sizer/sizer.dart';
