@@ -1,11 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:epub_viewer/epub_viewer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:growbymargin/Screens/onboard.dart';
+import 'package:share/share.dart';
+//import 'package:growbymargin/Screens/signin.dart';
+import 'package:growbymargin/helper/authentication.dart';
 import 'package:sizer/sizer.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+//import 'package:url_launcher/url_launcher.dart';
+//import 'package:webview_flutter/webview_flutter.dart';
 
 class DetailBook extends StatefulWidget {
   final String bookID,
@@ -34,9 +39,28 @@ class DetailBook extends StatefulWidget {
 }
 
 class _DetailBookState extends State<DetailBook> {
+  
   final db = FirebaseFirestore.instance;
-
+  AuthenticationHelper authenticationHelper = AuthenticationHelper();
   int index = 0;
+
+  bool isLoggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.authStateChanges().listen((event) {
+      if (event != null) {
+        setState(() {
+          isLoggedIn = true;
+        });
+      } else {
+        setState(() {
+          isLoggedIn = false;
+        });
+      }
+    });
+  }
   int count = 0;
   @override
   Widget build(BuildContext context) {
@@ -70,6 +94,9 @@ class _DetailBookState extends State<DetailBook> {
                 ),
               ),
               GestureDetector(
+                onTap: (){
+                  Share.share('Check out this amazing book only on Knowmemore. Download the app now.');
+                },
                   child: Icon(
                 Icons.share,
                 color: Colors.black45,
@@ -171,7 +198,17 @@ class _DetailBookState extends State<DetailBook> {
                         ],
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () async{
+                          if (isLoggedIn==false){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>OnBoard()));
+                          }else{
+                            var currentUser=FirebaseAuth.instance.currentUser;
+                            await FirebaseFirestore.instance.collection('Users').doc(currentUser!.uid).collection('Cart').add({
+                              'bookID':widget.bookID,
+                              'datetime':DateTime.now().toString(),
+                            });
+                          }
+                        },
                         child: Container(
                           width: 45,
                           height: 45,
