@@ -1,20 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:growbymargin/Screens/bookdetail.dart';
 import 'package:growbymargin/Screens/bottomNavBar.dart';
-import 'package:growbymargin/Screens/morebook.dart';
 import 'package:growbymargin/Screens/onboard.dart';
+import 'package:growbymargin/Screens/sidebar.dart';
 import 'package:growbymargin/helper/authentication.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:url_launcher/url_launcher.dart';
-//import 'package:percent_indicator/circular_percent_indicator.dart';
-//import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -48,27 +45,31 @@ class _HomeState extends State<Home> {
     //final List<String> id=List.generate(length, (index) => null)
     return Scaffold(
       backgroundColor: Colors.grey[50],
+      drawer: TheDrawer(),
       appBar: AppBar(
         elevation: 0.0,
-        leading: Container(
-          width: 56,
-          height: 56,
-          margin: EdgeInsets.only(top: 5, bottom: 5, left: 3.w),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(color: Colors.grey, offset: Offset(0.0, 0.1))
-              ]),
-          child: IconButton(
-              onPressed: () {
-                authenticationHelper.signOut();
-              },
-              icon: Icon(
-                Icons.dashboard,
-                color: Colors.black54,
-                size: 8.w,
-              )),
+        leading: Builder(
+          builder: (context)=> Container(
+            width: 56,
+            height: 56,
+            margin: EdgeInsets.only(top: 5, bottom: 5, left: 3.w),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(color: Colors.grey, offset: Offset(0.0, 0.1))
+                ]),
+            child: IconButton(
+                onPressed: () {
+                  //authenticationHelper.signOut();
+                  Scaffold.of(context).openDrawer();
+                },
+                icon: Icon(
+                  Icons.dashboard,
+                  color: Colors.black54,
+                  size: 8.w,
+                )),
+          ),
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
