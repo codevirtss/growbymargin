@@ -49,16 +49,37 @@ class _CartState extends State<Cart> {
                         //padding: EdgeInsets.only(left: 10),
                         child: ListView(
                           shrinkWrap: true,
-                          //physics: ScrollPhysics(),
+                          physics: ScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           children: snapshot.data!.docs.map((doc) {
                             return Container(
-                              child: CartTile(name: 'Herbal Remedies and Cure All', image: 'https://source.unsplash.com/cIEb4UJ4ruk',price: '100 USD',mrp: '300 USD',)
+                              child: CartTile(name: '${doc['bookName']}', image: '${doc['imageUrl']}',price: '${doc['price']}',mrp: '${doc['mrp']}',)
                             );
                           }).toList(),
                         ),
                       );
                   },
+                ),
+              ),
+              Container(
+                width: 100.w,
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                child: Expanded(
+                  child: MaterialButton(
+                    onPressed: (){},
+                    color: Colors.orange[800],
+                    height: 45,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6)),
+                    child: Text(
+                      'Checkout',
+                      style: GoogleFonts.prompt(
+                          textStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500)),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -235,7 +256,7 @@ class CartTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [BoxShadow(color: Colors.grey,offset: Offset(0.0,0.1),spreadRadius: 0.01)],
                 image: DecorationImage(
-                  image: NetworkImage('https://source.unsplash.com/cIEb4UJ4ruk'),
+                  image: NetworkImage('$image'),
                   fit: BoxFit.cover,
                 )
               ),

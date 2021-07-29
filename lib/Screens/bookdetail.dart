@@ -214,6 +214,10 @@ class _DetailBookState extends State<DetailBook> {
                                       .doc(widget.bookID)
                                       .set({
                                     'bookID': widget.bookID,
+                                    'bookName':widget.bname,
+                                    'price':widget.price,
+                                    'mrp':widget.bMrp,
+                                    'imageUrl':widget.imgUrl,
                                     'datetime': DateTime.now().toString(),
                                   }).then((value) {
                                     showDialog(
@@ -356,6 +360,7 @@ class _DetailBookState extends State<DetailBook> {
                 ),
               ),
               Container(
+                width: 100.w,
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
                 color: Colors.white,
                 child: Text(
