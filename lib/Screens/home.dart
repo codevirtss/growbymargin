@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:growbymargin/Screens/bookdetail.dart';
 import 'package:growbymargin/Screens/bottomNavBar.dart';
+import 'package:growbymargin/Screens/cart.dart';
 import 'package:growbymargin/Screens/onboard.dart';
 import 'package:growbymargin/Screens/sidebar.dart';
 import 'package:growbymargin/helper/authentication.dart';
@@ -74,19 +75,24 @@ class _HomeState extends State<Home> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Container(
-                width: 45,
-                height: 45,
-                margin: EdgeInsets.only(top: 5, bottom: 5, right: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(color: Colors.grey, offset: Offset(0.0, 0.1))
-                  ],
-                ),
-                child: Icon(
-                  Icons.shopping_bag_outlined,
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Cart()));
+                },
+                child: Container(
+                  width: 45,
+                  height: 45,
+                  margin: EdgeInsets.only(top: 5, bottom: 5, right: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(color: Colors.grey, offset: Offset(0.0, 0.1))
+                    ],
+                  ),
+                  child: Icon(
+                    Icons.shopping_bag_outlined,
+                  ),
                 ),
               ),
               isLoggedIn == true

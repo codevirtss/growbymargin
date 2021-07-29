@@ -532,6 +532,7 @@ class _DetailBookState extends State<DetailBook> {
                   },
                 ),
               ),
+              
               SizedBox(
                 height: 0,
               )

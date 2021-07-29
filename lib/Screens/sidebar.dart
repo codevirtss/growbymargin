@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:growbymargin/Screens/cart.dart';
 import 'package:growbymargin/helper/authentication.dart';
 import 'package:sizer/sizer.dart';
 
@@ -45,7 +48,8 @@ class TheDrawerState extends State<TheDrawer>{
             Divider(color: Colors.black26,height: 0,),
             ListTile(
               onTap: (){
-                authenticationHelper.signOut();
+                Scaffold.of(context).openEndDrawer();
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Cart()));
               },
               title: Row(
                   children: <Widget>[
