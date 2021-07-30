@@ -529,7 +529,7 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
-        bottomNavigationBar: bottomNav(
+        bottomNavigationBar: BottomNav(
           index: 0,
         ));
   }
