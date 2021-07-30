@@ -138,11 +138,12 @@ class _HomeState extends State<Home> {
             child: Column(
               children: <Widget>[
                 Container(
-                  //   color: Colors.pink,
+                  //color: Colors.pink,
                   width: 100.w,
                   height: 20.h,
-                  margin: EdgeInsets.only(bottom: 8, top: 5),
+                  margin: EdgeInsets.only(bottom: 8, top: 5,left: 10,right: 10,),
                   child: Container(
+                    decoration:BoxDecoration(borderRadius: BorderRadius.circular(8),),
                     child: StreamBuilder<QuerySnapshot>(
                       stream: db.collection('Offers').snapshots(),
                       builder: (context, snapshot) {
@@ -155,46 +156,66 @@ class _HomeState extends State<Home> {
                         } else
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: 5.sp),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.sp)),
-                              width: 100.w,
-                              child: CarouselSlider(
-                                options: CarouselOptions(
-                                    height: 100.h,
-                                    enlargeCenterPage: false,
-                                    autoPlay: true,
-                                    aspectRatio: 16 / 9,
-                                    autoPlayCurve: Curves.fastOutSlowIn,
-                                    enableInfiniteScroll: true,
-                                    // autoPlayAnimationDuration: Duration(microseconds: 10),
-                                    viewportFraction: 1.0),
-                                items: snapshot.data!.docs.map((doc) {
-                                  return GestureDetector(
-                                    onTap: () async {
-                                      if (await canLaunch(
-                                          '${doc['destinationUrl']}')) {
-                                        await launch(
-                                          doc['destinationUrl'],
-                                        );
-                                      } else {
-                                        throw 'Could not launch ${doc['destinationUrl']}';
-                                      }
-                                    },
-                                    child: Container(
-                                      //margin: EdgeInsets.symmetric(vertical: 7.h,horizontal: 6),
-                                      decoration: BoxDecoration(
-                                          //borderRadius: BorderRadius.circular(10),
-                                          color: Colors.white,
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                '${doc['imageUrl']}'),
-                                            fit: BoxFit.fill,
-                                          )),
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
+                            child: Stack(
+                              children: [
+                                  Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.sp)),
+                                  width: 100.w,
+                                  child: CarouselSlider(
+                                    options: CarouselOptions(
+                                        height: 100.h,
+                                        enlargeCenterPage: false,
+                                        autoPlay: true,
+                                        aspectRatio: 16 / 9,
+                                        autoPlayCurve: Curves.fastOutSlowIn,
+                                        enableInfiniteScroll: true,
+                                        // autoPlayAnimationDuration: Duration(microseconds: 10),
+                                        viewportFraction: 1.0),
+                                    items: snapshot.data!.docs.map((doc) {
+                                      return GestureDetector(
+                                        onTap: () async {
+                                          if (doc['type']=='UrlOffer'){
+                                            if (await canLaunch(
+                                                '${doc['destinationUrl']}')) {
+                                              await launch(
+                                                doc['destinationUrl'],
+                                              );
+                                            } else {
+                                              throw 'Could not launch ${doc['destinationUrl']}';
+                                            }
+                                          }else if(doc['type']=='BookOffer'){
+                                            print('${doc['bookID']}');}
+                                        },
+                                        child: Container(
+                                          //margin: EdgeInsets.symmetric(vertical: 7.h,horizontal: 6),
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(8),
+                                              boxShadow: [BoxShadow(color: Colors.black,offset: Offset(0.0,0.1))],
+                                              color: Colors.white,
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    '${doc['imageUrl']}'),
+                                                fit: BoxFit.fill,
+                                              )),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Icon(Icons.arrow_back_ios,color: Colors.grey,),
+                                      Icon(Icons.arrow_forward_ios,color: Colors.grey,)
+                                    ],
+                                  ),
+                                ),
+                              ]
                             ),
                           );
                       },
