@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
+num sum=0;
+
 class Cart extends StatefulWidget {
   const Cart({ Key? key }) : super(key: key);
 
@@ -53,7 +55,7 @@ class _CartState extends State<Cart> {
                           scrollDirection: Axis.vertical,
                           children: snapshot.data!.docs.map((doc) {
                             return Container(
-                              child: CartTile(name: '${doc['bookName']}', image: '${doc['imageUrl']}',price: '${doc['price']}',mrp: '${doc['mrp']}',)
+                              child: CartTile(name: '${doc['bookName']}', image: '${doc['imageUrl']}',price: '${doc['price']}',mrp: '${doc['mrp']}',id: '${doc['bookID']}',)
                             );
                           }).toList(),
                         ),
@@ -64,22 +66,36 @@ class _CartState extends State<Cart> {
               Container(
                 width: 100.w,
                 margin: EdgeInsets.symmetric(horizontal: 10),
-                child: Expanded(
-                  child: MaterialButton(
-                    onPressed: (){},
-                    color: Colors.orange[800],
-                    height: 45,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)),
-                    child: Text(
-                      'Checkout',
-                      style: GoogleFonts.prompt(
-                          textStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500)),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                          '$sum',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500)),
+                        ),
                     ),
-                  ),
+                    Expanded(
+                      child: MaterialButton(
+                        onPressed: (){},
+                        color: Colors.orange[800],
+                        height: 45,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                        child: Text(
+                          'Checkout',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500)),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -91,11 +107,13 @@ class _CartState extends State<Cart> {
 }
 
 class CartTile extends StatelessWidget {
-  final String image,name,price,mrp;
-  CartTile({required this.name,required this.image, required this.price, required this.mrp});
+  final String image,name,price,mrp,id;
+  CartTile({required this.name,required this.image, required this.price, required this.mrp, required this.id});
 
   @override
   Widget build(BuildContext context) {
+    num p=int.parse(price.split(' ')[0]);
+    sum=sum+p;
     return Container(
       width: 100.w,
       height: 50.w,
@@ -224,7 +242,9 @@ class CartTile extends StatelessWidget {
                     //height: 40,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6)),
-                    onPressed: () {},
+                    onPressed: () {
+                      FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Cart').doc(id).delete();
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
