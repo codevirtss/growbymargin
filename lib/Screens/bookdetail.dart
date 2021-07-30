@@ -5,7 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:growbymargin/Screens/cart.dart';
 import 'package:growbymargin/Screens/onboard.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:share/share.dart';
 //import 'package:growbymargin/Screens/signin.dart';
 import 'package:growbymargin/helper/authentication.dart';
@@ -214,10 +216,10 @@ class _DetailBookState extends State<DetailBook> {
                                       .doc(widget.bookID)
                                       .set({
                                     'bookID': widget.bookID,
-                                    'bookName':widget.bname,
-                                    'price':widget.price,
-                                    'mrp':widget.bMrp,
-                                    'imageUrl':widget.imgUrl,
+                                    'bookName': widget.bname,
+                                    'price': widget.price,
+                                    'mrp': widget.bMrp,
+                                    'imageUrl': widget.imgUrl,
                                     'datetime': DateTime.now().toString(),
                                   }).then((value) {
                                     showDialog(
@@ -229,9 +231,18 @@ class _DetailBookState extends State<DetailBook> {
                                             actions: [
                                               TextButton(
                                                   onPressed: () {
-                                                    Navigator.pop(context);
+                                                    Navigator.push(
+                                                            context,
+                                                            PageTransition(
+                                                                child: Cart(),
+                                                                type:
+                                                                    PageTransitionType
+                                                                        .fade))
+                                                        .then((value) {
+                                                      Navigator.pop(context);
+                                                    });
                                                   },
-                                                  child: Text("OK"))
+                                                  child: Text("Go To Cart"))
                                             ],
                                           );
                                         });
@@ -537,7 +548,6 @@ class _DetailBookState extends State<DetailBook> {
                   },
                 ),
               ),
-              
               SizedBox(
                 height: 0,
               )

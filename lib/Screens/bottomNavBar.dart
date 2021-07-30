@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:growbymargin/Screens/home.dart';
 import 'package:growbymargin/Screens/morebook.dart';
 
-class bottomNav extends StatefulWidget {
+class BottomNav extends StatefulWidget {
   int index;
-  bottomNav({required this.index});
+  BottomNav({required this.index});
 
   @override
-  _bottomNavState createState() => _bottomNavState();
+  _BottomNavState createState() => _BottomNavState();
 }
 
-class _bottomNavState extends State<bottomNav> {
+class _BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     return Container(
