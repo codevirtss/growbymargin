@@ -40,7 +40,14 @@ class _OfferBookDetailsState extends State<OfferBookDetails> {
               author: "Raza Khan",
             );
           } else {
-            return new Text("error");
+            return Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              child: Center(
+                child: Image.asset("assets/Images/Error.gif"),
+              ),
+            );
           }
         });
   }
