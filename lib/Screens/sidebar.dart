@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:growbymargin/Screens/cart.dart';
+import 'package:growbymargin/Screens/profile.dart';
 import 'package:growbymargin/helper/authentication.dart';
 import 'package:sizer/sizer.dart';
 
@@ -36,6 +37,8 @@ class TheDrawerState extends State<TheDrawer>{
             ListTile(
               onTap: (){
                 //authenticationHelper.signOut();
+                Scaffold.of(context).openEndDrawer();
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfilePage()));
               },
               title: Row(
                   children: <Widget>[

@@ -67,20 +67,27 @@ class _CartState extends State<Cart> {
                                         ));
                                       }).toList()),
                                   Container(
+                                    decoration: BoxDecoration(
+                                      boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(0.0, 0.1))],
+                                      color: Colors.white,
+                                    ),
                                     width: 100.w,
                                     margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
+                                        EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                                        padding: EdgeInsets.only(left: 10,right: 5,top: 5,bottom: 5),
                                     child: Row(
                                       children: [
                                         Expanded(
-                                          child: Text(
-                                            '$sum',
-                                            style: GoogleFonts.prompt(
-                                                textStyle: TextStyle(
-                                                    color: Colors.black87,
-                                                    fontSize: 14.sp,
-                                                    fontWeight:
-                                                        FontWeight.w500)),
+                                          child: Container(
+                                            child: Text(
+                                              'Total: $sum',
+                                              style: GoogleFonts.prompt(
+                                                  textStyle: TextStyle(
+                                                      color: Colors.black87,
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                            ),
                                           ),
                                         ),
                                         Expanded(
@@ -267,17 +274,36 @@ class CartTile extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    IconButton(
-                        onPressed: () {
-                          FirebaseFirestore.instance
-                              .collection('Users')
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .collection('Cart')
-                              .doc(id)
-                              .delete();
-                        },
-                        icon: Icon(Icons.delete)),
-                    TextButton(onPressed: () {}, child: Text("Buy Now")),
+                    Container(
+                      width: 15.w,
+                      decoration: BoxDecoration(
+                        color: Colors.orange[800],
+                        borderRadius: BorderRadius.circular(8)
+                      ),
+                      child: IconButton(
+                          onPressed: () {
+                            FirebaseFirestore.instance
+                                .collection('Users')
+                                .doc(FirebaseAuth.instance.currentUser!.uid)
+                                .collection('Cart')
+                                .doc(id)
+                                .delete();
+                          },
+                          icon: Icon(Icons.delete,color: Colors.white,)),
+                    ),
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.only(left: 5,right: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.orange[800],
+                          borderRadius: BorderRadius.circular(8)
+                        ),
+                        child: TextButton(onPressed: () {}, child: Text("Buy Now",style: GoogleFonts.prompt(
+                          textStyle: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600))))
+                      )
+                    ),
                   ],
                 )
               ],
