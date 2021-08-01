@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
-num sum=0;
+num sum = 0;
 
 class Cart extends StatefulWidget {
-  const Cart({ Key? key }) : super(key: key);
+  const Cart({Key? key}) : super(key: key);
 
   @override
   _CartState createState() => _CartState();
@@ -17,8 +18,8 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
-    final db=FirebaseFirestore.instance;
-    var currentUser=FirebaseAuth.instance.currentUser;
+    final db = FirebaseFirestore.instance;
+    var currentUser = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -41,61 +42,74 @@ class _CartState extends State<Cart> {
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(
-                        child:
-                            Text('No Item in Cart'),
+                        child: Text('No Item in Cart'),
                       );
                     } else
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        //height: MediaQuery.of(context).size.height * 0.35,
-                        //padding: EdgeInsets.only(left: 10),
-                        child: ListView(
-                          shrinkWrap: true,
-                          physics: ScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          children: snapshot.data!.docs.map((doc) {
-                            return Container(
-                              child: CartTile(name: '${doc['bookName']}', image: '${doc['imageUrl']}',price: '${doc['price']}',mrp: '${doc['mrp']}',id: '${doc['bookID']}',)
-                            );
-                          }).toList(),
-                        ),
-                      );
+                      return snapshot.data!.docs.length != 0
+                          ? Container(
+                              width: MediaQuery.of(context).size.width,
+                              //height: MediaQuery.of(context).size.height * 0.35,
+                              //padding: EdgeInsets.only(left: 10),
+                              child: Column(
+                                children: [
+                                  ListView(
+                                      shrinkWrap: true,
+                                      physics: ScrollPhysics(),
+                                      scrollDirection: Axis.vertical,
+                                      children: snapshot.data!.docs.map((doc) {
+                                        return Container(
+                                            child: CartTile(
+                                          name: '${doc['bookName']}',
+                                          image: '${doc['imageUrl']}',
+                                          price: '${doc['price']}',
+                                          mrp: '${doc['mrp']}',
+                                          id: '${doc['bookID']}',
+                                        ));
+                                      }).toList()),
+                                  Container(
+                                    width: 100.w,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            '$sum',
+                                            style: GoogleFonts.prompt(
+                                                textStyle: TextStyle(
+                                                    color: Colors.black87,
+                                                    fontSize: 14.sp,
+                                                    fontWeight:
+                                                        FontWeight.w500)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: MaterialButton(
+                                            onPressed: () {},
+                                            color: Colors.orange[800],
+                                            height: 45,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(6)),
+                                            child: Text(
+                                              'Checkout',
+                                              style: GoogleFonts.prompt(
+                                                  textStyle: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14.sp,
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ))
+                          : Container(
+                              child: Image.asset("assets/Images/Email.gif"));
                   },
-                ),
-              ),
-              Container(
-                width: 100.w,
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                          '$sum',
-                          style: GoogleFonts.prompt(
-                              textStyle: TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500)),
-                        ),
-                    ),
-                    Expanded(
-                      child: MaterialButton(
-                        onPressed: (){},
-                        color: Colors.orange[800],
-                        height: 45,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        child: Text(
-                          'Checkout',
-                          style: GoogleFonts.prompt(
-                              textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500)),
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ],
@@ -107,24 +121,52 @@ class _CartState extends State<Cart> {
 }
 
 class CartTile extends StatelessWidget {
-  final String image,name,price,mrp,id;
-  CartTile({required this.name,required this.image, required this.price, required this.mrp, required this.id});
+  final String image, name, price, mrp, id;
+  CartTile(
+      {required this.name,
+      required this.image,
+      required this.price,
+      required this.mrp,
+      required this.id});
 
   @override
   Widget build(BuildContext context) {
-    num p=int.parse(price.split(' ')[0]);
-    sum=sum+p;
+    num p = int.parse(price.split(' ').first);
+    print("p = $p");
+    sum = sum + p;
     return Container(
       width: 100.w,
       height: 50.w,
-      margin: EdgeInsets.only(bottom: 5,top: 5,left: 10,right: 10),
+      margin: EdgeInsets.only(bottom: 5, top: 5, left: 10, right: 10),
       decoration: BoxDecoration(
-        boxShadow: [BoxShadow(color: Colors.grey,offset: Offset(0.0,0.1))],
+        boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(0.0, 0.1))],
         color: Colors.white,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          GestureDetector(
+            onTap: () {
+              print('Fetch Data and redirect to detail page');
+            },
+            child: Container(
+              margin: EdgeInsets.all(10),
+              width: 35.w,
+              height: 45.w,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey,
+                        offset: Offset(0.0, 0.1),
+                        spreadRadius: 0.01)
+                  ],
+                  image: DecorationImage(
+                    image: NetworkImage('$image'),
+                    fit: BoxFit.cover,
+                  )),
+            ),
+          ),
           Container(
             width: 50.w,
             height: 50.w,
@@ -133,11 +175,18 @@ class CartTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('$name',
-                  style: GoogleFonts.prompt(textStyle: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w600,)),
+                Text(
+                  '$name',
+                  style: GoogleFonts.prompt(
+                      textStyle: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  )),
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -163,7 +212,9 @@ class CartTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,30 +237,12 @@ class CartTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 3,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Pages: ',
-                      style: GoogleFonts.prompt(
-                          textStyle: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 11.sp,
-                              fontWeight: FontWeight.w600)),
-                    ),
-                    Text(
-                      '180',
-                      style: GoogleFonts.prompt(
-                          textStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 11.sp,
-                              fontWeight: FontWeight.w700)),
-                    ),
-                  ],
+                SizedBox(
+                  height: 3,
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,56 +265,24 @@ class CartTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 5,),
-                Container(
-                  padding: EdgeInsets.zero,
-                  height: 35,
-                  width: 120,
-                  child: MaterialButton(
-                    color: Colors.orange[800],
-                    //height: 40,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)),
-                    onPressed: () {
-                      FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Cart').doc(id).delete();
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(Icons.delete,color: Colors.white,size: 16.sp,),
-                        Text(
-                          'Remove',
-                          style: GoogleFonts.prompt(
-                              textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w500)),
-                        ),
-                      ],
-                    ),
-                  ),
+                Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          FirebaseFirestore.instance
+                              .collection('Users')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .collection('Cart')
+                              .doc(id)
+                              .delete();
+                        },
+                        icon: Icon(Icons.delete)),
+                    TextButton(onPressed: () {}, child: Text("Buy Now")),
+                  ],
                 )
               ],
             ),
           ),
-          GestureDetector(
-            onTap: (){
-              print('Fetch Data and redirect to detail page');
-            },
-            child: Container(
-              margin: EdgeInsets.all(10),
-              width: 35.w,
-              height: 45.w,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [BoxShadow(color: Colors.grey,offset: Offset(0.0,0.1),spreadRadius: 0.01)],
-                image: DecorationImage(
-                  image: NetworkImage('$image'),
-                  fit: BoxFit.cover,
-                )
-              ),
-            ),
-          )
         ],
       ),
     );

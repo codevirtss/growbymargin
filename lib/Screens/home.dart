@@ -3,10 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:growbymargin/Screens/blank_cart.dart';
 import 'package:growbymargin/Screens/bookdetail.dart';
 import 'package:growbymargin/Screens/bottomNavBar.dart';
 import 'package:growbymargin/Screens/cart.dart';
+import 'package:growbymargin/Screens/offerBookDetailed.dart';
 import 'package:growbymargin/Screens/onboard.dart';
 import 'package:growbymargin/Screens/sidebar.dart';
 import 'package:growbymargin/helper/authentication.dart';
@@ -77,8 +77,9 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               GestureDetector(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Cart()));
+                onTap: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => Cart()));
                 },
                 child: Container(
                   width: 45,
@@ -141,9 +142,16 @@ class _HomeState extends State<Home> {
                   //color: Colors.pink,
                   width: 100.w,
                   height: 20.h,
-                  margin: EdgeInsets.only(bottom: 8, top: 5,left: 10,right: 10,),
+                  margin: EdgeInsets.only(
+                    bottom: 8,
+                    top: 5,
+                    left: 10,
+                    right: 10,
+                  ),
                   child: Container(
-                    decoration:BoxDecoration(borderRadius: BorderRadius.circular(8),),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     child: StreamBuilder<QuerySnapshot>(
                       stream: db.collection('Offers').snapshots(),
                       builder: (context, snapshot) {
@@ -156,67 +164,83 @@ class _HomeState extends State<Home> {
                         } else
                           return Padding(
                             padding: EdgeInsets.symmetric(horizontal: 5.sp),
-                            child: Stack(
-                              children: [
-                                  Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.sp)),
-                                  width: 100.w,
-                                  child: CarouselSlider(
-                                    options: CarouselOptions(
-                                        height: 100.h,
-                                        enlargeCenterPage: false,
-                                        autoPlay: true,
-                                        aspectRatio: 16 / 9,
-                                        autoPlayCurve: Curves.fastOutSlowIn,
-                                        enableInfiniteScroll: true,
-                                        // autoPlayAnimationDuration: Duration(microseconds: 10),
-                                        viewportFraction: 1.0),
-                                    items: snapshot.data!.docs.map((doc) {
-                                      return GestureDetector(
-                                        onTap: () async {
-                                          if (doc['type']=='UrlOffer'){
-                                            if (await canLaunch(
-                                                '${doc['destinationUrl']}')) {
-                                              await launch(
-                                                doc['destinationUrl'],
-                                              );
-                                            } else {
-                                              throw 'Could not launch ${doc['destinationUrl']}';
-                                            }
-                                          }else if(doc['type']=='BookOffer'){
-                                            print('${doc['bookID']}');}
-                                        },
-                                        child: Container(
-                                          //margin: EdgeInsets.symmetric(vertical: 7.h,horizontal: 6),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              boxShadow: [BoxShadow(color: Colors.black,offset: Offset(0.0,0.1))],
-                                              color: Colors.white,
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                    '${doc['imageUrl']}'),
-                                                fit: BoxFit.fill,
-                                              )),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
+                            child: Stack(children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.sp)),
+                                width: 100.w,
+                                child: CarouselSlider(
+                                  options: CarouselOptions(
+                                      height: 100.h,
+                                      enlargeCenterPage: false,
+                                      autoPlay: true,
+                                      aspectRatio: 16 / 9,
+                                      autoPlayCurve: Curves.fastOutSlowIn,
+                                      enableInfiniteScroll: true,
+                                      // autoPlayAnimationDuration: Duration(microseconds: 10),
+                                      viewportFraction: 1.0),
+                                  items: snapshot.data!.docs.map((doc) {
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        if (doc['type'] == 'UrlOffer') {
+                                          if (await canLaunch(
+                                              '${doc['destinationUrl']}')) {
+                                            await launch(
+                                              doc['destinationUrl'],
+                                            );
+                                          }
+                                        } else if (doc['type'] == 'BookOffer') {
+                                          print("${doc["bookId"]}");
+                                          Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                  child: OfferBookDetails(
+                                                      bookId: doc["bookId"]),
+                                                  type: PageTransitionType
+                                                      .leftToRight));
+                                        }
+                                      },
+                                      child: Container(
+                                        //margin: EdgeInsets.symmetric(vertical: 7.h,horizontal: 6),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.black,
+                                                  offset: Offset(0.0, 0.1))
+                                            ],
+                                            color: Colors.white,
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  '${doc['imageUrl']}'),
+                                              fit: BoxFit.fill,
+                                            )),
+                                      ),
+                                    );
+                                  }).toList(),
                                 ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.only(left: 5),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Icon(Icons.arrow_back_ios,color: Colors.grey,),
-                                      Icon(Icons.arrow_forward_ios,color: Colors.grey,)
-                                    ],
-                                  ),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.only(left: 5),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.arrow_back_ios,
+                                      color: Colors.grey,
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Colors.grey,
+                                    )
+                                  ],
                                 ),
-                              ]
-                            ),
+                              ),
+                            ]),
                           );
                       },
                     ),
@@ -272,278 +296,6 @@ class _HomeState extends State<Home> {
                     },
                   ),
                 ),
-                /*Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              'Books on Ayurvedic Herbs',
-                              style: GoogleFonts.prompt(
-                                  textStyle: TextStyle(
-                                      color: Colors.black38,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600)),
-                            ),
-                          ],
-                        ),
-                        GestureDetector(
-                          child: Text(
-                            '...',
-                            style: GoogleFonts.prompt(
-                                textStyle: TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: 30,
-                                    letterSpacing: 2,
-                                    fontWeight: FontWeight.w900)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    //width: MediaQuery.of(context).size.width,
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: db.collection('BookCollection').where('bookCollectionName',isEqualTo: 'Ayurvedic Herbs').snapshots(),
-                      builder: (context,snapshot){
-                        if (!snapshot.hasData){
-                          return Center(
-                            child: CircularProgressIndicator(color:Colors.teal[300]),
-                          );
-                        }else
-                          return Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.33,
-                            padding: EdgeInsets.only(left: 10),
-                            child: ListView(
-                              shrinkWrap: true,
-                              //physics: ScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              children: snapshot.data!.docs.map((doc){
-                                return Container(
-                                  child: BookTile(
-                                        imageUrl: doc['bookCoverImageUrl'],
-                                        name: doc['bookName'],
-                                        writer: 'Morgan Housel',
-                                      ),
-                                );
-                              }).toList(),
-                            ),
-                          );
-                      },
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              'Books on Herbal Products',
-                              style: GoogleFonts.prompt(
-                                  textStyle: TextStyle(
-                                      color: Colors.black38,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600)),
-                            ),
-                          ],
-                        ),
-                        GestureDetector(
-                          child: Text(
-                            '...',
-                            style: GoogleFonts.prompt(
-                                textStyle: TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: 30,
-                                    letterSpacing: 2,
-                                    fontWeight: FontWeight.w900)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: db.collection('BookCollection').where('bookCollectionName',isEqualTo: 'Herbal Products').snapshots(),
-                      builder: (context,snapshot){
-                        if (!snapshot.hasData){
-                          return Center(
-                            child: CircularProgressIndicator(color:Colors.teal[300]),
-                          );
-                        }else
-                          return Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.33,
-                            padding: EdgeInsets.only(left: 10),
-                            child: ListView(
-                              shrinkWrap: true,
-                              //physics: ScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              children: snapshot.data!.docs.map((doc){
-                                return Container(
-                                  child: BookTile(
-                                        imageUrl: doc['bookCoverImageUrl'],
-                                        name: doc['bookName'],
-                                        writer: 'Morgan Housel',
-                                      ),
-                                );
-                              }).toList(),
-                            ),
-                          );
-                      },
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              'Books on Phytotherapy',
-                              style: GoogleFonts.prompt(
-                                  textStyle: TextStyle(
-                                      color: Colors.black38,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600)),
-                            ),
-                          ],
-                        ),
-                        GestureDetector(
-                          child: Text(
-                            '...',
-                            style: GoogleFonts.prompt(
-                                textStyle: TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: 30,
-                                    letterSpacing: 2,
-                                    fontWeight: FontWeight.w900)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: db.collection('BookCollection').where('bookCollectionName',isEqualTo: 'Phytotherapy').snapshots(),
-                      builder: (context,snapshot){
-                        if (!snapshot.hasData){
-                          return Center(
-                            child: CircularProgressIndicator(color:Colors.teal[300]),
-                          );
-                        }else
-                          return Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.33,
-                            padding: EdgeInsets.only(left: 10),
-                            child: ListView(
-                              shrinkWrap: true,
-                              //physics: ScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              children: snapshot.data!.docs.map((doc){
-                                return Container(
-                                  child: BookTile(
-                                        imageUrl: doc['bookCoverImageUrl'],
-                                        name: doc['bookName'],
-                                        writer: 'Morgan Housel',
-                                      ),
-                                );
-                              }).toList(),
-                            ),
-                          );
-                      },
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              'Books on Homeopathy',
-                              style: GoogleFonts.prompt(
-                                  textStyle: TextStyle(
-                                      color: Colors.black38,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600)),
-                            ),
-                          ],
-                        ),
-                        GestureDetector(
-                          child: Text(
-                            '...',
-                            style: GoogleFonts.prompt(
-                                textStyle: TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: 30,
-                                    letterSpacing: 2,
-                                    fontWeight: FontWeight.w900)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: db.collection('BookCollection').where('bookCollectionName',isEqualTo: 'Homeopathy').snapshots(),
-                      builder: (context,snapshot){
-                        if (!snapshot.hasData){
-                          return Center(
-                            child: CircularProgressIndicator(color:Colors.teal[300]),
-                          );
-                        }else
-                          return Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.33,
-                            padding: EdgeInsets.only(left: 10),
-                            child: ListView(
-                              shrinkWrap: true,
-                              //physics: ScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              children: snapshot.data!.docs.map((doc){
-                                return Container(
-                                  child: BookTile(
-                                        imageUrl: doc['bookCoverImageUrl'],
-                                        name: doc['bookName'],
-                                        writer: 'Morgan Housel',
-                                      ),
-                                );
-                              }).toList(),
-                            ),
-                          );
-                      },
-                    ),
-                  ),*/
                 SizedBox(
                   height: 0,
                 )
@@ -556,59 +308,6 @@ class _HomeState extends State<Home> {
         ));
   }
 }
-
-/*class BookTile extends StatelessWidget {
-  final String name, imageUrl, writer;
-  BookTile({required this.imageUrl, required this.name, required this.writer});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.30,
-        width: MediaQuery.of(context).size.width * 0.38,
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.fromLTRB(10, 10, 5, 10),
-              height: MediaQuery.of(context).size.height * 0.25,
-              width: MediaQuery.of(context).size.width * 0.35,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  image: DecorationImage(
-                      image: NetworkImage(imageUrl), fit: BoxFit.cover)),
-            ),
-            Container(
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: Text(
-                  'By $writer',
-                  style: GoogleFonts.prompt(
-                      textStyle: TextStyle(
-                          color: Colors.black38,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600)),
-                  overflow: TextOverflow.ellipsis,
-                )),
-            Container(
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Text(
-                  '$name',
-                  style: GoogleFonts.prompt(
-                      textStyle: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600)),
-                  overflow: TextOverflow.ellipsis,
-                )),
-          ],
-        ),
-      ),
-    );
-  }
-}*/
 
 class GridTile extends StatelessWidget {
   final String name,
