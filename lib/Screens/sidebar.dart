@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:growbymargin/Screens/cart.dart';
 import 'package:growbymargin/Screens/profile.dart';
+import 'package:growbymargin/Screens/purchase.dart';
 import 'package:growbymargin/helper/authentication.dart';
 import 'package:sizer/sizer.dart';
 
@@ -59,6 +60,21 @@ class TheDrawerState extends State<TheDrawer>{
                     Icon(Icons.shopping_cart_outlined,size: 16.sp,),
                     SizedBox(width: 10,),
                     Text('Cart',style: GoogleFonts.prompt(textStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 13.sp)),)
+                  ]
+              ),
+            ),
+            Divider(color: Colors.black26,height: 0,),
+            ListTile(
+              onTap: (){
+                //authenticationHelper.signOut();
+                Scaffold.of(context).openEndDrawer();
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Purchase()));
+              },
+              title: Row(
+                  children: <Widget>[
+                    Icon(Icons.library_books,size: 16.sp,),
+                    SizedBox(width: 10,),
+                    Text('Purchases',style: GoogleFonts.prompt(textStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 13.sp)),)
                   ]
               ),
             ),

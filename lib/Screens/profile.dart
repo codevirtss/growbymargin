@@ -90,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           SizedBox(height: 70,),
                                           Container(
                                             margin: EdgeInsets.symmetric(horizontal: 4),
-                                            padding: EdgeInsets.only(top: 60,bottom: 10,left: 10,right: 10),
+                                            padding: EdgeInsets.only(top: 60,bottom: 10,left: 20,right: 20),
                                             decoration: BoxDecoration(
                                               color: Colors.teal[300],
                                               borderRadius: BorderRadius.only(topLeft: Radius.circular(50),topRight: Radius.circular(50))
@@ -99,235 +99,250 @@ class _ProfilePageState extends State<ProfilePage> {
                                             height: 55.h,
                                             child: ListView(
                                               children: [
-                                                ListTile(
-                                                  onTap: (){},
-                                                  tileColor: Colors.white,
-                                                  horizontalTitleGap: 0,
-                                                  leading: Container(
-                                                    width: 15.w,
-                                                    height: 15.w,
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
-                                                      color: Colors.white,
-                                                    ),
-                                                    child: Container(
+                                                Container(
+                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.white),
+                                                  //margin: EdgeInsets.symmetric(horizontal: 10),
+                                                  child: ListTile(
+                                                    onTap: (){},
+                                                    tileColor: Colors.white,
+                                                    horizontalTitleGap: 0,
+                                                    leading: Container(
+                                                      width: 15.w,
+                                                      height: 15.w,
+                                                      padding: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
                                                       decoration: BoxDecoration(
-                                                        color: Colors.orange[800],
-                                                        shape: BoxShape.circle,
+                                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
+                                                        //color: Colors.white,
                                                       ),
-                                                      child: Icon(Icons.lock,color: Colors.white,),
-                                                    ),
-                                                  ),
-                                                  title: Container(
-                                                    alignment: Alignment.centerLeft,
-                                                    width: 50.w,
-                                                    height: 15.w,
-                                                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
-                                                    color: Colors.white,
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text('Privacy',
-                                                          style: GoogleFonts.prompt(
-                                                            textStyle: TextStyle(
-                                                                color: Colors.black87,
-                                                                fontSize: 14.sp,
-                                                                fontWeight: FontWeight.w600)),
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.orange[800],
+                                                          shape: BoxShape.circle,
                                                         ),
-                                                        Text('Private differs among cultures.',
-                                                          style: GoogleFonts.prompt(
-                                                            textStyle: TextStyle(
-                                                                color: Colors.black38,
-                                                                fontSize: 9.sp,
-                                                                fontWeight: FontWeight.w400)),
-                                                        ),
-                                                      ],
+                                                        child: Icon(Icons.lock,color: Colors.white,),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  trailing: Container(
-                                                    width: 15.w,
-                                                    height: 15.w,
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
-                                                      color: Colors.white,
+                                                    title: Container(
+                                                      alignment: Alignment.centerLeft,
+                                                      width: 50.w,
+                                                      height: 15.w,
+                                                      padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+                                                      //color: Colors.white,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Text('Privacy',
+                                                            style: GoogleFonts.prompt(
+                                                              textStyle: TextStyle(
+                                                                  color: Colors.black87,
+                                                                  fontSize: 14.sp,
+                                                                  fontWeight: FontWeight.w600)),
+                                                          ),
+                                                          Text('Private differs among cultures.',
+                                                            overflow: TextOverflow.ellipsis,
+                                                            style: GoogleFonts.prompt(
+                                                              textStyle: TextStyle(
+                                                                  color: Colors.black38,
+                                                                  fontSize: 9.sp,
+                                                                  fontWeight: FontWeight.w400)),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                    child: Icon(Icons.arrow_forward_ios,color: Colors.black38,),
+                                                    trailing: Container(
+                                                      width: 15.w,
+                                                      height: 15.w,
+                                                      padding: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
+                                                        //color: Colors.white,
+                                                      ),
+                                                      child: Icon(Icons.arrow_forward_ios,color: Colors.black38,),
+                                                    ),
                                                   ),
                                                 ),
                                                 SizedBox(height: 15,),
-                                                ListTile(
-                                                  onTap: (){},
-                                                  tileColor: Colors.white,
-                                                  horizontalTitleGap: 0,
-                                                  leading: Container(
-                                                    width: 15.w,
-                                                    height: 15.w,
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
-                                                      color: Colors.white,
-                                                    ),
-                                                    child: Container(
+                                                Container(
+                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.white),                                                 
+                                                  child: ListTile(
+                                                    onTap: (){},
+                                                    tileColor: Colors.white,
+                                                    horizontalTitleGap: 0,
+                                                    leading: Container(
+                                                      width: 15.w,
+                                                      height: 15.w,
+                                                      padding: EdgeInsets.all(5),
                                                       decoration: BoxDecoration(
-                                                        color: Colors.orange[800],
-                                                        shape: BoxShape.circle,
+                                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
+                                                        color: Colors.white,
                                                       ),
-                                                      child: Icon(Icons.phone,color: Colors.white,),
-                                                    ),
-                                                  ),
-                                                  title: Container(
-                                                    alignment: Alignment.centerLeft,
-                                                    width: 50.w,
-                                                    height: 15.w,
-                                                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
-                                                    color: Colors.white,
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text('Mobile',
-                                                          style: GoogleFonts.prompt(
-                                                            textStyle: TextStyle(
-                                                                color: Colors.black87,
-                                                                fontSize: 14.sp,
-                                                                fontWeight: FontWeight.w600)),
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.orange[800],
+                                                          shape: BoxShape.circle,
                                                         ),
-                                                        Text('9851574008',
-                                                          style: GoogleFonts.prompt(
-                                                            textStyle: TextStyle(
-                                                                color: Colors.black38,
-                                                                fontSize: 10.sp,
-                                                                fontWeight: FontWeight.w400)),
-                                                        ),
-                                                      ],
+                                                        child: Icon(Icons.phone,color: Colors.white,),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  trailing: Container(
-                                                    width: 15.w,
-                                                    height: 15.w,
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
+                                                    title: Container(
+                                                      alignment: Alignment.centerLeft,
+                                                      width: 50.w,
+                                                      height: 15.w,
+                                                      padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
                                                       color: Colors.white,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Text('Mobile',
+                                                            style: GoogleFonts.prompt(
+                                                              textStyle: TextStyle(
+                                                                  color: Colors.black87,
+                                                                  fontSize: 14.sp,
+                                                                  fontWeight: FontWeight.w600)),
+                                                          ),
+                                                          Text('9851574008',
+                                                            style: GoogleFonts.prompt(
+                                                              textStyle: TextStyle(
+                                                                  color: Colors.black38,
+                                                                  fontSize: 10.sp,
+                                                                  fontWeight: FontWeight.w400)),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                    child: Icon(Icons.arrow_forward_ios,color: Colors.black38,),
+                                                    trailing: Container(
+                                                      width: 15.w,
+                                                      height: 15.w,
+                                                      padding: EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
+                                                        color: Colors.white,
+                                                      ),
+                                                      child: Icon(Icons.arrow_forward_ios,color: Colors.black38,),
+                                                    ),
                                                   ),
                                                 ),
                                                 SizedBox(height: 15,),
-                                                ListTile(
-                                                  onTap: (){},
-                                                  tileColor: Colors.white,
-                                                  horizontalTitleGap: 0,
-                                                  leading: Container(
-                                                    width: 15.w,
-                                                    height: 15.w,
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
-                                                      color: Colors.white,
-                                                    ),
-                                                    child: Container(
+                                                Container(
+                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.white),
+                                                  child: ListTile(
+                                                    onTap: (){},
+                                                    tileColor: Colors.white,
+                                                    horizontalTitleGap: 0,
+                                                    leading: Container(
+                                                      width: 15.w,
+                                                      height: 15.w,
+                                                      padding: EdgeInsets.all(5),
                                                       decoration: BoxDecoration(
-                                                        color: Colors.orange[800],
-                                                        shape: BoxShape.circle,
+                                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
+                                                        color: Colors.white,
                                                       ),
-                                                      child: Icon(Icons.dashboard,color: Colors.white,),
-                                                    ),
-                                                  ),
-                                                  title: Container(
-                                                    alignment: Alignment.centerLeft,
-                                                    width: 50.w,
-                                                    height: 15.w,
-                                                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
-                                                    color: Colors.white,
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text('General',
-                                                          style: GoogleFonts.prompt(
-                                                            textStyle: TextStyle(
-                                                                color: Colors.black87,
-                                                                fontSize: 14.sp,
-                                                                fontWeight: FontWeight.w600)),
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.orange[800],
+                                                          shape: BoxShape.circle,
                                                         ),
-                                                        Text('The generic title for all grades.',
-                                                          style: GoogleFonts.prompt(
-                                                            textStyle: TextStyle(
-                                                                color: Colors.black38,
-                                                                fontSize: 9.sp,
-                                                                fontWeight: FontWeight.w400)),
-                                                        ),
-                                                      ],
+                                                        child: Icon(Icons.dashboard,color: Colors.white,),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  trailing: Container(
-                                                    width: 15.w,
-                                                    height: 15.w,
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
+                                                    title: Container(
+                                                      alignment: Alignment.centerLeft,
+                                                      width: 50.w,
+                                                      height: 15.w,
+                                                      padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
                                                       color: Colors.white,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Text('General',
+                                                            style: GoogleFonts.prompt(
+                                                              textStyle: TextStyle(
+                                                                  color: Colors.black87,
+                                                                  fontSize: 14.sp,
+                                                                  fontWeight: FontWeight.w600)),
+                                                          ),
+                                                          Text('The generic title for all grades.',
+                                                            overflow: TextOverflow.ellipsis,
+                                                            style: GoogleFonts.prompt(
+                                                              textStyle: TextStyle(
+                                                                  color: Colors.black38,
+                                                                  fontSize: 9.sp,
+                                                                  fontWeight: FontWeight.w400)),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                    child: Icon(Icons.arrow_forward_ios,color: Colors.black38,),
+                                                    trailing: Container(
+                                                      width: 15.w,
+                                                      height: 15.w,
+                                                      padding: EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
+                                                        color: Colors.white,
+                                                      ),
+                                                      child: Icon(Icons.arrow_forward_ios,color: Colors.black38,),
+                                                    ),
                                                   ),
                                                 ),
                                                 SizedBox(height: 15,),
-                                                ListTile(
-                                                  onTap: (){},
-                                                  tileColor: Colors.white,
-                                                  horizontalTitleGap: 0,
-                                                  leading: Container(
-                                                    width: 15.w,
-                                                    height: 15.w,
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
-                                                      color: Colors.white,
-                                                    ),
-                                                    child: Container(
+                                                Container(
+                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color: Colors.white),
+                                                  child: ListTile(
+                                                    onTap: (){},
+                                                    tileColor: Colors.white,
+                                                    horizontalTitleGap: 0,
+                                                    leading: Container(
+                                                      width: 15.w,
+                                                      height: 15.w,
+                                                      padding: EdgeInsets.all(5),
                                                       decoration: BoxDecoration(
-                                                        color: Colors.orange[800],
-                                                        shape: BoxShape.circle,
+                                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
+                                                        color: Colors.white,
                                                       ),
-                                                      child: Icon(Icons.settings,color: Colors.white,),
-                                                    ),
-                                                  ),
-                                                  title: Container(
-                                                    alignment: Alignment.centerLeft,
-                                                    width: 50.w,
-                                                    height: 15.w,
-                                                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
-                                                    color: Colors.white,
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text('Settings',
-                                                          style: GoogleFonts.prompt(
-                                                            textStyle: TextStyle(
-                                                                color: Colors.black87,
-                                                                fontSize: 14.sp,
-                                                                fontWeight: FontWeight.w600)),
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.orange[800],
+                                                          shape: BoxShape.circle,
                                                         ),
-                                                        Text('Where something is set.',
-                                                          style: GoogleFonts.prompt(
-                                                            textStyle: TextStyle(
-                                                                color: Colors.black38,
-                                                                fontSize: 9.sp,
-                                                                fontWeight: FontWeight.w400)),
-                                                        ),
-                                                      ],
+                                                        child: Icon(Icons.settings,color: Colors.white,),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  trailing: Container(
-                                                    width: 15.w,
-                                                    height: 15.w,
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
+                                                    title: Container(
+                                                      alignment: Alignment.centerLeft,
+                                                      width: 50.w,
+                                                      height: 15.w,
+                                                      padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
                                                       color: Colors.white,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Text('Settings',
+                                                            style: GoogleFonts.prompt(
+                                                              textStyle: TextStyle(
+                                                                  color: Colors.black87,
+                                                                  fontSize: 14.sp,
+                                                                  fontWeight: FontWeight.w600)),
+                                                          ),
+                                                          Text('Where something is set.',
+                                                            style: GoogleFonts.prompt(
+                                                              textStyle: TextStyle(
+                                                                  color: Colors.black38,
+                                                                  fontSize: 9.sp,
+                                                                  fontWeight: FontWeight.w400)),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                    child: Icon(Icons.arrow_forward_ios,color: Colors.black38,),
+                                                    trailing: Container(
+                                                      width: 15.w,
+                                                      height: 15.w,
+                                                      padding: EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
+                                                        color: Colors.white,
+                                                      ),
+                                                      child: Icon(Icons.arrow_forward_ios,color: Colors.black38,),
+                                                    ),
                                                   ),
                                                 ),
                                               ],

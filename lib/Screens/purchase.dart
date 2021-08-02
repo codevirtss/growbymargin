@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+//import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,14 +8,14 @@ import 'package:sizer/sizer.dart';
 
 num sum = 0;
 
-class Cart extends StatefulWidget {
-  const Cart({Key? key}) : super(key: key);
+class Purchase extends StatefulWidget {
+  const Purchase({Key? key}) : super(key: key);
 
   @override
-  _CartState createState() => _CartState();
+  _PurchaseState createState() => _PurchaseState();
 }
 
-class _CartState extends State<Cart> {
+class _PurchaseState extends State<Purchase> {
   @override
   Widget build(BuildContext context) {
     final db = FirebaseFirestore.instance;
@@ -58,7 +58,7 @@ class _CartState extends State<Cart> {
                                       scrollDirection: Axis.vertical,
                                       children: snapshot.data!.docs.map((doc) {
                                         return Container(
-                                            child: CartTile(
+                                            child: BookTile(
                                           name: '${doc['bookName']}',
                                           image: '${doc['imageUrl']}',
                                           price: '${doc['price']}',
@@ -127,9 +127,9 @@ class _CartState extends State<Cart> {
   }
 }
 
-class CartTile extends StatelessWidget {
+class BookTile extends StatelessWidget {
   final String image, name, price, mrp, id;
-  CartTile(
+  BookTile(
       {required this.name,
       required this.image,
       required this.price,
@@ -272,33 +272,18 @@ class CartTile extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 12,),
                 Row(
                   children: [
-                    Container(
-                      width: 15.w,
-                      decoration: BoxDecoration(
-                        color: Colors.orange[800],
-                        borderRadius: BorderRadius.circular(8)
-                      ),
-                      child: IconButton(
-                          onPressed: () {
-                            FirebaseFirestore.instance
-                                .collection('Users')
-                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .collection('Cart')
-                                .doc(id)
-                                .delete();
-                          },
-                          icon: Icon(Icons.delete,color: Colors.white,)),
-                    ),
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.only(left: 5,right: 5),
+                        //margin: EdgeInsets.only(left: 5,right: 5),
+                        height: 11.w,
                         decoration: BoxDecoration(
                           color: Colors.orange[800],
                           borderRadius: BorderRadius.circular(8)
                         ),
-                        child: TextButton(onPressed: () {}, child: Text("Buy Now",style: GoogleFonts.prompt(
+                        child: TextButton(onPressed: () {}, child: Text("Read",style: GoogleFonts.prompt(
                           textStyle: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600))))
