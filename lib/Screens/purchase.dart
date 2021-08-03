@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:growbymargin/Screens/feedback_form.dart';
+import 'package:growbymargin/Utils/GlobalVariables.dart';
 import 'package:sizer/sizer.dart';
 
 num sum = 0;
@@ -20,7 +21,7 @@ class _PurchaseState extends State<Purchase> {
   @override
   Widget build(BuildContext context) {
     final db = FirebaseFirestore.instance;
-    var currentUser = FirebaseAuth.instance.currentUser;
+    User? currentUser = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -37,7 +38,7 @@ class _PurchaseState extends State<Purchase> {
                 child: StreamBuilder<QuerySnapshot>(
                   stream: db
                       .collection('Users')
-                      .doc(currentUser!.uid)
+                      .doc(currentUser?.uid)
                       .collection('Cart')
                       .snapshots(),
                   builder: (context, snapshot) {
@@ -49,8 +50,6 @@ class _PurchaseState extends State<Purchase> {
                       return snapshot.data!.docs.length != 0
                           ? Container(
                               width: MediaQuery.of(context).size.width,
-                              //height: MediaQuery.of(context).size.height * 0.35,
-                              //padding: EdgeInsets.only(left: 10),
                               child: Column(
                                 children: [
                                   ListView(
@@ -273,27 +272,32 @@ class BookTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 12,),
+                SizedBox(
+                  height: 12,
+                ),
                 Row(
                   children: [
                     Expanded(
-                      child: Container(
-                        //margin: EdgeInsets.only(left: 5,right: 5),
-                        height: 11.w,
-                        decoration: BoxDecoration(
-                          color: Colors.orange[800],
-                          borderRadius: BorderRadius.circular(8)
-                        ),
-                        child: TextButton(
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>FeedbackForm(bookID: id,)));
-                          }, 
-                          child: Text("Read",style: GoogleFonts.prompt(
-                            textStyle: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600))))
-                      )
-                    ),
+                        child: Container(
+                            //margin: EdgeInsets.only(left: 5,right: 5),
+                            height: 11.w,
+                            decoration: BoxDecoration(
+                                color: Colors.orange[800],
+                                borderRadius: BorderRadius.circular(8)),
+                            child: TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => FeedbackForm(
+                                                bookID: id,
+                                              )));
+                                },
+                                child: Text("Read",
+                                    style: GoogleFonts.prompt(
+                                        textStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600)))))),
                   ],
                 )
               ],
