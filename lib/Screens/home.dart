@@ -351,7 +351,7 @@ class GridTile extends StatelessWidget {
                     )));
       },
       child: Container(
-        height: 40.h,
+        height: 50.h,
         //color: Colors.pink,
         //  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         child: Column(

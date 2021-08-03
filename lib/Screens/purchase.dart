@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:growbymargin/Screens/feedback_form.dart';
 import 'package:sizer/sizer.dart';
 
 num sum = 0;
@@ -283,10 +284,14 @@ class BookTile extends StatelessWidget {
                           color: Colors.orange[800],
                           borderRadius: BorderRadius.circular(8)
                         ),
-                        child: TextButton(onPressed: () {}, child: Text("Read",style: GoogleFonts.prompt(
-                          textStyle: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600))))
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>FeedbackForm(bookID: id,)));
+                          }, 
+                          child: Text("Read",style: GoogleFonts.prompt(
+                            textStyle: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600))))
                       )
                     ),
                   ],
