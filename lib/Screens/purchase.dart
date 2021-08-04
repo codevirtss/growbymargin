@@ -277,6 +277,20 @@ class BookTile extends StatelessWidget {
                 ),
                 Row(
                   children: [
+                    Container(
+                      margin: EdgeInsets.only(right: 5),
+                      width: 11.w,
+                      height: 11.w,
+                      decoration: BoxDecoration(
+                        color: Colors.orange[800],
+                        borderRadius: BorderRadius.circular(8)
+                      ),
+                      child: IconButton(
+                          onPressed: () {
+                            Navigator.push(context,MaterialPageRoute(builder: (context) => FeedbackForm(bookID: id,)));
+                          },
+                          icon: Icon(Icons.feedback,color: Colors.white,)),
+                    ),
                     Expanded(
                         child: Container(
                             //margin: EdgeInsets.only(left: 5,right: 5),
@@ -286,18 +300,18 @@ class BookTile extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8)),
                             child: TextButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => FeedbackForm(
-                                                bookID: id,
-                                              )));
+                                  
                                 },
                                 child: Text("Read",
                                     style: GoogleFonts.prompt(
                                         textStyle: TextStyle(
                                             color: Colors.white,
-                                            fontWeight: FontWeight.w600)))))),
+                                            fontWeight: FontWeight.w600)
+                                        )
+                                      )
+                                  )
+                      )
+                    ),
                   ],
                 )
               ],

@@ -26,7 +26,7 @@ class _OnBoardState extends State<OnBoard> {
           Container(
             width: 100.w,
             height: 75.h,
-            margin: EdgeInsets.fromLTRB(7.w, 25.h, 7.w, 5.h),
+            margin: EdgeInsets.fromLTRB(7.w, 25.h, 7.w, 10.h),
             padding: EdgeInsets.all(2.w),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -35,19 +35,26 @@ class _OnBoardState extends State<OnBoard> {
             child: Column(
               children: <Widget>[
                 Container(
-                  width: 40.w,
-                  height: 40.w,
+                  width: 100.w,
+                  height: 60.w,
                   padding:EdgeInsets.all(2.w),
                   child: CircleAvatar(
                     child: Image.asset('assets/Images/reading.gif')
                   ),
                 ),
-                Center(
-                  child: Text('Knowmemore',
-                    style: GoogleFonts.kanit(textStyle: TextStyle(fontWeight: FontWeight.w700,fontStyle: FontStyle.italic,fontSize: 19.sp)),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  child: Text('Manage your team\'s projects',
+                    style: GoogleFonts.prompt(textStyle: TextStyle(fontWeight: FontWeight.w600,fontSize: 17.sp)),
                   ),
                 ),
-                Container(
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w,vertical: 1.w),
+                  child: Text('Project management and team work\'s made easy.',
+                    style: GoogleFonts.prompt(textStyle: TextStyle(fontWeight: FontWeight.w400,fontSize: 11.sp,color: Colors.black26)),
+                  ),
+                ),
+                /*Container(
                   margin: EdgeInsets.only(top: 5.h),
                   child: Column(
                     children: <Widget>[
@@ -79,11 +86,11 @@ class _OnBoardState extends State<OnBoard> {
                       ),
                     ],
                   ),
-                ),
+                ),*/
                 Container(
                   width: 100.h,
                   height: 6.h,
-                  margin: EdgeInsets.only(left: 8.w,right: 8.w,top: 12.h,bottom: 3.h),
+                  margin: EdgeInsets.only(left: 8.w,right: 8.w,top: 8.h,bottom: 3.h),
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.w)),
                   child: MaterialButton(
                     onPressed: (){
@@ -91,14 +98,14 @@ class _OnBoardState extends State<OnBoard> {
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInScreen()));
                     },
                     elevation: 0.0,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3.w)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
                     color: Color(0xff92E3A9),
-                    child: Text('Sign In',
+                    child: Text('Get Started',
                       style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16.sp,fontWeight: FontWeight.w500,color: Colors.white)),
                     ),
                   ),
                 ),
-                GestureDetector(
+                /*GestureDetector(
                   child: Text('Create an Account',
                     style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 11.sp,fontWeight: FontWeight.w500,color: Colors.black38,wordSpacing: 0.5.w,letterSpacing: 0.5.sp)),
                   ),
@@ -106,7 +113,7 @@ class _OnBoardState extends State<OnBoard> {
                     Navigator.pop(context);
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpScreen()));
                   },
-                )
+                )*/
               ],
             ),
           ),

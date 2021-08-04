@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -75,6 +73,32 @@ class TheDrawerState extends State<TheDrawer>{
                     Icon(Icons.library_books,size: 16.sp,),
                     SizedBox(width: 10,),
                     Text('Purchases',style: GoogleFonts.prompt(textStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 13.sp)),)
+                  ]
+              ),
+            ),
+            Divider(color: Colors.black26,height: 0,),
+            ListTile(
+              onTap: (){
+                //authenticationHelper.signOut();
+              },
+              title: Row(
+                  children: <Widget>[
+                    Icon(Icons.support_agent,size: 16.sp,),
+                    SizedBox(width: 10,),
+                    Text('Support',style: GoogleFonts.prompt(textStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 13.sp)),)
+                  ]
+              ),
+            ),
+            Divider(color: Colors.black26,height: 0,),
+            ListTile(
+              onTap: (){
+                //authenticationHelper.signOut();
+              },
+              title: Row(
+                  children: <Widget>[
+                    Icon(Icons.info_outline_rounded,size: 16.sp,),
+                    SizedBox(width: 10,),
+                    Text('About',style: GoogleFonts.prompt(textStyle: TextStyle(fontWeight: FontWeight.w500,fontSize: 13.sp)),)
                   ]
               ),
             ),

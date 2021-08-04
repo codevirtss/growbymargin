@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:growbymargin/Utils/GlobalVariables.dart';
@@ -226,6 +227,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
                             'bookID': widget.bookID,
                             'star': star.toString(),
                             'feedback': feedback.text,
+                            'uid':FirebaseAuth.instance.currentUser!.uid.toString(),
                             "username": GlobalVariables.userName,
                             "userEmail": GlobalVariables.userEmail,
                           }).whenComplete(() {
@@ -233,47 +235,60 @@ class _FeedbackFormState extends State<FeedbackForm> {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: Text(
-                                      'Success',
-                                      style: GoogleFonts.prompt(
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black54),
+                                    title: Center(
+                                      child: Text(
+                                        'Success',
+                                        style: GoogleFonts.prompt(
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black54),
+                                      ),
                                     ),
                                     content: Container(
                                       child: Column(
+                                        mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
                                           Container(
-                                            child: CircleAvatar(
-                                                child: Image.asset(
-                                                    'assets/Images/reading.gif')),
+                                            width: 80.w,
+                                            height: 40.h,
+                                            child: Image.asset(
+                                                'assets/Images/reading.gif',fit: BoxFit.cover,),
                                           ),
-                                          Text(
-                                            'Review Published Succesfully.',
-                                            style: GoogleFonts.prompt(
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black54),
+                                          Center(
+                                            child: Text(
+                                              'Review Published Succesfully.',
+                                              style: GoogleFonts.prompt(
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black54),
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
                                     actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                    context,
-                                                    PageTransition(
-                                                        child: FeedbackForm(
-                                                          bookID: widget.bookID,
-                                                        ),
-                                                        type: PageTransitionType
-                                                            .fade))
-                                                .then((value) {
-                                              Navigator.pop(context);
-                                            });
-                                          },
-                                          child: Text("Ok"))
+                                      Center(
+                                        child: TextButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                          child: FeedbackForm(
+                                                            bookID: widget.bookID,
+                                                          ),
+                                                          type: PageTransitionType
+                                                              .fade))
+                                                  .then((value) {
+                                                Navigator.pop(context);
+                                              });
+                                            },
+                                            child: Text("Ok",
+                                            style: GoogleFonts.prompt(
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black54),
+                                            )),
+                                      )
                                     ],
                                   );
                                 });

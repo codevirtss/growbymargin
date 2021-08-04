@@ -89,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ),
                                           SizedBox(height: 70,),
                                           Container(
-                                            margin: EdgeInsets.symmetric(horizontal: 4),
+                                            //margin: EdgeInsets.symmetric(horizontal: 4),
                                             padding: EdgeInsets.only(top: 60,bottom: 10,left: 20,right: 20),
                                             decoration: BoxDecoration(
                                               color: Colors.teal[300],
