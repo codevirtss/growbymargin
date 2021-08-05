@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:growbymargin/Screens/home.dart';
 import 'package:sizer/sizer.dart';
 
 num sum = 0;
@@ -21,6 +22,7 @@ class _CartState extends State<Cart> {
     final db = FirebaseFirestore.instance;
     var currentUser = FirebaseAuth.instance.currentUser;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
       ),
@@ -114,8 +116,39 @@ class _CartState extends State<Cart> {
                                   ),*/
                                 ],
                               ))
-                          : Container(
-                              child: Image.asset("assets/Images/Email.gif"));
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    height: 50.h,
+                                    child:
+                                        Image.asset("assets/Images/cart.gif")),
+                                Center(
+                                  child: MaterialButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Home()));
+                                    },
+                                    color: Colors.orange[800],
+                                    //height: 45,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(6)),
+                                    child: Text(
+                                      'Go to Shop',
+                                      style: GoogleFonts.prompt(
+                                          textStyle: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w500)),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
                   },
                 ),
               ),
@@ -277,9 +310,8 @@ class CartTile extends StatelessWidget {
                     Container(
                       width: 15.w,
                       decoration: BoxDecoration(
-                        color: Colors.orange[800],
-                        borderRadius: BorderRadius.circular(8)
-                      ),
+                          color: Colors.orange[800],
+                          borderRadius: BorderRadius.circular(8)),
                       child: IconButton(
                           onPressed: () {
                             FirebaseFirestore.instance
@@ -289,21 +321,24 @@ class CartTile extends StatelessWidget {
                                 .doc(id)
                                 .delete();
                           },
-                          icon: Icon(Icons.delete,color: Colors.white,)),
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          )),
                     ),
                     Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(left: 5,right: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.orange[800],
-                          borderRadius: BorderRadius.circular(8)
-                        ),
-                        child: TextButton(onPressed: () {}, child: Text("Buy Now",style: GoogleFonts.prompt(
-                          textStyle: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600))))
-                      )
-                    ),
+                        child: Container(
+                            margin: EdgeInsets.only(left: 5, right: 5),
+                            decoration: BoxDecoration(
+                                color: Colors.orange[800],
+                                borderRadius: BorderRadius.circular(8)),
+                            child: TextButton(
+                                onPressed: () {},
+                                child: Text("Buy Now",
+                                    style: GoogleFonts.prompt(
+                                        textStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600)))))),
                   ],
                 )
               ],

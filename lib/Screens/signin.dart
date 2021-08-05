@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:growbymargin/Screens/forgetPassword.dart';
 import 'package:growbymargin/Screens/signup.dart';
 import 'package:growbymargin/helper/authentication.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -31,7 +33,7 @@ class _SignInScreenState extends State<SignInScreen> {
             children: <Widget>[
               Container(
                 width: 75.w,
-                height: 75.w,
+                height: 35.h,
                 child: Image.asset(
                   'assets/Images/image2.png',
                   fit: BoxFit.cover,
@@ -107,7 +109,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           Icons.arrow_forward,
                           color: Colors.white,
                         ),
-                        backgroundColor: Color(0xff92E3A9),
+                        backgroundColor: Colors.orange[800],
                         shape: CircleBorder(),
                       ),
                     )
@@ -139,7 +141,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   Padding(
                     padding: EdgeInsets.only(left: 25.w, right: 10.w),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                child: ForgetPassword(),
+                                type: PageTransitionType.topToBottom));
+                      },
                       child: Text(
                         'Forget Password',
                         style: GoogleFonts.prompt(

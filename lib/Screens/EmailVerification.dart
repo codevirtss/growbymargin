@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -33,7 +32,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                 child: Home(), type: PageTransitionType.rightToLeftWithFade));
         timer.cancel();
       }
-    }); 
+    });
   }
 
   @override
@@ -55,18 +54,17 @@ class _EmailVerificationState extends State<EmailVerification> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                  Text(
+                    Text(
                       """Email Verifiction Link has been sent to you registerd Email-Id please verify!
                     """,
-                  style: TextStyle(fontSize: 20,
-                   color: constantColors.blackColor,
-                  ),
-                      
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: constantColors.blackColor,
+                      ),
                     ),
-                   Icon(
+                    Icon(
                       EvaIcons.alertCircleOutline,
                       size: 80,
-                      
                     )
                   ],
                 ),

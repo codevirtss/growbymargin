@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:growbymargin/Screens/feedback_form.dart';
+import 'package:growbymargin/Screens/home.dart';
 import 'package:growbymargin/Utils/GlobalVariables.dart';
 import 'package:sizer/sizer.dart';
 
@@ -23,6 +24,7 @@ class _PurchaseState extends State<Purchase> {
     final db = FirebaseFirestore.instance;
     User? currentUser = FirebaseAuth.instance.currentUser;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
       ),
@@ -114,8 +116,39 @@ class _PurchaseState extends State<Purchase> {
                                   ),*/
                                 ],
                               ))
-                          : Container(
-                              child: Image.asset("assets/Images/Email.gif"));
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    height: 50.h,
+                                    child:
+                                        Image.asset("assets/Images/cart.gif")),
+                                Center(
+                                  child: MaterialButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Home()));
+                                    },
+                                    color: Colors.orange[800],
+                                    //height: 45,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(6)),
+                                    child: Text(
+                                      'Go to Shop',
+                                      style: GoogleFonts.prompt(
+                                          textStyle: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w500)),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
                   },
                 ),
               ),
@@ -282,14 +315,21 @@ class BookTile extends StatelessWidget {
                       width: 11.w,
                       height: 11.w,
                       decoration: BoxDecoration(
-                        color: Colors.orange[800],
-                        borderRadius: BorderRadius.circular(8)
-                      ),
+                          color: Colors.orange[800],
+                          borderRadius: BorderRadius.circular(8)),
                       child: IconButton(
                           onPressed: () {
-                            Navigator.push(context,MaterialPageRoute(builder: (context) => FeedbackForm(bookID: id,)));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FeedbackForm(
+                                          bookID: id,
+                                        )));
                           },
-                          icon: Icon(Icons.feedback,color: Colors.white,)),
+                          icon: Icon(
+                            Icons.feedback,
+                            color: Colors.white,
+                          )),
                     ),
                     Expanded(
                         child: Container(
@@ -299,19 +339,12 @@ class BookTile extends StatelessWidget {
                                 color: Colors.orange[800],
                                 borderRadius: BorderRadius.circular(8)),
                             child: TextButton(
-                                onPressed: () {
-                                  
-                                },
+                                onPressed: () {},
                                 child: Text("Read",
                                     style: GoogleFonts.prompt(
                                         textStyle: TextStyle(
                                             color: Colors.white,
-                                            fontWeight: FontWeight.w600)
-                                        )
-                                      )
-                                  )
-                      )
-                    ),
+                                            fontWeight: FontWeight.w600)))))),
                   ],
                 )
               ],

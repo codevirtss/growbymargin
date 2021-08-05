@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:growbymargin/Screens/home.dart';
 import 'package:growbymargin/Utils/GlobalVariables.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
@@ -217,6 +218,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
                       height: 50,
                       onPressed: () async {
                         print(widget.bookID);
+
                         try {
                           await FirebaseFirestore.instance
                               .collection('BookCollection')
@@ -227,7 +229,8 @@ class _FeedbackFormState extends State<FeedbackForm> {
                             'bookID': widget.bookID,
                             'star': star.toString(),
                             'feedback': feedback.text,
-                            'uid':FirebaseAuth.instance.currentUser!.uid.toString(),
+                            'uid': FirebaseAuth.instance.currentUser!.uid
+                                .toString(),
                             "username": GlobalVariables.userName,
                             "userEmail": GlobalVariables.userEmail,
                           }).whenComplete(() {
@@ -252,7 +255,9 @@ class _FeedbackFormState extends State<FeedbackForm> {
                                             width: 80.w,
                                             height: 40.h,
                                             child: Image.asset(
-                                                'assets/Images/reading.gif',fit: BoxFit.cover,),
+                                              'assets/Images/reading.gif',
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                           Center(
                                             child: Text(
@@ -273,17 +278,17 @@ class _FeedbackFormState extends State<FeedbackForm> {
                                               Navigator.push(
                                                       context,
                                                       PageTransition(
-                                                          child: FeedbackForm(
-                                                            bookID: widget.bookID,
-                                                          ),
-                                                          type: PageTransitionType
-                                                              .fade))
+                                                          child: Home(),
+                                                          type:
+                                                              PageTransitionType
+                                                                  .fade))
                                                   .then((value) {
                                                 Navigator.pop(context);
                                               });
                                             },
-                                            child: Text("Ok",
-                                            style: GoogleFonts.prompt(
+                                            child: Text(
+                                              "Ok",
+                                              style: GoogleFonts.prompt(
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black54),
@@ -312,7 +317,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
                               });
                         }
                       },
-                      color: Colors.teal[200],
+                      color: Colors.orange[800],
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8)),
                       child: Text(

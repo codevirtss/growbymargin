@@ -28,19 +28,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
         scrollDirection: Axis.vertical,
         child: Container(
-          width: 100.w,
-          height: 100.h,
           color: Colors.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                 width: 75.w,
-                height: 75.w,
+                height: 35.h,
                 child: Image.asset(
                   'assets/Images/image2.png',
                   fit: BoxFit.cover,
@@ -87,7 +86,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(10.w, 15.w, 10.w, 18.w),
+                padding: EdgeInsets.fromLTRB(25.sp, 10.sp, 10.sp, 18.sp),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -115,7 +114,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ],
                     ),
                     Container(
-                      height: 16.w,
                       //padding: EdgeInsets.only(left: 36.w),
                       child: FloatingActionButton(
                         onPressed: () {
@@ -126,7 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Icons.arrow_forward,
                           color: Colors.white,
                         ),
-                        backgroundColor: Color(0xff92E3A9),
+                        backgroundColor: Colors.orange[800],
                         shape: CircleBorder(),
                       ),
                     )

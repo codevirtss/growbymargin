@@ -277,7 +277,15 @@ class _DetailBookState extends State<DetailBook> {
                                 ),
                               ),
                             )
-                          : TextButton(onPressed: () {}, child: Text("Login"))
+                          : TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        child: OnBoard(),
+                                        type: PageTransitionType.leftToRight));
+                              },
+                              child: Text("Login"))
                     ],
                   )),
               Container(
@@ -454,7 +462,13 @@ class _DetailBookState extends State<DetailBook> {
                               height: 40,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(6)),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        child: OnBoard(),
+                                        type: PageTransitionType.leftToRight));
+                              },
                               child: Text(
                                 'Login',
                                 style: GoogleFonts.prompt(
