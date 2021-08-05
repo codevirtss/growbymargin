@@ -6,6 +6,7 @@ import 'package:growbymargin/Screens/cart.dart';
 import 'package:growbymargin/Screens/onboard.dart';
 import 'package:growbymargin/Screens/profile.dart';
 import 'package:growbymargin/Screens/purchase.dart';
+import 'package:growbymargin/Screens/support.dart';
 import 'package:growbymargin/helper/authentication.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
@@ -137,6 +138,11 @@ class TheDrawerState extends State<TheDrawer> {
                   ListTile(
                     onTap: () {
                       //authenticationHelper.signOut();
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              child: SuppostTeam(),
+                              type: PageTransitionType.leftToRightWithFade));
                     },
                     title: Row(children: <Widget>[
                       Icon(
@@ -222,12 +228,12 @@ class TheDrawerState extends State<TheDrawer> {
                   Center(
                     child: MaterialButton(
                       onPressed: () {
-                         Navigator.push(
+                        Navigator.push(
                             context,
                             PageTransition(
                                 child: OnBoard(),
                                 type: PageTransitionType.leftToRight));
-                                              },
+                      },
                       color: Colors.orange[800],
                       //height: 45,
                       shape: RoundedRectangleBorder(
