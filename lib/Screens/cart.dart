@@ -127,7 +127,6 @@ class _CartState extends State<Cart> {
                                 Center(
                                   child: MaterialButton(
                                     onPressed: () {
-                                      Navigator.pop(context);
                                       Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(

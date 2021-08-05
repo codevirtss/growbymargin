@@ -28,11 +28,6 @@ class SuppostTeam extends StatelessWidget {
                 child: Column(
                   children: [
                     Image.asset("assets/Images/support.gif"),
-                    // Icon(
-                    //   Icons.support_agent,
-                    //   size: 60.sp,
-                    //   color: Color(0XFF92E3A9),
-                    // ),
                     Text(
                       "How Can we help \n            you?",
                       style: TextStyle(
