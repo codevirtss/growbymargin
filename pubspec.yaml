@@ -21,26 +21,29 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
+  carousel_slider: ^4.0.0
   cloud_firestore: ^2.4.0
   cupertino_icons: ^1.0.3
   device_preview: ^0.7.4
+  epub_viewer: ^0.2.2
   eva_icons_flutter: ^3.0.0
   firebase_auth: ^3.0.0
   firebase_core: ^1.4.0
   firebase_database: ^7.1.2
+  flutter:
+    sdk: flutter
+  flutter_advanced_drawer: ^1.2.3
   google_fonts: ^2.1.0
+  http: ^0.13.3
   page_transition: ^2.0.2
   percent_indicator: ^3.0.1
+  share: ^2.0.4
   sizer: ^2.0.13
   sliding_up_panel: ^2.0.0+1
-  carousel_slider: ^4.0.0
+  sn_progress_dialog: ^1.0.2
+  stripe_payment: ^1.1.4
   url_launcher: ^6.0.9
-  epub_viewer: ^0.2.2
   webview_flutter: ^2.0.10
-  share: ^2.0.4
-  flutter_advanced_drawer: ^1.2.3
 
 dev_dependencies:
   flutter_test:

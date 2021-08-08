@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:epub_viewer/epub_viewer.dart';
@@ -7,13 +9,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:growbymargin/Screens/cart.dart';
 import 'package:growbymargin/Screens/onboard.dart';
+import 'package:growbymargin/helper/payments.dart';
 import 'package:page_transition/page_transition.dart';
+
 import 'package:share/share.dart';
-//import 'package:growbymargin/Screens/signin.dart';
 import 'package:growbymargin/helper/authentication.dart';
 import 'package:sizer/sizer.dart';
-//import 'package:url_launcher/url_launcher.dart';
-//import 'package:webview_flutter/webview_flutter.dart';
 
 class DetailBook extends StatefulWidget {
   final String bookID,
@@ -63,6 +64,7 @@ class _DetailBookState extends State<DetailBook> {
         });
       }
     });
+    StripeService.init();
   }
 
   int count = 0;
@@ -445,7 +447,21 @@ class _DetailBookState extends State<DetailBook> {
                               height: 40,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(6)),
-                              onPressed: () {},
+                              onPressed: () async {
+                                var response = await StripeService.payWithCard(
+                                    amount: widget.price, currency: "USD");
+
+                                print("Payment Response: ${response.message}");
+
+                                Scaffold.of(context)
+                                    // ignore: deprecated_member_use
+                                    .showSnackBar(SnackBar(
+                                  content: Text(response.message!),
+                                  duration: Duration(
+                                      seconds:
+                                          response.success == true ? 3 : 4),
+                                ));
+                              },
                               child: Text(
                                 'Buy',
                                 style: GoogleFonts.prompt(
