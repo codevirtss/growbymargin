@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "316863838331",
-    "project_id": "growbymargin-2211c",
-    "storage_bucket": "growbymargin-2211c.appspot.com"
+    "project_number": "350567652566",
+    "project_id": "growapp-19c06",
+    "storage_bucket": "growapp-19c06.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:316863838331:android:e58df84a0e78b01af64ade",
+        "mobilesdk_app_id": "1:350567652566:android:97d137608fbc285d093d77",
         "android_client_info": {
-          "package_name": "com.growbymargin.app"
+          "package_name": "com.remedieslifetime.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "316863838331-e0vu47a6jc1lq1e4gebf45j3r26i3d0a.apps.googleusercontent.com",
+          "client_id": "350567652566-pn7asuuvr097d76b0qegenq6up6a09dh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBjpsmYmOH-fqarWDXWRD6SqFHr6FNusr0"
+          "current_key": "AIzaSyA1JNY3MozF2dCC5EcKH13Z8zk2u3fuYOw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "316863838331-e0vu47a6jc1lq1e4gebf45j3r26i3d0a.apps.googleusercontent.com",
+              "client_id": "350567652566-pn7asuuvr097d76b0qegenq6up6a09dh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

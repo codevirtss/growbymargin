@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>316863838331-r6k3b725tbl2a907thmcks33k05nug8p.apps.googleusercontent.com</string>
+	<string>350567652566-hna58hjpn6muaa5f9sqhc936ihfijake.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.316863838331-r6k3b725tbl2a907thmcks33k05nug8p</string>
+	<string>com.googleusercontent.apps.350567652566-hna58hjpn6muaa5f9sqhc936ihfijake</string>
 	<key>API_KEY</key>
-	<string>AIzaSyA8p9gAVvzT8H3IOT2MwBgA6yLscv1pW_c</string>
+	<string>AIzaSyDJZGVeUkzW9ODCW_UJCij_yLOBObs6go4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>316863838331</string>
+	<string>350567652566</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.growbymargin.app</string>
+	<string>com.remedieslifetime.app</string>
 	<key>PROJECT_ID</key>
-	<string>growbymargin-2211c</string>
+	<string>growapp-19c06</string>
 	<key>STORAGE_BUCKET</key>
-	<string>growbymargin-2211c.appspot.com</string>
+	<string>growapp-19c06.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:316863838331:ios:95bd61f819c7652ef64ade</string>
-	<key>DATABASE_URL</key>
-	<string>https://growbymargin-2211c-default-rtdb.firebaseio.com</string>
+	<string>1:350567652566:ios:d6dd2719e698d47d093d77</string>
 </dict>
 </plist>

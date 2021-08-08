@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
 set(BINARY_NAME "growbymargin")
-set(APPLICATION_ID "com.growbymargin.app")
+set(APPLICATION_ID "com.remedieslifetime.app")
 
 cmake_policy(SET CMP0063 NEW)
 

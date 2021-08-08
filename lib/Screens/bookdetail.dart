@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:async/async.dart';
@@ -6,11 +7,12 @@ import 'package:epub_viewer/epub_viewer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:growbymargin/Screens/cart.dart';
 import 'package:growbymargin/Screens/onboard.dart';
-import 'package:growbymargin/helper/payments.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:share/share.dart';
 import 'package:growbymargin/helper/authentication.dart';
@@ -64,7 +66,40 @@ class _DetailBookState extends State<DetailBook> {
         });
       }
     });
-    StripeService.init();
+  }
+
+  Map<String, dynamic>? paymentIntentData;
+
+  Future<void> makePayments(String amount) async {
+    final url = Uri.parse(
+        'https://us-central1-growapp-19c06.cloudfunctions.net/stripePayment?amount=$amount&currency=USD');
+
+    final response =
+        await http.get(url, headers: {'Content-Type': 'application/json'});
+    paymentIntentData = json.decode(response.body);
+
+    await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+            paymentIntentClientSecret: paymentIntentData!['paymentIntent'],
+            applePay: true,
+            googlePay: true,
+            style: ThemeMode.dark,
+            merchantCountryCode: 'INDIA',
+            merchantDisplayName: 'Remedies Lifetime'));
+    setState(() {});
+    displayPaymentsheet();
+  }
+
+  Future<void> displayPaymentsheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet(
+          parameters: PresentPaymentSheetParameters(
+              clientSecret: paymentIntentData!["paymentIntent"],
+              confirmPayment: true));
+      setState(() {
+        paymentIntentData = null;
+      });
+    } catch (e) {}
   }
 
   int count = 0;
@@ -448,19 +483,7 @@ class _DetailBookState extends State<DetailBook> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(6)),
                               onPressed: () async {
-                                var response = await StripeService.payWithCard(
-                                    amount: widget.price, currency: "USD");
-
-                                print("Payment Response: ${response.message}");
-
-                                Scaffold.of(context)
-                                    // ignore: deprecated_member_use
-                                    .showSnackBar(SnackBar(
-                                  content: Text(response.message!),
-                                  duration: Duration(
-                                      seconds:
-                                          response.success == true ? 3 : 4),
-                                ));
+                                makePayments(widget.price);
                               },
                               child: Text(
                                 'Buy',

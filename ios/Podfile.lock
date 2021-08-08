@@ -350,10 +350,12 @@ PODS:
   - shared_preferences (0.0.1):
     - Flutter
   - SSZipArchive (2.2.3)
-  - Stripe (19.4.1)
-  - stripe_payment (1.0.0):
+  - Stripe (21.5.1):
+    - Stripe/Stripe3DS2 (= 21.5.1)
+  - Stripe/Stripe3DS2 (21.5.1)
+  - stripe_ios (0.0.1):
     - Flutter
-    - Stripe (~> 19.4.0)
+    - Stripe (~> 21.5.1)
   - url_launcher (0.0.1):
     - Flutter
   - webview_flutter (0.0.1):
@@ -370,7 +372,7 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
-  - stripe_payment (from `.symlinks/plugins/stripe_payment/ios`)
+  - stripe_ios (from `.symlinks/plugins/stripe_ios/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
@@ -421,8 +423,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/share/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
-  stripe_payment:
-    :path: ".symlinks/plugins/stripe_payment/ios"
+  stripe_ios:
+    :path: ".symlinks/plugins/stripe_ios/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
   webview_flutter:
@@ -461,8 +463,8 @@ SPEC CHECKSUMS:
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
-  Stripe: 5914399ac5878056b985d56b409cb4bb1e7fc7e8
-  stripe_payment: 1cbe9c339c21b5ecf01035e80eea351067c67c56
+  Stripe: 515db5536fd659b5d79a0898ce1b882b61ab597e
+  stripe_ios: ce035050135b58a5a838e0d410d53b26f1dc026a
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
   ZFDragableModalTransition: 0d294eaaba6edfcb9839595de765f9ca06a4b524
