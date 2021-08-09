@@ -1,7 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
-
-import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:epub_viewer/epub_viewer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +10,6 @@ import 'package:growbymargin/Screens/cart.dart';
 import 'package:growbymargin/Screens/onboard.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:share/share.dart';
 import 'package:growbymargin/helper/authentication.dart';
 import 'package:sizer/sizer.dart';
@@ -69,38 +65,6 @@ class _DetailBookState extends State<DetailBook> {
   }
 
   Map<String, dynamic>? paymentIntentData;
-
-  Future<void> makePayments(String amount) async {
-    final url = Uri.parse(
-        'https://us-central1-growapp-19c06.cloudfunctions.net/stripePayment?amount=$amount&currency=USD');
-
-    final response =
-        await http.get(url, headers: {'Content-Type': 'application/json'});
-    paymentIntentData = json.decode(response.body);
-
-    await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-            paymentIntentClientSecret: paymentIntentData!['paymentIntent'],
-            applePay: true,
-            googlePay: true,
-            style: ThemeMode.dark,
-            merchantCountryCode: 'INDIA',
-            merchantDisplayName: 'Remedies Lifetime'));
-    setState(() {});
-    displayPaymentsheet();
-  }
-
-  Future<void> displayPaymentsheet() async {
-    try {
-      await Stripe.instance.presentPaymentSheet(
-          parameters: PresentPaymentSheetParameters(
-              clientSecret: paymentIntentData!["paymentIntent"],
-              confirmPayment: true));
-      setState(() {
-        paymentIntentData = null;
-      });
-    } catch (e) {}
-  }
 
   int count = 0;
   @override
@@ -483,6 +447,8 @@ class _DetailBookState extends State<DetailBook> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(6)),
                               onPressed: () async {
+                                print("buy...");
+                                var finalprice = int.parse(widget.price) * 10;
                                 makePayments(widget.price);
                               },
                               child: Text(
@@ -608,93 +574,47 @@ class _DetailBookState extends State<DetailBook> {
           ),
         ),
       ),
-      /*floatingActionButton: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(right: 30),
-        color: Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(left: 30, right: 5),
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              height: 55,
-              width: 190,
-              decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(6)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    ' QTY ',
-                    style: GoogleFonts.prompt(
-                        textStyle: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500)),
-                  ),
-                  VerticalDivider(
-                    color: Colors.black38,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        count > 0 ? count -= 1 : count = 0;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.remove,
-                      color: Colors.black54,
-                      size: 19,
-                    ),
-                  ),
-                  Text(
-                    '${count.toString()}',
-                    style: GoogleFonts.prompt(
-                        textStyle: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500)),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        count += 1;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.add,
-                      color: Colors.black54,
-                      size: 19,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            MaterialButton(
-              elevation: 0,
-              height: 55,
-              padding: EdgeInsets.only(left: 8, right: 8),
-              color: Colors.orange[800],
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6)),
-              onPressed: () {},
-              child: Text(
-                'Add to Cart',
-                style: GoogleFonts.prompt(
-                    textStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500)),
-              ),
-            )
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,*/
     );
+  }
+
+  Future<void> makePayments(String amount) async {
+    final url = Uri.parse(
+        'https://us-central1-growapp-19c06.cloudfunctions.net/stripePayment?amount=$amount');
+
+    final response =
+        await http.get(
+          url, 
+          headers: {'Content-Type': 'application/json'});
+
+    paymentIntentData = json.decode(response.body);
+    print(paymentIntentData);
+    await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+            paymentIntentClientSecret: paymentIntentData!['paymentIntent'],
+            applePay: true,
+            googlePay: true,
+            style: ThemeMode.system,
+            merchantCountryCode: 'IND',
+            merchantDisplayName: 'Remedies Lifetime'));
+    setState(() {});
+    displayPaymentsheet();
+  }
+
+  Future<void> displayPaymentsheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet(
+          parameters: PresentPaymentSheetParameters(
+              clientSecret: paymentIntentData!["paymentIntent"],
+              confirmPayment: true));
+      setState(() {
+        paymentIntentData = null;
+      });
+      Scaffold.of(context)
+          // ignore: deprecated_member_use
+          .showSnackBar(SnackBar(content: Text("Payment Successfull")));
+    } catch (e) {
+      print(e);
+    }
   }
 }
 

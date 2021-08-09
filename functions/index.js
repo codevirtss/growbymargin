@@ -12,7 +12,10 @@ const stripe = require('stripe')(functions.config().stripe.testkey);
 exports.stripePayment = functions.https.onRequest(async (req, res) => {
     const paymentIntent = await stripe.paymentIntents.create({
         amount: req.query.amount,
-        currency: req.query.currency,
+        currency: 'usd',
+        description: "Software development services",
+
+
 
     },
         function (err, paymentIntent) {
@@ -20,7 +23,7 @@ exports.stripePayment = functions.https.onRequest(async (req, res) => {
                 console.log(err);
             } else {
                 res.json({
-                    paymentIntent: paymentIntent.client_secret
+                    paymentIntent: paymentIntent.client_secret,
                 })
             }
         }

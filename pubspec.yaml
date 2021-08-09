@@ -32,18 +32,17 @@ dependencies:
   firebase_database: ^7.1.2
   flutter:
     sdk: flutter
-  flutter_advanced_drawer: ^1.2.3
+
   flutter_stripe: ^1.2.0
   google_fonts: ^2.1.0
   http: ^0.13.3
   page_transition: ^2.0.2
-  percent_indicator: ^3.0.1
+
   share: ^2.0.4
   sizer: ^2.0.13
   sliding_up_panel: ^2.0.0+1
   sn_progress_dialog: ^1.0.2
   url_launcher: ^6.0.9
-  webview_flutter: ^2.0.10
 
 dev_dependencies:
   flutter_test:
