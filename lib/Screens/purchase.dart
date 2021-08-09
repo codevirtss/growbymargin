@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:epub_viewer/epub_viewer.dart';
 //import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:growbymargin/Screens/feedback_form.dart';
 import 'package:growbymargin/Screens/home.dart';
 import 'package:growbymargin/Utils/GlobalVariables.dart';
+import 'package:growbymargin/helper/PurchaseHelper.dart';
 import 'package:sizer/sizer.dart';
 
 num sum = 0;
@@ -40,7 +42,7 @@ class _PurchaseState extends State<Purchase> {
                 child: StreamBuilder<QuerySnapshot>(
                   stream: db
                       .collection('Users')
-                      .doc(currentUser?.uid)
+                      .doc(currentUser!.uid)
                       .collection('Cart')
                       .snapshots(),
                   builder: (context, snapshot) {
@@ -66,6 +68,8 @@ class _PurchaseState extends State<Purchase> {
                                           price: '${doc['price']}',
                                           mrp: '${doc['mrp']}',
                                           id: '${doc['bookID']}',
+                                          fullURl:
+                                              'https://firebasestorage.googleapis.com/v0/b/growapp-19c06.appspot.com/o/Books%2Fab16d5d7-9a83-4bb6-81ea-3662e2a95c53%2FFull?alt=media&token=75aab7ab-71c1-45e6-8c33-4eaf4fa6f564',
                                         ));
                                       }).toList()),
                                   /*Container(
@@ -161,16 +165,19 @@ class _PurchaseState extends State<Purchase> {
 }
 
 class BookTile extends StatelessWidget {
-  final String image, name, price, mrp, id;
-  BookTile(
-      {required this.name,
-      required this.image,
-      required this.price,
-      required this.mrp,
-      required this.id});
+  final String image, name, price, mrp, id, fullURl;
+  BookTile({
+    required this.name,
+    required this.image,
+    required this.price,
+    required this.mrp,
+    required this.id,
+    required this.fullURl,
+  });
 
   @override
   Widget build(BuildContext context) {
+    PurchaseHelper purchaseHelper = PurchaseHelper();
     num p = int.parse(price.split(' ').first);
     print("p = $p");
     sum = sum + p;
@@ -339,7 +346,12 @@ class BookTile extends StatelessWidget {
                                 color: Colors.orange[800],
                                 borderRadius: BorderRadius.circular(8)),
                             child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  purchaseHelper.downloadFile(
+                                      context, fullURl, fullURl).then((value) {
+                                            EpubViewer.open("/storage/emulated/0/.Remedies Lifetime/https://firebasestorage.googleapis.com/v0/b/growapp-19c06.appspot.com/o/Books%2Fab16d5d7-9a83-4bb6-81ea-3662e2a95c53%2FFull?alt=media&token=75aab7ab-71c1-45e6-8c33-4eaf4fa6f564.epub");
+                                      });
+                                },
                                 child: Text("Read",
                                     style: GoogleFonts.prompt(
                                         textStyle: TextStyle(
