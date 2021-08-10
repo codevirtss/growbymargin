@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:epub_viewer/epub_viewer.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+
 import 'package:google_fonts/google_fonts.dart';
+import 'package:growbymargin/PdfViewer/pdfViewr.dart';
 import 'package:growbymargin/Screens/cart.dart';
 import 'package:growbymargin/Screens/onboard.dart';
 import 'package:page_transition/page_transition.dart';
@@ -404,27 +405,14 @@ class _DetailBookState extends State<DetailBook> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6)),
                         onPressed: () async {
-                          print(widget.prev);
-                          EpubViewer.setConfig(
-                              identifier: "iosBook",
-                              scrollDirection:
-                                  EpubScrollDirection.ALLDIRECTIONS,
-                              allowSharing: true,
-                              enableTts: true,
-                              nightMode: true);
-
-                          await EpubViewer.openAsset(
-                            'assets/Images/book.epub',
-                            lastLocation: EpubLocator.fromJson({
-                              "bookId": "2239",
-                              "href": "/OEBPS/ch06.xhtml",
-                              "created": 1539934158390,
-                              "locations": {
-                                "cfi": "epubcfi(/0!/4/4[simple_book]/2/2/6)"
-                              }
-                            }),
-                          );
-                          // ge
+                       Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          child: PdfBookOpen(
+                                            url: widget.prev,
+                                            name: widget.bname,
+                                          ),
+                                          type: PageTransitionType.fade));
                         },
                         child: Text(
                           'Preview',
@@ -449,7 +437,7 @@ class _DetailBookState extends State<DetailBook> {
                               onPressed: () async {
                                 print("buy...");
                                 var finalprice = int.parse(widget.price) * 10;
-                                makePayments(widget.price);
+                                // makePayments(widget.price);
                               },
                               child: Text(
                                 'Buy',
@@ -577,45 +565,45 @@ class _DetailBookState extends State<DetailBook> {
     );
   }
 
-  Future<void> makePayments(String amount) async {
-    final url = Uri.parse(
-        'https://us-central1-growapp-19c06.cloudfunctions.net/stripePayment?amount=$amount');
+  // Future<void> makePayments(String amount) async {
+  //   final url = Uri.parse(
+  //       'https://us-central1-growapp-19c06.cloudfunctions.net/stripePayment?amount=$amount');
 
-    final response =
-        await http.get(
-          url, 
-          headers: {'Content-Type': 'application/json'});
+  //   final response =
+  //       await http.get(
+  //         url,
+  //         headers: {'Content-Type': 'application/json'});
 
-    paymentIntentData = json.decode(response.body);
-    print(paymentIntentData);
-    await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-            paymentIntentClientSecret: paymentIntentData!['paymentIntent'],
-            applePay: true,
-            googlePay: true,
-            style: ThemeMode.system,
-            merchantCountryCode: 'IND',
-            merchantDisplayName: 'Remedies Lifetime'));
-    setState(() {});
-    displayPaymentsheet();
-  }
+  //   paymentIntentData = json.decode(response.body);
+  //   print(paymentIntentData);
+  //   await Stripe.instance.initPaymentSheet(
+  //       paymentSheetParameters: SetupPaymentSheetParameters(
+  //           paymentIntentClientSecret: paymentIntentData!['paymentIntent'],
+  //           applePay: true,
+  //           googlePay: true,
+  //           style: ThemeMode.system,
+  //           merchantCountryCode: 'IND',
+  //           merchantDisplayName: 'Remedies Lifetime'));
+  //   setState(() {});
+  //   displayPaymentsheet();
+  // }
 
-  Future<void> displayPaymentsheet() async {
-    try {
-      await Stripe.instance.presentPaymentSheet(
-          parameters: PresentPaymentSheetParameters(
-              clientSecret: paymentIntentData!["paymentIntent"],
-              confirmPayment: true));
-      setState(() {
-        paymentIntentData = null;
-      });
-      Scaffold.of(context)
-          // ignore: deprecated_member_use
-          .showSnackBar(SnackBar(content: Text("Payment Successfull")));
-    } catch (e) {
-      print(e);
-    }
-  }
+  // Future<void> displayPaymentsheet() async {
+  //   try {
+  //     await Stripe.instance.presentPaymentSheet(
+  //         parameters: PresentPaymentSheetParameters(
+  //             clientSecret: paymentIntentData!["paymentIntent"],
+  //             confirmPayment: true));
+  //     setState(() {
+  //       paymentIntentData = null;
+  //     });
+  //     Scaffold.of(context)
+  //         // ignore: deprecated_member_use
+  //         .showSnackBar(SnackBar(content: Text("Payment Successfull")));
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 }
 
 class BookTile extends StatelessWidget {

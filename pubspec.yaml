@@ -26,14 +26,13 @@ dependencies:
   cupertino_icons: ^1.0.3
   device_preview: ^0.7.4
   dio: ^4.0.0
-  epub_viewer: ^0.2.2
+  easy_pdf_viewer: ^1.0.0
   eva_icons_flutter: ^3.0.0
   firebase_auth: ^3.0.0
   firebase_core: ^1.4.0
   firebase_database: ^7.1.2
   flutter:
     sdk: flutter
-  flutter_stripe: ^1.2.0
   google_fonts: ^2.1.0
   objectdb: ^1.2.1+1
   page_transition: ^2.0.2

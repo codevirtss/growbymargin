@@ -1,14 +1,21 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:epub_viewer/epub_viewer.dart';
+
 //import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:growbymargin/PdfViewer/pdfViewr.dart';
 import 'package:growbymargin/Screens/feedback_form.dart';
 import 'package:growbymargin/Screens/home.dart';
 import 'package:growbymargin/Utils/GlobalVariables.dart';
 import 'package:growbymargin/helper/PurchaseHelper.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
 
 num sum = 0;
@@ -21,6 +28,31 @@ class Purchase extends StatefulWidget {
 }
 
 class _PurchaseState extends State<Purchase> {
+  // Future<File> createFileOfPdfUrl() async {
+  //   Completer<File> completer = Completer();
+  //   print("Start download file from internet!");
+  //   try {
+  //     // "https://berlin2017.droidcon.cod.newthinking.net/sites/global.droidcon.cod.newthinking.net/files/media/documents/Flutter%20-%2060FPS%20UI%20of%20the%20future%20%20-%20DroidconDE%2017.pdf";
+  //     // final url = "https://pdfkit.org/docs/guide.pdf";
+  //     final url = "http://www.pdf995.com/samples/pdf.pdf";
+  //     final filename = url.substring(url.lastIndexOf("/") + 1);
+  //     var request = await HttpClient().getUrl(Uri.parse(url));
+  //     var response = await request.close();
+  //     var bytes = await consolidateHttpClientResponseBytes(response);
+  //     var dir = await getApplicationDocumentsDirectory();
+  //     print("Download files");
+  //     print("${dir.path}/$filename");
+  //     File file = File("${dir.path}/$filename");
+
+  //     await file.writeAsBytes(bytes, flush: true);
+  //     completer.complete(file);
+  //   } catch (e) {
+  //     throw Exception('Error parsing asset file!');
+  //   }
+
+  //   return completer.future;
+  // }
+
   @override
   Widget build(BuildContext context) {
     final db = FirebaseFirestore.instance;
@@ -347,10 +379,14 @@ class BookTile extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8)),
                             child: TextButton(
                                 onPressed: () {
-                                  purchaseHelper.downloadFile(
-                                      context, fullURl, fullURl).then((value) {
-                                            EpubViewer.open("/storage/emulated/0/.Remedies Lifetime/https://firebasestorage.googleapis.com/v0/b/growapp-19c06.appspot.com/o/Books%2Fab16d5d7-9a83-4bb6-81ea-3662e2a95c53%2FFull?alt=media&token=75aab7ab-71c1-45e6-8c33-4eaf4fa6f564.epub");
-                                      });
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          child: PdfBookOpen(
+                                            url: fullURl,
+                                            name: name,
+                                          ),
+                                          type: PageTransitionType.fade));
                                 },
                                 child: Text("Read",
                                     style: GoogleFonts.prompt(

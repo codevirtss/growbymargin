@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "350567652566",
+    "firebase_url": "https://growapp-19c06-default-rtdb.firebaseio.com",
     "project_id": "growapp-19c06",
     "storage_bucket": "growapp-19c06.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "350567652566-pn7asuuvr097d76b0qegenq6up6a09dh.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "350567652566-hna58hjpn6muaa5f9sqhc936ihfijake.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.remedieslifetime.app"
+              }
             }
           ]
         }
