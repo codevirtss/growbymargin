@@ -255,7 +255,10 @@ class _HomeState extends State<Home> {
               ),
               Container(
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: db.collection('BookCollection').snapshots(),
+                  stream: db
+                      .collection('BookCollection')
+                    //  .orderBy('bookPrice', descending: false)
+                      .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(
@@ -289,6 +292,7 @@ class _HomeState extends State<Home> {
                                 mrp: doc['bookMrp'],
                                 desc: doc['bookDescription'],
                                 price: doc['bookPrice'],
+                                full: doc["fullBookUrl"],
                                 collection: doc['bookCollectionName'],
                                 bookPreviewUrl: doc['bookPreviewUrl'],
                                 //bookID: doc['bookID'],
@@ -324,6 +328,7 @@ class GridTile extends StatelessWidget {
       desc,
       price,
       collection,
+      full,
       bookPreviewUrl;
   GridTile(
       {required this.imageUrl,
@@ -334,87 +339,166 @@ class GridTile extends StatelessWidget {
       required this.desc,
       required this.price,
       required this.collection,
+      required this.full,
       required this.bookPreviewUrl});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DetailBook(
-                      bookID: id,
-                      imgUrl: imageUrl,
-                      author: writer,
-                      bname: name,
-                      bMrp: mrp,
-                      bdesc: desc,
-                      price: price,
-                      collName: collection,
-                      prev: bookPreviewUrl,
-                    )));
-      },
-      child: Container(
-        //color: Colors.pink,
-        //  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.fromLTRB(5.sp, 5.sp, 5.sp, 5.sp),
-              height: 25.h,
-              //width: MediaQuery.of(context).size.height * 0.15,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  image: DecorationImage(
-                      image: NetworkImage(imageUrl), fit: BoxFit.cover)),
-            ),
-            Container(
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  '$name',
-                  style: GoogleFonts.prompt(
-                      textStyle: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600)),
-                  overflow: TextOverflow.ellipsis,
-                )),
-            Container(
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Row(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          '\$${mrp.split(' ')[0]}',
-                          style: GoogleFonts.prompt(
-                              textStyle: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  decoration: TextDecoration.lineThrough)),
+    return Card(
+      elevation: 05,
+      child: GestureDetector(
+        onTap: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DetailBook(
+                        bookID: id,
+                        imgUrl: imageUrl,
+                        author: writer,
+                        bname: name,
+                        bMrp: mrp,
+                        bdesc: desc,
+                        price: price,
+                        collName: collection,
+                        prev: bookPreviewUrl,
+                        full: full,
+                      )));
+        },
+        child: price == "0"
+            ? ClipRRect(
+                child: Banner(
+                  message: "Free",
+                  color: Colors.red,
+                  location: BannerLocation.topEnd,
+                  textDirection: TextDirection.ltr,
+                  child: Container(
+                    //color: Colors.pink,
+                    //  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.fromLTRB(5.sp, 5.sp, 5.sp, 5.sp),
+                          height: 23.h,
+                          //width: MediaQuery.of(context).size.height * 0.15,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              image: DecorationImage(
+                                  image: NetworkImage(imageUrl),
+                                  fit: BoxFit.cover)),
                         ),
-                        SizedBox(
-                          width: 2.w,
-                        ),
-                        Text(
-                          '\$${price.split(' ')[0]}',
-                          style: GoogleFonts.prompt(
-                              textStyle: TextStyle(
-                                  color: Colors.lightBlue,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600)),
-                        ),
+                        Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child: Text(
+                              '$name',
+                              style: GoogleFonts.prompt(
+                                  textStyle: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600)),
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                        Container(
+                            alignment: Alignment.topLeft,
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child: Row(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '\$${mrp.split(' ')[0]}',
+                                      style: GoogleFonts.prompt(
+                                          textStyle: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                              decoration:
+                                                  TextDecoration.lineThrough)),
+                                    ),
+                                    SizedBox(
+                                      width: 2.w,
+                                    ),
+                                    Text(
+                                      '\$${price.split(' ')[0]}',
+                                      style: GoogleFonts.prompt(
+                                          textStyle: TextStyle(
+                                              color: Colors.lightBlue,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )),
                       ],
                     ),
+                  ),
+                ),
+              )
+            : Container(
+                //color: Colors.pink,
+                //  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.fromLTRB(5.sp, 5.sp, 5.sp, 5.sp),
+                      height: 23.h,
+                      //width: MediaQuery.of(context).size.height * 0.15,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          image: DecorationImage(
+                              image: NetworkImage(imageUrl),
+                              fit: BoxFit.cover)),
+                    ),
+                    Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Text(
+                          '$name',
+                          style: GoogleFonts.prompt(
+                              textStyle: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w600)),
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                    Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Row(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '\$${mrp.split(' ')[0]}',
+                                  style: GoogleFonts.prompt(
+                                      textStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          decoration:
+                                              TextDecoration.lineThrough)),
+                                ),
+                                SizedBox(
+                                  width: 2.w,
+                                ),
+                                Text(
+                                  '\$${price.split(' ')[0]}',
+                                  style: GoogleFonts.prompt(
+                                      textStyle: TextStyle(
+                                          color: Colors.lightBlue,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600)),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )),
                   ],
-                )),
-          ],
-        ),
+                ),
+              ),
       ),
     );
   }

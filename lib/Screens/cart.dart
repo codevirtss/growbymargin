@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:growbymargin/PdfViewer/pdfViewr.dart';
 import 'package:growbymargin/Screens/home.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 
 num sum = 0;
@@ -62,6 +64,7 @@ class _CartState extends State<Cart> {
                                             child: CartTile(
                                           name: '${doc['bookName']}',
                                           image: '${doc['imageUrl']}',
+                                          
                                           price: '${doc['price']}',
                                           mrp: '${doc['mrp']}',
                                           id: '${doc['bookID']}',
@@ -165,6 +168,7 @@ class CartTile extends StatelessWidget {
       required this.image,
       required this.price,
       required this.mrp,
+
       required this.id});
 
   @override
@@ -303,42 +307,48 @@ class CartTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    Container(
-                      width: 15.w,
-                      decoration: BoxDecoration(
-                          color: Colors.orange[800],
-                          borderRadius: BorderRadius.circular(8)),
-                      child: IconButton(
-                          onPressed: () {
-                            FirebaseFirestore.instance
-                                .collection('Users')
-                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .collection('Cart')
-                                .doc(id)
-                                .delete();
-                          },
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.white,
-                          )),
-                    ),
-                    Expanded(
-                        child: Container(
-                            margin: EdgeInsets.only(left: 5, right: 5),
+                SizedBox(
+                  height: 10,
+                ),
+                
+                 Row(
+                        children: [
+                          Container(
+                            width: 15.w,
                             decoration: BoxDecoration(
                                 color: Colors.orange[800],
                                 borderRadius: BorderRadius.circular(8)),
-                            child: TextButton(
-                                onPressed: () {},
-                                child: Text("Buy Now",
-                                    style: GoogleFonts.prompt(
-                                        textStyle: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600)))))),
-                  ],
-                )
+                            child: IconButton(
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('Users')
+                                      .doc(FirebaseAuth
+                                          .instance.currentUser!.uid)
+                                      .collection('Cart')
+                                      .doc(id)
+                                      .delete();
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                )),
+                          ),
+                          Expanded(
+                              child: Container(
+                                  margin: EdgeInsets.only(left: 5, right: 5),
+                                  decoration: BoxDecoration(
+                                      color: Colors.orange[800],
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: TextButton(
+                                      onPressed: () {},
+                                      child: Text("Buy Now",
+                                          style: GoogleFonts.prompt(
+                                              textStyle: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight:
+                                                      FontWeight.w600)))))),
+                        ],
+                      )
               ],
             ),
           ),

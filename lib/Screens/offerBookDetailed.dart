@@ -37,6 +37,7 @@ class _OfferBookDetailsState extends State<OfferBookDetails> {
               price: boodDatabyId["bookPrice"],
               prev: boodDatabyId["bookPreviewUrl"],
               collName: boodDatabyId["bookCollectionName"],
+              full: boodDatabyId["fullBookUrl"],
               author: "Raza Khan",
             );
           } else {
