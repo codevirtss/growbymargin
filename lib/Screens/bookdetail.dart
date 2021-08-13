@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -53,6 +54,23 @@ class _DetailBookState extends State<DetailBook> {
 
   bool isLoggedIn = false;
   bool isBookAdded = false;
+  bool isBookBuyed = false;
+
+  Future<bool?> checkIsBookPurchased() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    var ans = await FirebaseFirestore.instance
+        .collection("User")
+        .doc(currentUser!.uid)
+        .collection("Books")
+        .where("bookId", isEqualTo: widget.bookID)
+        .get()
+        .whenComplete(() {
+      setState(() {
+        isBookBuyed = true;
+        print("after $isBookBuyed");
+      });
+    });
+  }
 
   @override
   void initState() {
@@ -68,9 +86,8 @@ class _DetailBookState extends State<DetailBook> {
         });
       }
     });
+    checkIsBookPurchased();
   }
-
-  Map<String, dynamic>? paymentIntentData;
 
   int count = 0;
   @override
@@ -405,7 +422,7 @@ class _DetailBookState extends State<DetailBook> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 color: Colors.white,
-                child: widget.price == "0"
+                child: isLoggedIn == true && widget.price == "0"
                     ? Row(
                         children: [
                           Expanded(
@@ -468,7 +485,7 @@ class _DetailBookState extends State<DetailBook> {
                           SizedBox(
                             width: 10,
                           ),
-                          isLoggedIn == true
+                          isLoggedIn == true || isBookBuyed
                               ? Expanded(
                                   child: MaterialButton(
                                     color: Colors.orange[800],
@@ -555,6 +572,7 @@ class _DetailBookState extends State<DetailBook> {
                                                                           () {
                                                                         Navigator.pop(
                                                                             context);
+                                                                        checkIsBookPurchased();
                                                                       },
                                                                       child: Text(
                                                                           "Okay!"))
@@ -563,17 +581,26 @@ class _DetailBookState extends State<DetailBook> {
                                                             )),
                                                       );
                                                     });
-                                                // Fluttertoast.showToast(
-                                                //     msg:
-                                                //         "Payment Successfull...",
-                                                //     toastLength:
-                                                //         Toast.LENGTH_SHORT,
-                                                //     gravity:
-                                                //         ToastGravity.BOTTOM,
-                                                //     timeInSecForIosWeb: 1,
-                                                //     // backgroundColor: Colors.red,
-                                                //     // textColor: Colors.white,
-                                                //     fontSize: 16.0);
+                                                var currentUser = FirebaseAuth
+                                                    .instance.currentUser;
+                                                await FirebaseFirestore.instance
+                                                    .collection("Users")
+                                                    .doc(currentUser!.uid)
+                                                    .collection("Books")
+                                                    .doc(widget.bookID)
+                                                    .set(({
+                                                      'bookID': widget.bookID,
+                                                      'bookName': widget.bname,
+                                                      'price': widget.price,
+                                                      'mrp': widget.bMrp,
+                                                      'imageUrl': widget.imgUrl,
+                                                      'full': widget.full,
+                                                      'transactionId':
+                                                          dataMap["id"],
+                                                      'datetime': DateTime.now()
+                                                          .toString(),
+                                                    }));
+
                                                 print(
                                                     "Successfull............");
                                               } else {
@@ -620,7 +647,7 @@ class _DetailBookState extends State<DetailBook> {
                                               fontWeight: FontWeight.w500)),
                                     ),
                                   ),
-                                )
+                                ),
                         ],
                       ),
               ),
@@ -715,46 +742,6 @@ More Collection \n${widget.collName}""",
       ),
     );
   }
-
-  // Future<void> makePayments(String amount) async {
-  //   final url = Uri.parse(
-  //       'https://us-central1-growapp-19c06.cloudfunctions.net/stripePayment?amount=$amount');
-
-  //   final response =
-  //       await http.get(
-  //         url,
-  //         headers: {'Content-Type': 'application/json'});
-
-  //   paymentIntentData = json.decode(response.body);
-  //   print(paymentIntentData);
-  //   await Stripe.instance.initPaymentSheet(
-  //       paymentSheetParameters: SetupPaymentSheetParameters(
-  //           paymentIntentClientSecret: paymentIntentData!['paymentIntent'],
-  //           applePay: true,
-  //           googlePay: true,
-  //           style: ThemeMode.system,
-  //           merchantCountryCode: 'IND',
-  //           merchantDisplayName: 'Remedies Lifetime'));
-  //   setState(() {});
-  //   displayPaymentsheet();
-  // }
-
-  // Future<void> displayPaymentsheet() async {
-  //   try {
-  //     await Stripe.instance.presentPaymentSheet(
-  //         parameters: PresentPaymentSheetParameters(
-  //             clientSecret: paymentIntentData!["paymentIntent"],
-  //             confirmPayment: true));
-  //     setState(() {
-  //       paymentIntentData = null;
-  //     });
-  //     Scaffold.of(context)
-  //         // ignore: deprecated_member_use
-  //         .showSnackBar(SnackBar(content: Text("Payment Successfull")));
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 }
 
 class BookTile extends StatelessWidget {

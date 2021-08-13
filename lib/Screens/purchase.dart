@@ -1,9 +1,4 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-//import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:growbymargin/PdfViewer/pdfViewr.dart';
 import 'package:growbymargin/Screens/feedback_form.dart';
 import 'package:growbymargin/Screens/home.dart';
-import 'package:growbymargin/Utils/GlobalVariables.dart';
 import 'package:growbymargin/helper/PurchaseHelper.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
 
 num sum = 0;
@@ -24,35 +17,10 @@ class Purchase extends StatefulWidget {
   const Purchase({Key? key}) : super(key: key);
 
   @override
-  _PurchaseState createState() => _PurchaseState();
+  _PurchaseState createState() => _PurchaseState(); 
 }
 
 class _PurchaseState extends State<Purchase> {
-  // Future<File> createFileOfPdfUrl() async {
-  //   Completer<File> completer = Completer();
-  //   print("Start download file from internet!");
-  //   try {
-  //     // "https://berlin2017.droidcon.cod.newthinking.net/sites/global.droidcon.cod.newthinking.net/files/media/documents/Flutter%20-%2060FPS%20UI%20of%20the%20future%20%20-%20DroidconDE%2017.pdf";
-  //     // final url = "https://pdfkit.org/docs/guide.pdf";
-  //     final url = "http://www.pdf995.com/samples/pdf.pdf";
-  //     final filename = url.substring(url.lastIndexOf("/") + 1);
-  //     var request = await HttpClient().getUrl(Uri.parse(url));
-  //     var response = await request.close();
-  //     var bytes = await consolidateHttpClientResponseBytes(response);
-  //     var dir = await getApplicationDocumentsDirectory();
-  //     print("Download files");
-  //     print("${dir.path}/$filename");
-  //     File file = File("${dir.path}/$filename");
-
-  //     await file.writeAsBytes(bytes, flush: true);
-  //     completer.complete(file);
-  //   } catch (e) {
-  //     throw Exception('Error parsing asset file!');
-  //   }
-
-  //   return completer.future;
-  // }
-
   @override
   Widget build(BuildContext context) {
     final db = FirebaseFirestore.instance;
@@ -64,7 +32,7 @@ class _PurchaseState extends State<Purchase> {
       ),
       body: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
-        scrollDirection: Axis.vertical,
+        scrollDirection: Axis.vertical, 
         child: Container(
           child: Column(
             children: <Widget>[
@@ -75,7 +43,7 @@ class _PurchaseState extends State<Purchase> {
                   stream: db
                       .collection('Users')
                       .doc(currentUser!.uid)
-                      .collection('Cart')
+                      .collection('Books')
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
@@ -100,56 +68,9 @@ class _PurchaseState extends State<Purchase> {
                                           price: '${doc['price']}',
                                           mrp: '${doc['mrp']}',
                                           id: '${doc['bookID']}',
-                                          fullURl:
-                                              'https://firebasestorage.googleapis.com/v0/b/growapp-19c06.appspot.com/o/Books%2Fab16d5d7-9a83-4bb6-81ea-3662e2a95c53%2FFull?alt=media&token=75aab7ab-71c1-45e6-8c33-4eaf4fa6f564',
+                                          fullURl: '${doc['full']}',
                                         ));
                                       }).toList()),
-                                  /*Container(
-                                    decoration: BoxDecoration(
-                                      boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(0.0, 0.1))],
-                                      color: Colors.white,
-                                    ),
-                                    width: 100.w,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                        padding: EdgeInsets.only(left: 10,right: 5,top: 5,bottom: 5),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Container(
-                                            child: Text(
-                                              'Total: $sum',
-                                              style: GoogleFonts.prompt(
-                                                  textStyle: TextStyle(
-                                                      color: Colors.black87,
-                                                      fontSize: 14.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: MaterialButton(
-                                            onPressed: () {},
-                                            color: Colors.orange[800],
-                                            height: 45,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(6)),
-                                            child: Text(
-                                              'Checkout',
-                                              style: GoogleFonts.prompt(
-                                                  textStyle: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 14.sp,
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),*/
                                 ],
                               ))
                           : Column(
@@ -349,27 +270,27 @@ class BookTile extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 5),
-                      width: 11.w,
-                      height: 11.w,
-                      decoration: BoxDecoration(
-                          color: Colors.orange[800],
-                          borderRadius: BorderRadius.circular(8)),
-                      child: IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FeedbackForm(
-                                          bookID: id,
-                                        )));
-                          },
-                          icon: Icon(
-                            Icons.feedback,
-                            color: Colors.white,
-                          )),
-                    ),
+                    // Container(
+                    //   margin: EdgeInsets.only(right: 5),
+                    //   width: 11.w,
+                    //   height: 11.w,
+                    //   decoration: BoxDecoration(
+                    //       color: Colors.orange[800],
+                    //       borderRadius: BorderRadius.circular(8)),
+                    //   child: IconButton(
+                    //       onPressed: () {
+                    //         Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (context) => FeedbackForm(
+                    //                       bookID: id,
+                    //                     )));
+                    //       },
+                    //       icon: Icon(
+                    //         Icons.feedback,
+                    //         color: Colors.white,
+                    //       )),
+                    // ),
                     Expanded(
                         child: Container(
                             //margin: EdgeInsets.only(left: 5,right: 5),

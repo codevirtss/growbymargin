@@ -3,9 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:growbymargin/PdfViewer/pdfViewr.dart';
 import 'package:growbymargin/Screens/home.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 
 num sum = 0;
