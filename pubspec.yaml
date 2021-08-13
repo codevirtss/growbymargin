@@ -33,7 +33,9 @@ dependencies:
   firebase_database: ^7.1.2
   flutter:
     sdk: flutter
+  fluttertoast: ^8.0.8
   google_fonts: ^2.1.0
+  http_auth: ^1.0.1
   objectdb: ^1.2.1+1
   page_transition: ^2.0.2
   path_provider: ^2.0.2
@@ -43,6 +45,7 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   sn_progress_dialog: ^1.0.2
   url_launcher: ^6.0.9
+  webview_flutter: ^2.0.12
 
 dev_dependencies:
   flutter_test:

@@ -1,14 +1,17 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:growbymargin/PdfViewer/pdfViewr.dart';
 import 'package:growbymargin/Screens/cart.dart';
 import 'package:growbymargin/Screens/onboard.dart';
+import 'package:growbymargin/paypal/PaypalPayment.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
@@ -207,80 +210,84 @@ class _DetailBookState extends State<DetailBook> {
                         ],
                       ),
                       isLoggedIn == true
-                          ? widget.price == "0" ? Container() : GestureDetector(
-                              onTap: () async {
-                                var currentUser =
-                                    FirebaseAuth.instance.currentUser;
+                          ? widget.price == "0"
+                              ? Container()
+                              : GestureDetector(
+                                  onTap: () async {
+                                    var currentUser =
+                                        FirebaseAuth.instance.currentUser;
 
-                                try {
-                                  await FirebaseFirestore.instance
-                                      .collection('Users')
-                                      .doc(currentUser!.uid)
-                                      .collection('Cart')
-                                      .doc(widget.bookID)
-                                      .set({
-                                    'bookID': widget.bookID,
-                                    'bookName': widget.bname,
-                                    'price': widget.price,
-                                    'mrp': widget.bMrp,
-                                    'imageUrl': widget.imgUrl,
-                                    'datetime': DateTime.now().toString(),
-                                  }).then((value) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: Text("Success"),
-                                            content: Text("Book added"),
-                                            actions: [
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                            context,
-                                                            PageTransition(
-                                                                child: Cart(),
-                                                                type:
-                                                                    PageTransitionType
+                                    try {
+                                      await FirebaseFirestore.instance
+                                          .collection('Users')
+                                          .doc(currentUser!.uid)
+                                          .collection('Cart')
+                                          .doc(widget.bookID)
+                                          .set({
+                                        'bookID': widget.bookID,
+                                        'bookName': widget.bname,
+                                        'price': widget.price,
+                                        'mrp': widget.bMrp,
+                                        'imageUrl': widget.imgUrl,
+                                        'datetime': DateTime.now().toString(),
+                                      }).then((value) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text("Success"),
+                                                content: Text("Book added"),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.push(
+                                                                context,
+                                                                PageTransition(
+                                                                    child:
+                                                                        Cart(),
+                                                                    type: PageTransitionType
                                                                         .fade))
-                                                        .then((value) {
-                                                      Navigator.pop(context);
-                                                    });
-                                                  },
-                                                  child: Text("Go To Cart"))
-                                            ],
-                                          );
-                                        });
-                                  });
-                                } catch (e) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: Text("Error"),
-                                          content: Text("Try after some time"),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text("OK"))
-                                          ],
-                                        );
+                                                            .then((value) {
+                                                          Navigator.pop(
+                                                              context);
+                                                        });
+                                                      },
+                                                      child: Text("Go To Cart"))
+                                                ],
+                                              );
+                                            });
                                       });
-                                }
-                              },
-                              child: Container(
-                                width: 45,
-                                height: 45,
-                                decoration: BoxDecoration(
-                                    color: Colors.teal[300],
-                                    shape: BoxShape.circle),
-                                child: Icon(
-                                  Icons.shopping_cart,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            )
+                                    } catch (e) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: Text("Error"),
+                                              content:
+                                                  Text("Try after some time"),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text("OK"))
+                                              ],
+                                            );
+                                          });
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 45,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                        color: Colors.teal[300],
+                                        shape: BoxShape.circle),
+                                    child: Icon(
+                                      Icons.shopping_cart,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
                           : TextButton(
                               onPressed: () {
                                 Navigator.push(
@@ -469,10 +476,116 @@ class _DetailBookState extends State<DetailBook> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(6)),
                                     onPressed: () async {
-                                      print("buy...");
-                                      var finalprice =
-                                          int.parse(widget.price) * 10;
-                                      // makePayments(widget.price);
+                                      // Navigator.pop(context);
+
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (BuildContext cntxt) =>
+                                              PaypalPayment(
+                                            //  onFinish: () {},
+                                            onFinish: (dataMap) async {
+                                              // payment done
+                                              print('order data: ' +
+                                                  dataMap.toString());
+                                              if (dataMap['state'] ==
+                                                      "approved" ||
+                                                  dataMap['state'] ==
+                                                      "completed") {
+                                                showDialog(
+                                                    barrierDismissible: false,
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return BackdropFilter(
+                                                        filter:
+                                                            ImageFilter.blur(
+                                                                sigmaX: 10,
+                                                                sigmaY: 10),
+                                                        child: new AlertDialog(
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            3.0.w))),
+                                                            // title: new Text("Transaction Successfull.."),
+                                                            content: Container(
+                                                              height: 35.0.h,
+                                                              child: Column(
+                                                                children: [
+                                                                  SizedBox(
+                                                                    height:
+                                                                        20.0.h,
+                                                                    child: Image
+                                                                        .asset(
+                                                                            "assets/Images/check.gif"),
+                                                                  ),
+                                                                  Text(
+                                                                    "Transaction Sucessfull...",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        fontSize: 15
+                                                                            .sp,
+                                                                        fontWeight:
+                                                                            FontWeight.w700),
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          1.0.h),
+                                                                  Text(
+                                                                    dataMap[
+                                                                        "id"],
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          10.sp,
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          1.0.h),
+                                                                  ElevatedButton(
+                                                                      style: ButtonStyle(
+                                                                          backgroundColor: MaterialStateProperty.all(Colors.orange[
+                                                                              800]),
+                                                                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius.all(Radius.circular(3.0
+                                                                                  .w))))),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                      child: Text(
+                                                                          "Okay!"))
+                                                                ],
+                                                              ),
+                                                            )),
+                                                      );
+                                                    });
+                                                // Fluttertoast.showToast(
+                                                //     msg:
+                                                //         "Payment Successfull...",
+                                                //     toastLength:
+                                                //         Toast.LENGTH_SHORT,
+                                                //     gravity:
+                                                //         ToastGravity.BOTTOM,
+                                                //     timeInSecForIosWeb: 1,
+                                                //     // backgroundColor: Colors.red,
+                                                //     // textColor: Colors.white,
+                                                //     fontSize: 16.0);
+                                                print(
+                                                    "Successfull............");
+                                              } else {
+                                                showToast(
+                                                    "Payment Failed...Please Try Again......");
+                                              }
+                                            },
+                                            amount: "10.00 \$",
+                                            itemName: "Book",
+                                          ),
+                                        ),
+                                      );
                                     },
                                     child: Text(
                                       'Buy',
@@ -566,7 +679,7 @@ More Collection \n${widget.collName}""",
                     } else
                       return Container(
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.35,
+                        height: MediaQuery.of(context).size.height * 0.38,
                         padding: EdgeInsets.only(left: 10),
                         child: ListView(
                           shrinkWrap: true,
@@ -691,7 +804,7 @@ class BookTile extends StatelessWidget {
         },
         child: price == "0"
             ? ClipRRect(
-              child: Banner(
+                child: Banner(
                   message: "Free",
                   color: Colors.red,
                   location: BannerLocation.topEnd,
@@ -770,7 +883,7 @@ class BookTile extends StatelessWidget {
                     ),
                   ),
                 ),
-            )
+              )
             : Container(
                 height: MediaQuery.of(context).size.height * 0.35,
                 width: MediaQuery.of(context).size.width * 0.38,
@@ -848,4 +961,70 @@ class BookTile extends StatelessWidget {
       ),
     );
   }
+}
+
+getSucessDialog(BuildContext context, String transactionID) {
+  return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: new AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(3.0.w))),
+              // title: new Text("Transaction Successfull.."),
+              content: Container(
+                height: 35.0.h,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20.0.h,
+                      child: Image.asset("assets/Images/check.gif"),
+                    ),
+                    Text(
+                      "Transaction Sucessfull...",
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    SizedBox(height: 1.0.h),
+                    Text(
+                      "ID:- ${transactionID}",
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                      ),
+                    ),
+                    SizedBox(height: 1.0.h),
+                    ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.orange[800]),
+                            shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(3.0.w))))),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Okay!"))
+                  ],
+                ),
+              )),
+        );
+      });
+}
+
+showToast(
+  String msg,
+) {
+  Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      // backgroundColor: Colors.red,
+      // textColor: Colors.white,
+      fontSize: 16.0);
 }
