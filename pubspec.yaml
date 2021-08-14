@@ -36,6 +36,7 @@ dependencies:
   fluttertoast: ^8.0.8
   google_fonts: ^2.1.0
   http_auth: ^1.0.1
+  mailto: ^2.0.0
   objectdb: ^1.2.1+1
   page_transition: ^2.0.2
   path_provider: ^2.0.2
