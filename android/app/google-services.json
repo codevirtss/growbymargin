@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "350567652566",
-    "firebase_url": "https://growapp-19c06-default-rtdb.firebaseio.com",
-    "project_id": "growapp-19c06",
-    "storage_bucket": "growapp-19c06.appspot.com"
+    "project_number": "838056571754",
+    "project_id": "web-admin-ea648",
+    "storage_bucket": "web-admin-ea648.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:350567652566:android:97d137608fbc285d093d77",
+        "mobilesdk_app_id": "1:838056571754:android:3974b1b0d4d9bc02c1ab13",
         "android_client_info": {
           "package_name": "com.remedieslifetime.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "350567652566-pn7asuuvr097d76b0qegenq6up6a09dh.apps.googleusercontent.com",
+          "client_id": "838056571754-bhhfhao1962cusg7t7o63sfin0jm5q50.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA1JNY3MozF2dCC5EcKH13Z8zk2u3fuYOw"
+          "current_key": "AIzaSyBCrt5NSnaspMksHdSFchXu6uRQSD1mWJI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "350567652566-pn7asuuvr097d76b0qegenq6up6a09dh.apps.googleusercontent.com",
+              "client_id": "838056571754-bhhfhao1962cusg7t7o63sfin0jm5q50.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "350567652566-hna58hjpn6muaa5f9sqhc936ihfijake.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.remedieslifetime.app"
-              }
             }
           ]
         }

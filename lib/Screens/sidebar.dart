@@ -11,7 +11,6 @@ import 'package:growbymargin/Screens/cart.dart';
 import 'package:growbymargin/Screens/onboard.dart';
 import 'package:growbymargin/Screens/profile.dart';
 import 'package:growbymargin/Screens/purchase.dart';
-import 'package:growbymargin/Screens/support.dart';
 import 'package:growbymargin/helper/authentication.dart';
 
 class TheDrawer extends StatefulWidget {
